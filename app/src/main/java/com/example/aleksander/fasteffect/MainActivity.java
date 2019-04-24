@@ -40,8 +40,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         SQLiteDatabase baza = openOrCreateDatabase(bazaDanychStruktura.BazaPlik, Context.MODE_PRIVATE, null);
 
         baza.execSQL("CREATE TABLE IF NOT EXISTS 'Dzien'( idDzien INTEGER PRIMARY KEY AUTOINCREMENT,Data NUMERIC)");
-        baza.execSQL("CREATE TABLE IF NOT EXISTS 'Posilek'( idPosilek INTEGER PRIMARY KEY AUTOINCREMENT,Nazwa STRING,Bialko INTEGER,Weglowodany INTEGER,Tluszcze INTEGER)");
-        baza.execSQL("CREATE TABLE IF NOT EXISTS 'PoraDnia'( idPoraDnia INTEGER PRIMARY KEY AUTOINCREMENT,Pora STRING)");
+        baza.execSQL("CREATE TABLE IF NOT EXISTS 'Posilek'( idPosilek INTEGER PRIMARY KEY AUTOINCREMENT,Nazwa TEXT,Bialko INTEGER,Weglowodany INTEGER,Tluszcze INTEGER)");
+        baza.execSQL("CREATE TABLE IF NOT EXISTS 'PoraDnia'( idPoraDnia INTEGER PRIMARY KEY AUTOINCREMENT,Pora TEXT)");
         baza.execSQL("CREATE TABLE IF NOT EXISTS 'Hash'( idDzien INTEGER, idPosilek INTEGER,idPoraDnia INTEGER, CONSTRAINT fk_idDzien FOREIGN KEY(idDzien) REFERENCES Dzien(idDzien),CONSTRAINT fk_idPosilek FOREIGN KEY(idPosilek) REFERENCES Posilek(idPosilek),CONSTRAINT fk_idPoraDnia FOREIGN KEY(idPoraDnia) REFERENCES PoraDnia(idPoraDnia))");
 
 
