@@ -35,7 +35,7 @@ import static android.database.sqlite.SQLiteDatabase.openOrCreateDatabase;
  * A simple {@link Fragment} subclass.
  */
 public class ProfileFragment extends Fragment {
-
+//
 
     public ProfileFragment() {
         // Required empty public constructor
