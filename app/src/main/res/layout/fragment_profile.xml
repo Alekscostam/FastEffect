@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,94 +9,185 @@
 
     <!-- TODO: Update blank fragment layout -->
     <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
 
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="60dp"
+                android:layout_height="16dp"
+
+                android:layout_marginEnd="139dp"
+
+                android:text="Wiek"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toTopOf="@+id/editTextWiek"
+                app:layout_constraintEnd_toEndOf="@+id/editTextWiek"
+                tools:ignore="MissingConstraints" />
 
             <EditText
                 android:id="@+id/editTextWiek"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="200dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="38dp"
+
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="40dp"
                 android:ems="10"
                 android:hint="@string/age"
                 android:inputType="number"
                 android:maxLength="2"
+                android:textColor="#000"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toTopOf="@+id/editTextWzrost"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.537"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0"
+                tools:ignore="MissingConstraints" />
 
-                android:textColor="#000" />
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="60dp"
+                android:layout_height="15dp"
+                android:layout_gravity="right"
+                android:layout_marginEnd="139dp"
+                android:layout_marginBottom="0dp"
+                android:text="Wzrost"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toTopOf="@+id/editTextWzrost"
+                app:layout_constraintEnd_toEndOf="@+id/editTextWzrost"
+                tools:ignore="MissingConstraints" />
 
             <EditText
                 android:id="@+id/editTextWzrost"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+
+                android:layout_width="200dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="40dp"
                 android:ems="10"
                 android:hint="@string/height"
                 android:inputType="number"
+
                 android:maxLength="3"
                 android:textColor="#000"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toTopOf="@+id/editTextWaga"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.537"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="MissingConstraints" />
 
-
-                />
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="60dp"
+                android:layout_height="16dp"
+                android:layout_gravity="right"
+                android:layout_marginEnd="139dp"
+                android:layout_marginBottom="0dp"
+                android:text="Waga"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toTopOf="@+id/editTextWaga"
+                app:layout_constraintEnd_toEndOf="@+id/editTextWaga"
+                tools:ignore="MissingConstraints" />
 
             <EditText
                 android:id="@+id/editTextWaga"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="200dp"
+                android:layout_height="36dp"
+                android:layout_gravity="right"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="40dp"
                 android:ems="10"
                 android:hint="@string/wieght"
                 android:inputType="numberDecimal"
                 android:maxLength="3"
-                android:textColor="#000" />
+                android:textColor="#000"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toTopOf="@+id/RadioPlec"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.537"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="60dp"
+                android:layout_height="16dp"
+                android:layout_gravity="right"
+                android:layout_marginEnd="139dp"
+                android:text="Pleć"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toTopOf="@+id/RadioPlec"
+                app:layout_constraintEnd_toEndOf="@+id/RadioPlec"
+                tools:ignore="MissingConstraints" />
+
+            <Button
+                android:id="@+id/buttonSave"
+                android:layout_width="200dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="8dp"
+
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="252dp"
+                android:layout_weight="1"
+                android:background="#41AECF"
+                android:text="@string/save"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.537"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="MissingConstraints" />
 
             <RadioGroup
                 android:id="@+id/RadioPlec"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_width="200dp"
+
+                android:layout_height="44dp"
+
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="28dp"
+
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toTopOf="@+id/buttonSave"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.538"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="MissingConstraints">
 
                 <RadioButton
 
                     android:id="@+id/radioButtonM"
-                    android:layout_width="wrap_content"
+
+                    android:layout_width="70dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/man"
-
-                    />
+                    android:text="@string/man" />
 
                 <RadioButton
 
                     android:id="@+id/radioButtonW"
-                    android:layout_width="wrap_content"
+
+                    android:layout_width="61dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/women" />
 
             </RadioGroup>
+        </android.support.constraint.ConstraintLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/buttonSave"
-                    android:layout_width="wrap_content"
-                    android:layout_height="35dp"
-                    android:layout_weight="1"
-
-                    android:background="@android:color/holo_green_dark"
-                    android:text="@string/save" />
-
-            </LinearLayout>
-
-
-        </LinearLayout>
     </ScrollView>
-
 
 </RelativeLayout>
