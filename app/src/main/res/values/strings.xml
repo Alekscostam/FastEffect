@@ -5,6 +5,15 @@
 <string name="man">Mężczyzna</string>
 <string name="women">Kobieta</string>
 
+    //login
+<string name="login">Login</string>
+<string name="password">Hasło</string>
+
+    //register
+<string name="imie">Imie</string>
+<string name="email">e-mail</string>
+
+
 <string name="name">Imie</string>
 <string name="surname">Nazwisko</string>
 <string name="wieght">Waga(kg)</string>
