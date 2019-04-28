@@ -1,10 +1,13 @@
 package com.example.aleksander.fasteffect;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -18,55 +21,48 @@ public class LoginActivity extends AppCompatActivity {
 
         final int[] password_show = {0};
 
-        final EditText editTextPassword = (EditText) findViewById(R.id.autoCompleteTextViewPassword) ;
+
+        AutoCompleteTextView autoCompleteTextViewLogin = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextViewLogin);
+        Button buttonLogin = (Button) findViewById(R.id.buttonLogin);
+        final AutoCompleteTextView autoCompleteTextViewPassword = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextViewPassword);
         ImageButton imageButtonShowPassword = (ImageButton) findViewById(R.id.imageButtonPassword);
         TextView textViewRegister = (TextView) findViewById(R.id.textViewRegister);
 
         textViewRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent register = new Intent(getApplicationContext(),RegisterActivity.class);
+                Intent register = new Intent(getApplicationContext(), RegisterActivity.class);
                 startActivity(register);
             }
         });
 
-
-        editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-
+        //  final Typeface tfArial = Typeface.createFromAsset(getAssets(), "arial.ttf");
+        autoCompleteTextViewPassword.setTransformationMethod(new PasswordTransformationMethod());
+        // editTextPassword.setTypeface(tfArial);
 
         imageButtonShowPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
 
-                if(password_show[0] ==0)
-                {
+                if (password_show[0] == 0) {
+
+                    autoCompleteTextViewPassword.setTransformationMethod(null);
+                    password_show[0] = 1;
+                    autoCompleteTextViewPassword.setSelection(autoCompleteTextViewPassword.length());
 
 
-                    editTextPassword.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                    password_show[0] =1;
-                    editTextPassword.setSelection(editTextPassword.length());
+                } else if (password_show[0] == 1) {
+
+                    autoCompleteTextViewPassword.setTransformationMethod(new PasswordTransformationMethod());
+                    password_show[0] = 0;
+                    autoCompleteTextViewPassword.setSelection(autoCompleteTextViewPassword.length());
 
                 }
-                else if(password_show[0] ==1)
-                {
-
-
-                    editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                    password_show[0] =0;
-                    editTextPassword.setSelection(editTextPassword.length());
-                }
-
 
 
             }
         });
-
-
-
-
-
-
 
 
     }

@@ -14,23 +14,23 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
 
         <AutoCompleteTextView
-            android:id="@+id/autoCompleteTextView2"
+            android:id="@+id/autoCompleteTextViewLogin"
             android:layout_width="240dp"
             android:layout_height="40dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="40dp"
             android:layout_marginEnd="8dp"
             android:background="@drawable/plainttext_roundedlogin"
-            android:drawableLeft="@drawable/ic_profile"
+          android:drawableStart="@drawable/ic_profile"
             android:hint="@string/login"
             android:singleLine="true"
-            android:textColor="#41AECF"
-            android:maxLength="13"
-            android:inputType="text"
+            android:textColor="#808080"
+            android:maxLength="15"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
@@ -39,7 +39,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/buttonLogin"
             android:layout_width="240dp"
             android:layout_height="31dp"
             android:layout_marginStart="8dp"
@@ -64,18 +64,19 @@ android:textAllCaps="false"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="8dp"
             android:background="@drawable/plainttext_roundedlogin"
-            android:drawableLeft="@drawable/ic_lock"
+            android:drawableStart="@drawable/ic_lock"
             android:hint="@string/password"
             android:inputType="textPassword"
             android:singleLine="true"
-            android:textColor="#41AECF"
-            android:maxLength="11"
+            android:textColor="#808080"
+            android:typeface="sans"
+            android:maxLength="15"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
 
 
-            app:layout_constraintTop_toBottomOf="@+id/autoCompleteTextView2" />
+            app:layout_constraintTop_toBottomOf="@+id/autoCompleteTextViewLogin" />
 
         <CheckBox
             android:id="@+id/checkBox"
@@ -84,7 +85,7 @@ android:textAllCaps="false"
             android:layout_marginStart="8dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="8dp"
-            android:text="Zapamiętaj mnie"
+           android:text="@string/rememberMe"
             android:textColor="#0D0D0D"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
@@ -93,6 +94,7 @@ android:textAllCaps="false"
             tools:ignore="MissingConstraints" />
 
         <ImageButton
+
             android:id="@+id/imageButtonPassword"
             android:layout_width="34dp"
             android:layout_height="34dp"
@@ -112,12 +114,12 @@ android:textAllCaps="false"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="8dp"
             android:gravity="center"
-            android:text="Zarejestruj się"
+            android:text="@string/Create_Account"
             android:textColor="#FF0000"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button"
+            app:layout_constraintTop_toBottomOf="@+id/buttonLogin"
             tools:ignore="MissingConstraints" />
 
         <TextView
@@ -130,7 +132,7 @@ android:textAllCaps="false"
             android:textSize="22sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button"
+            app:layout_constraintTop_toBottomOf="@+id/buttonLogin"
             tools:ignore="MissingConstraints" />
 
         <TextView
@@ -140,7 +142,7 @@ android:textAllCaps="false"
             android:layout_marginStart="0dp"
             android:gravity="center"
             android:layout_marginEnd="0dp"
-            android:text="FastEffect"
+            android:text="@string/app_name"
             android:textSize="40sp"
             android:background="#41AECF"
             android:textColor="#FFFFFF"

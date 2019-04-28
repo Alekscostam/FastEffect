@@ -2,29 +2,28 @@
     <string name="app_name">FastEffect</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Colse navigation drawer</string>
-<string name="man">Mężczyzna</string>
-<string name="women">Kobieta</string>
+    <string name="man">Mężczyzna</string>
+    <string name="women">Kobieta</string>
 
     //login
-<string name="login">Login</string>
-<string name="password">Hasło</string>
+    <string name="login">Login</string>
+    <string name="password">Hasło</string>
+    <string name="passwordAgain">Powtórz hasło</string>
+    <string name="rememberMe">Zapamiętaj mnie</string>
 
     //register
-<string name="imie">Imie</string>
-<string name="email">e-mail</string>
+    <string name="imie">Imie</string>
+    <string name="email">E-mail</string>
 
 
-<string name="name">Imie</string>
-<string name="surname">Nazwisko</string>
-<string name="wieght">Waga(kg)</string>
-<string name="height">Wzrost(cm)</string>
-<string name="change">Zmień</string>
-<string name="save">Zapisz</string>
-<string name="age">Wiek</string>
-<string name="plec">Płeć</string>
-
-
-
+    <string name="name">Imie</string>
+    <string name="surname">Nazwisko</string>
+    <string name="wieght">Waga(kg)</string>
+    <string name="height">Wzrost(cm)</string>
+    <string name="change">Zmień</string>
+    <string name="save">Zapisz</string>
+    <string name="age">Wiek</string>
+    <string name="plec">Płeć</string>
 
 
     <string name="name_app">FastEffect</string>
