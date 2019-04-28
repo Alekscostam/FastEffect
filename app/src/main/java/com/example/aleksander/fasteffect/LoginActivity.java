@@ -1,5 +1,6 @@
 package com.example.aleksander.fasteffect;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 public class LoginActivity extends AppCompatActivity {
     @Override
@@ -17,8 +19,18 @@ public class LoginActivity extends AppCompatActivity {
         final int[] password_show = {0};
 
         final EditText editTextPassword = (EditText) findViewById(R.id.autoCompleteTextViewPassword) ;
-        editTextPassword.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
         ImageButton imageButtonShowPassword = (ImageButton) findViewById(R.id.imageButtonPassword);
+        TextView textViewRegister = (TextView) findViewById(R.id.textViewRegister);
+
+        textViewRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent register = new Intent(getApplicationContext(),RegisterActivity.class);
+                startActivity(register);
+            }
+        });
+
+
         editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
 
 
@@ -49,6 +61,8 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
+
+
 
 
 

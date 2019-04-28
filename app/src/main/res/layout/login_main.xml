@@ -17,44 +17,30 @@
         android:layout_height="match_parent">
 
 
-
         <AutoCompleteTextView
             android:id="@+id/autoCompleteTextView2"
-            android:layout_width="220dp"
+            android:layout_width="240dp"
             android:layout_height="40dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="40dp"
             android:layout_marginEnd="8dp"
             android:background="@drawable/plainttext_roundedlogin"
             android:drawableLeft="@drawable/ic_profile"
             android:hint="@string/login"
-
+            android:singleLine="true"
             android:textColor="#41AECF"
+            android:maxLength="13"
+            android:inputType="text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
 
 
-            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
-
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:src="@drawable/ic_accountdp"
-
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="MissingConstraints" />
+            app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
         <Button
             android:id="@+id/button"
-            android:layout_width="220dp"
+            android:layout_width="240dp"
             android:layout_height="31dp"
             android:layout_marginStart="8dp"
 android:textAllCaps="false"
@@ -72,7 +58,7 @@ android:textAllCaps="false"
 
         <AutoCompleteTextView
             android:id="@+id/autoCompleteTextViewPassword"
-            android:layout_width="220dp"
+            android:layout_width="240dp"
             android:layout_height="40dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="20dp"
@@ -81,8 +67,9 @@ android:textAllCaps="false"
             android:drawableLeft="@drawable/ic_lock"
             android:hint="@string/password"
             android:inputType="textPassword"
-
+            android:singleLine="true"
             android:textColor="#41AECF"
+            android:maxLength="11"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
@@ -118,17 +105,48 @@ android:textAllCaps="false"
             tools:ignore="MissingConstraints,VectorDrawableCompat" />
 
         <TextView
-            android:id="@+id/textView10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/textViewRegister"
+            android:layout_width="143dp"
+            android:layout_height="34dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="8dp"
+            android:gravity="center"
             android:text="Zarejestruj się"
             android:textColor="#FF0000"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/button"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/textViewAlert"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="80dp"
+
+            android:layout_marginEnd="8dp"
+            android:textSize="22sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginStart="0dp"
+            android:gravity="center"
+            android:layout_marginEnd="0dp"
+            android:text="FastEffect"
+            android:textSize="40sp"
+            android:background="#41AECF"
+            android:textColor="#FFFFFF"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:ignore="MissingConstraints" />
 
 
