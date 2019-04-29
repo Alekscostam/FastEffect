@@ -1,157 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
 
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-
-        <AutoCompleteTextView
-            android:id="@+id/autoCompleteTextViewLogin"
-            android:layout_width="240dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="40dp"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/plainttext_roundedlogin"
-          android:drawableStart="@drawable/ic_profile"
-            android:hint="@string/login"
-            android:singleLine="true"
-            android:textColor="#808080"
-            android:maxLength="15"
-
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent"
-
-
-            app:layout_constraintTop_toBottomOf="@+id/textView13" />
-
-        <Button
-            android:id="@+id/buttonLogin"
-            android:layout_width="240dp"
-            android:layout_height="31dp"
-            android:layout_marginStart="8dp"
-android:textAllCaps="false"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/button_rounded"
-
-            android:text="@string/login"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/checkBox"
-            tools:ignore="MissingConstraints" />
-
-
-        <AutoCompleteTextView
-            android:id="@+id/autoCompleteTextViewPassword"
-            android:layout_width="240dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/plainttext_roundedlogin"
-            android:drawableStart="@drawable/ic_lock"
-            android:hint="@string/password"
-            android:inputType="textPassword"
-            android:singleLine="true"
-            android:textColor="#808080"
-            android:typeface="sans"
-            android:maxLength="15"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent"
-
-
-            app:layout_constraintTop_toBottomOf="@+id/autoCompleteTextViewLogin" />
-
-        <CheckBox
-            android:id="@+id/checkBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="8dp"
-           android:text="@string/rememberMe"
-            android:textColor="#0D0D0D"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/autoCompleteTextViewPassword"
-            tools:ignore="MissingConstraints" />
-
-        <ImageButton
-
-            android:id="@+id/imageButtonPassword"
-            android:layout_width="34dp"
-            android:layout_height="34dp"
-            android:layout_marginEnd="3dp"
-            android:layout_marginBottom="3dp"
-            android:background="#FFFFFF"
-            app:layout_constraintBottom_toBottomOf="@+id/autoCompleteTextViewPassword"
-            app:layout_constraintEnd_toEndOf="@+id/autoCompleteTextViewPassword"
-            app:srcCompat="@drawable/ic_remove_red_eye_black_24dp"
-            tools:ignore="MissingConstraints,VectorDrawableCompat" />
-
-        <TextView
-            android:id="@+id/textViewRegister"
-            android:layout_width="143dp"
-            android:layout_height="34dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="8dp"
-            android:gravity="center"
-            android:text="@string/Create_Account"
-            android:textColor="#FF0000"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/buttonLogin"
-            tools:ignore="MissingConstraints" />
-
-        <TextView
-            android:id="@+id/textViewAlert"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
-
-            android:layout_marginEnd="8dp"
-            android:textSize="22sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/buttonLogin"
-            tools:ignore="MissingConstraints" />
-
-        <TextView
-            android:id="@+id/textView13"
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginStart="0dp"
-            android:gravity="center"
-            android:layout_marginEnd="0dp"
-            android:text="@string/app_name"
-            android:textSize="40sp"
-            android:background="#41AECF"
-            android:textColor="#FFFFFF"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="MissingConstraints" />
+            android:layout_height="wrap_content">
 
 
-    </android.support.constraint.ConstraintLayout>
+            <AutoCompleteTextView
+                android:id="@+id/autoCompleteTextViewEmail"
+                android:layout_width="240dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/plainttext_roundedlogin"
+                android:drawableStart="@drawable/ic_email"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:maxLength="15"
+                android:singleLine="true"
+                android:textColor="#808080"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.497"
+                app:layout_constraintStart_toStartOf="parent"
+
+
+                app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+            <Button
+                android:id="@+id/buttonLogin"
+                android:layout_width="240dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/button_rounded"
+                android:onClick="buttonLogin_Click"
+                android:text="@string/login"
+                android:textAllCaps="false"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.497"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/checkBox"
+                tools:ignore="MissingConstraints" />
+
+
+            <AutoCompleteTextView
+                android:id="@+id/autoCompleteTextViewPassword"
+                android:layout_width="240dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/plainttext_roundedlogin"
+                android:drawableStart="@drawable/ic_lock"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:maxLength="15"
+                android:singleLine="true"
+                android:textColor="#808080"
+                android:typeface="sans"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.497"
+                app:layout_constraintStart_toStartOf="parent"
+
+
+                app:layout_constraintTop_toBottomOf="@+id/autoCompleteTextViewEmail" />
+
+            <CheckBox
+                android:id="@+id/checkBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/rememberMe"
+                android:textColor="#0D0D0D"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/autoCompleteTextViewPassword"
+                tools:ignore="MissingConstraints" />
+
+            <ImageButton
+
+                android:id="@+id/imageButtonPassword"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:layout_marginEnd="3dp"
+                android:layout_marginBottom="3dp"
+                android:background="#FFFFFF"
+                app:layout_constraintBottom_toBottomOf="@+id/autoCompleteTextViewPassword"
+                app:layout_constraintEnd_toEndOf="@+id/autoCompleteTextViewPassword"
+                app:srcCompat="@drawable/ic_remove_red_eye_black_24dp"
+                tools:ignore="MissingConstraints,VectorDrawableCompat" />
+
+            <TextView
+                android:id="@+id/textViewRegister"
+                android:layout_width="143dp"
+                android:layout_height="34dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="8dp"
+                android:gravity="center"
+                android:text="@string/Create_Account"
+                android:textColor="#FF0000"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/buttonLogin"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/textViewAlert"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="80dp"
+
+                android:layout_marginEnd="8dp"
+                android:textSize="22sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/buttonLogin"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+
+                android:id="@+id/textView13"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="0dp"
+                android:background="#41AECF"
+                android:gravity="center"
+                android:text="@string/app_name"
+                android:textColor="#FFFFFF"
+                android:textSize="42sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="MissingConstraints" />
+
+
+        </android.support.constraint.ConstraintLayout>
     </ScrollView>
 </android.support.constraint.ConstraintLayout>

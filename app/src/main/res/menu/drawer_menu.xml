@@ -5,43 +5,49 @@
 
     <group android:checkableBehavior="single">
 
-    <group android:id="@+id/first_section" android:checkableBehavior="all">
-        <item
-            android:id="@+id/nav_house"
-            android:icon="@drawable/ic_home"
-            android:title="Strona główna" />
-        <item
-            android:id="@+id/nav_profile"
-            android:icon="@drawable/ic_profile"
-            android:title="Profil" />
+        <group
+            android:id="@+id/first_section"
+            android:checkableBehavior="all">
+            <item
+                android:id="@+id/nav_house"
+                android:icon="@drawable/ic_home"
+                android:title="Strona główna" />
+            <item
+                android:id="@+id/nav_profile"
+                android:icon="@drawable/ic_profile"
+                android:title="Profil" />
 
 
-    </group>
+        </group>
+
+        <group
+            android:id="@+id/second_section"
+            android:checkableBehavior="all">
+
+            <item
+                android:id="@+id/nav_activity"
+                android:icon="@drawable/ic_sport"
+                android:title="Aktywność" />
+            <item
+                android:id="@+id/nav_goal"
+                android:icon="@drawable/ic_star"
+                android:title="Cele" />
+
+            <item
+                android:id="@+id/nav_diet"
+                android:icon="@drawable/ic_restaurant"
+                android:title="Dieta" />
+        </group>
+
+        <group
+            android:id="@+id/third_section"
+            android:checkableBehavior="all">
 
 
-
-        <item
-            android:id="@+id/nav_activity"
-            android:icon="@drawable/ic_sport"
-            android:title="Aktywność" />
-        <item
-            android:id="@+id/nav_goal"
-            android:icon="@drawable/ic_star"
-            android:title="Cele" />
-
-        <item
-            android:id="@+id/nav_diet"
-            android:icon="@drawable/ic_restaurant"
-            android:title="Dieta" />
-
-
-    <group android:id="@+id/second_section" android:checkableBehavior="all">
-
-
-        <item
-            android:id="@+id/nav_importExport"
-            android:icon="@drawable/ic_import_export"
-            android:title="Export bazy" />
+            <item
+                android:id="@+id/nav_importExport"
+                android:icon="@drawable/ic_import_export"
+                android:title="Export bazy" />
         </group>
         <item
             android:id="@+id/nav_logOut"

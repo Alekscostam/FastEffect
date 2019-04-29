@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1007393095634",
+    "firebase_url": "https://bazaglobalna.firebaseio.com",
+    "project_id": "bazaglobalna",
+    "storage_bucket": "bazaglobalna.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1007393095634:android:65b53a51ee8d9d12",
+        "android_client_info": {
+          "package_name": "com.example.aleksander.fasteffect"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1007393095634-nnpqr2f3bt5503f4ovtd0t40odjuifij.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_JegPF8_dvN_zdXfv6F6UzgQIgR9QmwM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1007393095634-nnpqr2f3bt5503f4ovtd0t40odjuifij.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
