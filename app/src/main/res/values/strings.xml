@@ -12,7 +12,7 @@
     <string name="rememberMe">Zapamiętaj mnie</string>
 
     //register
-    <string name="imie">Imie</string>
+    <string name="imie">Nazwa użytkownika</string>
     <string name="email">E-mail</string>
 
 
