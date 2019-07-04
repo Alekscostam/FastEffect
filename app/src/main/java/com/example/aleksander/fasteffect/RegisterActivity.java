@@ -20,7 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private TextInputEditText textInputLayoutLogin;
+
     private TextInputEditText textInputLayoutPassword;
     private TextInputEditText textInputLayoutPasswordAgain;
     private TextInputEditText textInputLayoutEmail;
@@ -32,7 +32,6 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.register_main);
 
         TextView textViewBack = (TextView) findViewById(R.id.textViewBack);
-         textInputLayoutLogin = (TextInputEditText) findViewById(R.id.textInputEditTextLogin);
          textInputLayoutPassword = (TextInputEditText) findViewById(R.id.textInputEditTextPassword);
          textInputLayoutPasswordAgain = (TextInputEditText) findViewById(R.id.textInputEditTextPasswordAgain);
          textInputLayoutEmail = (TextInputEditText) findViewById(R.id.textInputEditTextEmail);
@@ -52,8 +51,6 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     }
-
-
 
 
     public void buttonRegister_Click(View v) {

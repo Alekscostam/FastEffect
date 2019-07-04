@@ -44,14 +44,15 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayoutEmail" />
 
+
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/textInputLayoutLogin"
+                android:id="@+id/textInputLayoutPassword"
                 android:layout_width="240dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="30dp"
-
                 android:layout_marginEnd="8dp"
+
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.496"
                 app:layout_constraintStart_toStartOf="parent"
@@ -59,39 +60,14 @@
                 tools:ignore="MissingConstraints">
 
                 <android.support.design.widget.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:id="@+id/textInputEditTextLogin"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/login"
-                    android:maxLength="15"
-                    android:singleLine="true"
-                    android:textColor="	#808080"
-                    android:textSize="20sp" />
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/textInputLayoutPassword"
-                android:layout_width="240dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="1dp"
-                android:layout_marginEnd="8dp"
-
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.496"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutLogin"
-                tools:ignore="MissingConstraints">
-
-                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/textInputEditTextPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/password"
-                    android:id="@+id/textInputEditTextPassword"
                     android:inputType="textPassword"
                     android:maxLength="15"
                     android:textColor="	#808080"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -117,7 +93,7 @@
                     android:maxLength="15"
                     android:singleLine="true"
                     android:textColor="	#808080"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -143,7 +119,7 @@
                     android:maxLength="20"
                     android:singleLine="true"
                     android:textColor="	#808080"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
             </android.support.design.widget.TextInputLayout>
 
             <TextView
