@@ -25,6 +25,35 @@
     <string name="age">Wiek</string>
     <string name="plec">Płeć</string>
 
+    //rodzaj sportu
+    <string name="strength">Siłowy</string>
+    <string name="endurance">Wytrzymałościowy</string>
+    <string name="mixed">Mieszany</string>
+    <string name="noActivities">Żaden</string>
+
+    //spinner
+    <string-array name="spinnerAktywnosc">
+        <item>brak aktywności, praca siedząca</item>
+        <item>niska aktywność(praca siedzaca, i 1-2 treningi w tygodniu)</item>
+        <item>średnia aktywność(praca siedzaca, i 3-4 treningi w tygodniu)</item>
+        <item>wysoka aktywność(praca fizyczna, i 3-4 treningi w tygodniu)</item>
+        <item>bardzo wysoka aktywność(sportowcy, osoby codziennie trenujące)</item>
+    </string-array>
+
+    //Cel
+    <string name="keep">utrzymanie wagi</string>
+    <string name="increase">zwiększenie wagi</string>
+    <string name="reduction">zmniejszenie wagi</string>
+
+
+
+
+    //makroskładniki i kalorie
+
+    <string name="protein">Białko</string>
+    <string name="fat">Tłuszcze</string>
+    <string name="carb">Węglowodany</string>
+
 
     <string name="name_app">FastEffect</string>
     <string name="Log_in">Log in</string>
