@@ -36,20 +36,14 @@ public class SportFragment extends Fragment  {
 
 
         Spinner spinnerAktywnosc = (Spinner) view.findViewById(R.id.spinnerAktywnosc);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource( getActivity(), R.array.spinnerAktywnosc , R.layout.spinner_item_my);
-
-        adapter.setDropDownViewResource(R.layout.spinner_item_my);
-
-
-        spinnerAktywnosc.setAdapter(adapter);
+        ArrayAdapter<CharSequence> adapterAktywnosc = ArrayAdapter.createFromResource( getActivity(), R.array.spinnerActivities , R.layout.spinner_item_my);
+        adapterAktywnosc.setDropDownViewResource(R.layout.spinner_item_my);
+        spinnerAktywnosc.setAdapter(adapterAktywnosc);
 
         spinnerAktywnosc.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
           @Override
           public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
               String text = adapterView.getItemAtPosition(i).toString();
-            //  Toast.makeText(adapterView.getContext(), text, Toast.LENGTH_SHORT).show();
-           //   ((TextView) adapterView.getChildAt(0)).setTextColor(Color.DKGRAY);
-           //   ((TextView) adapterView.getChildAt(0)).setTextSize(15);
 
           }
 
@@ -58,6 +52,46 @@ public class SportFragment extends Fragment  {
 
           }
       });
+
+
+
+
+        Spinner spinnerRodzajSportu = (Spinner) view.findViewById(R.id.spinnerRodzajSportu);
+        ArrayAdapter<CharSequence> adapterRodzajSportu = ArrayAdapter.createFromResource( getActivity(), R.array.spinnerTypeOfActivities , R.layout.spinner_item_my);
+        adapterRodzajSportu.setDropDownViewResource(R.layout.spinner_item_my);
+        spinnerRodzajSportu.setAdapter(adapterRodzajSportu);
+
+        spinnerRodzajSportu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
+
+       Spinner spinnerCel = (Spinner) view.findViewById(R.id.spinnerCel);
+       ArrayAdapter<CharSequence> adapterCel = ArrayAdapter.createFromResource(getActivity(),R.array.spinnerGoals,R.layout.spinner_item_my);
+       adapterCel.setDropDownViewResource(R.layout.spinner_item_my);
+       spinnerCel.setAdapter(adapterCel);
+       spinnerCel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+           @Override
+           public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+           }
+
+           @Override
+           public void onNothingSelected(AdapterView<?> adapterView) {
+
+           }
+       });
+
+
         return view;
 
 

@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.widget.EditText;
 
 import com.example.aleksander.fasteffect.FragmentClass.BazaDanychStruktura;
+import com.example.aleksander.fasteffect.FragmentClass.DietFragment;
 import com.example.aleksander.fasteffect.FragmentClass.HouseFragment;
 import com.example.aleksander.fasteffect.FragmentClass.ProfileFragment;
 import com.example.aleksander.fasteffect.FragmentClass.SportFragment;
@@ -93,6 +94,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_activity:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SportFragment()).commit();
+                break;
+
+            case R.id.nav_diet:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DietFragment()).commit();
                 break;
 
 

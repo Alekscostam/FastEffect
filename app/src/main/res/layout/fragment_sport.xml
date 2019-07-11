@@ -12,19 +12,21 @@
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-            <TextView
+            <Button
                 android:id="@+id/textViewOpis"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:background="#41AECF"
-                android:textColor="#FFFFFF"
-                android:text="Na tym etapie ustalany jest rozkład makroskładników"
+
+
+                android:text="Ustal rozkład kalorii i makroskładników automatycznie"
                 android:textAlignment="center"
-                android:textSize="20sp"
+                android:textAllCaps="false"
+
+                android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -35,189 +37,102 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:text="Określ rodzaj sportu który uprawiasz"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.495"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spinnerAktywnosc" />
+                app:layout_constraintTop_toBottomOf="@+id/view" />
 
             <TextView
                 android:id="@+id/textViewAktywnosc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="35dp"
+                android:layout_marginTop="0dp"
                 android:layout_marginEnd="8dp"
                 android:text="Aktywnośc fizyczna"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewOpis" />
 
-            <Button
-                android:id="@+id/buttonZadne"
-                android:layout_width="190dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/button_rounded_silver"
-                android:text="@string/noActivities"
-                android:textAllCaps="false"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/buttonMieszane"
-                tools:ignore="MissingConstraints" />
-
-            <Button
-                android:id="@+id/buttonMieszane"
-                android:layout_width="190dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/button_rounded_silver"
-                android:text="@string/mixed"
-                android:textAllCaps="false"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/buttonWytrzymalosciowe"
-                tools:ignore="MissingConstraints" />
-
-            <Button
-                android:id="@+id/buttonSilowe"
-                android:layout_width="190dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/button_rounded_silver"
-                android:text="@string/strength"
-                android:textAllCaps="false"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.502"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewRodzaj"
-                tools:ignore="MissingConstraints" />
-
-            <Button
-                android:id="@+id/buttonWytrzymalosciowe"
-                android:layout_width="190dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/button_rounded_silver"
-                android:text="@string/endurance"
-                android:textAllCaps="false"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/buttonSilowe"
-                tools:ignore="MissingConstraints" />
 
             <Spinner
                 android:id="@+id/spinnerAktywnosc"
-                android:layout_width="261dp"
-                android:layout_height="51dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:textColor="#000000"
                 android:textSize="5sp"
+                android:gravity="center"
+
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.515"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewAktywnosc" />
+
+            <Spinner
+                android:id="@+id/spinnerRodzajSportu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:gravity="center"
+                android:textColor="#000000"
+
+                android:textSize="5sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.501"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewRodzaj" />
+
+            <Spinner
+                android:id="@+id/spinnerCel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:gravity="center"
+                android:textColor="#000000"
+
+                android:textSize="5sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.501"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewCel" />
 
             <TextView
                 android:id="@+id/textViewCel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:text="Cel"
-                android:textSize="18sp"
+                android:text="Co planuje "
+                android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/buttonZadne" />
+                app:layout_constraintTop_toBottomOf="@+id/view2" />
 
-            <Button
-                android:id="@+id/buttonKeep"
-                android:textSize="10sp"
-                android:background="@drawable/button_rounded_silver"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
-                android:text="@string/keep"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewCel" />
-
-            <Button
-                android:id="@+id/buttonReduction"
-                android:textSize="10sp"
-                android:background="@drawable/button_rounded_silver"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="@string/reduction"
-                app:layout_constraintEnd_toStartOf="@+id/buttonKeep"
-                app:layout_constraintHorizontal_bias="0.534"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/buttonKeep" />
-
-            <Button
-                android:id="@+id/buttonIncrease"
-                android:textSize="10sp"
-
-                android:background="@drawable/button_rounded_silver"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="@string/increase"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.456"
-                app:layout_constraintStart_toEndOf="@+id/buttonKeep"
-                app:layout_constraintTop_toTopOf="@+id/buttonKeep" />
 
             <Button
                 android:id="@+id/buttonSet"
                 android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="44dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/button_rounded_silver"
+                android:layout_height="wrap_content"
+
+
+                android:layout_marginTop="15dp"
                 android:text="Sam ustal rozkład makroskładników i kalorii  "
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textColor="#FFFFFF"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
+
                 app:layout_constraintHorizontal_bias="0.0"
-
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/buttonKeep"
-                tools:ignore="MissingConstraints" />
-
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="TextView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/buttonSet"
+                app:layout_constraintTop_toBottomOf="@+id/view3"
                 tools:ignore="MissingConstraints" />
 
             <android.support.design.widget.TextInputLayout
@@ -226,17 +141,25 @@
 
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="0dp"
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.501"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView6">
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutKalorie">
 
                 <android.support.design.widget.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="	#808080"
                     android:hint="@string/protein"
+                    android:textColor="	#808080"
+                    android:textSize="12sp"
+                    android:inputType="number"
+                    android:gravity="center"
+                    android:maxLength="2"
+                    android:singleLine="true"
+
+
 
                     />
 
@@ -248,7 +171,7 @@
                 android:layout_height="wrap_content"
 
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="0dp"
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -257,8 +180,14 @@
                 <android.support.design.widget.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="@string/carb"
+                    android:textSize="12sp"
                     android:textColor="	#808080"
-                    android:hint="@string/carb"/>
+                    android:inputType="number"
+                    android:gravity="center"
+                    android:maxLength="2"
+                    android:singleLine="true"
+                    />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -268,7 +197,7 @@
 
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="0dp"
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -277,12 +206,97 @@
                 <android.support.design.widget.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="@string/fat"
+                    android:textSize="12sp"
                     android:textColor="	#808080"
-                   android:hint="@string/fat"/>
+                    android:inputType="number"
+                    android:gravity="center"
+                    android:maxLength="2"
+                    android:singleLine="true"
+                    />
             </android.support.design.widget.TextInputLayout>
+
+            <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:foreground="#BEBEBE"
+            app:layout_constraintBottom_toBottomOf="@+id/spinnerAktywnosc"
+            tools:layout_editor_absoluteX="0dp" />
+
+            <View
+            android:id="@+id/view2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:foreground="#BEBEBE"
+            app:layout_constraintBottom_toBottomOf="@+id/spinnerRodzajSportu"
+            tools:layout_editor_absoluteX="0dp" />
+
+            <View
+                android:id="@+id/view3"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:foreground="#BEBEBE"
+                app:layout_constraintBottom_toBottomOf="@+id/spinnerCel"
+                tools:layout_editor_absoluteX="0dp" />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/textInputLayoutKalorie"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/buttonSet"
+                tools:ignore="MissingConstraints">
+
+                <android.support.design.widget.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/calories"
+                    android:textSize="15sp"
+                    android:textColor="	#808080"
+                    android:inputType="number"
+                    android:gravity="center"
+                    android:maxLength="4"
+                    android:singleLine="true"
+
+                    />
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="220dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/button_rounded_aqua"
+                android:text="@string/save"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutCarb"
+                tools:ignore="MissingConstraints" />
+
+            <Space
+                android:layout_width="50dp"
+                android:layout_height="78dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/button2" />
 
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
+
+
 
 </RelativeLayout>

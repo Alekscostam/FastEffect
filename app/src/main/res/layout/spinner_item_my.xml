@@ -7,6 +7,7 @@
     android:layout_height="wrap_content"
     android:textSize="11.5sp"
     android:gravity="center"
+
     android:textColor="#383838"
     android:padding="5dip"
     />
