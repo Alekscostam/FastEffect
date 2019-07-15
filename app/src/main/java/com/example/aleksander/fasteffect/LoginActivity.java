@@ -114,9 +114,8 @@ public class LoginActivity extends AppCompatActivity {
                     });
 
 
-        } else {
-            Toast.makeText(this, "Niekompletne dane!", Toast.LENGTH_SHORT).show();
         }
+        else {Toast.makeText(this, "Niekompletne dane!", Toast.LENGTH_SHORT).show();}
     }
 }
 

@@ -1,15 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".FragmentClass.HouseFragment">
 
 
-    <Button
-        android:id="@+id/loginform"
-        android:layout_width="360dp"
-        android:layout_height="237dp"
+    <ScrollView
+        android:id="@+id/scrollView3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        android:layout_marginTop="300dp" />
-</FrameLayout>
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <View
+                android:id="@+id/viewSniadanie"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+
+                android:layout_marginTop="40dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+             android:background="@drawable/view_rounded"
+
+                >
+
+
+            </View>
+
+            <ImageButton
+                android:id="@+id/buttonAddProduct"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/ic_add"
+
+                app:layout_constraintEnd_toEndOf="@+id/viewSniadanie"
+                app:layout_constraintTop_toTopOf="@+id/viewSniadanie" />
+
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="104dp"
+                android:layout_height="33dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+               android:text="@string/breakfast"
+                android:textSize="20dp"
+                android:textColor="#41AECF"
+                app:layout_constraintStart_toStartOf="@+id/viewSniadanie"
+                app:layout_constraintTop_toTopOf="@+id/viewSniadanie" />
+
+            <Button
+                android:id="@+id/loginform"
+                android:layout_width="357dp"
+                android:layout_height="86dp"
+
+                android:layout_marginTop="200dp"
+                app:layout_constraintTop_toBottomOf="@+id/viewSniadanie"
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteX="27dp" />
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+
+</RelativeLayout>

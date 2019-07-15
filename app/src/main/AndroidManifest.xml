@@ -36,6 +36,13 @@
             android:noHistory = "true"
 
             ></activity>
+
+        <activity
+            android:name=".AddProductActivity"
+            android:noHistory = "true"
+
+            ></activity>
+
     </application>
 
 </manifest>

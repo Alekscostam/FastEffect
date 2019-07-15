@@ -8,8 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.aleksander.fasteffect.AddProductActivity;
 import com.example.aleksander.fasteffect.LoginActivity;
 import com.example.aleksander.fasteffect.R;
 
@@ -32,6 +34,18 @@ public class HouseFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_house, container, false);
 
         Button button= (Button) view.findViewById(R.id.loginform);
+        ImageButton buttonAddProduct = (ImageButton) view.findViewById(R.id.buttonAddProduct);
+
+
+        buttonAddProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent AddProduct =new Intent(getContext(), AddProductActivity.class);
+                startActivity(AddProduct);
+            }
+        });
+
+
 
 
         button.setOnClickListener(new View.OnClickListener() {

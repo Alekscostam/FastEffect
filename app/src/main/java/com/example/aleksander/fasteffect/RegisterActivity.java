@@ -55,25 +55,30 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void buttonRegister_Click(View v) {
 
-        final ProgressDialog progressDialog = ProgressDialog.show(RegisterActivity.this,"Proszę czekać...", "Rejestrowanie",true);
-        (firebaseAuth.createUserWithEmailAndPassword(textInputLayoutEmail.getText().toString(),textInputLayoutPassword.getText().toString()))
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        progressDialog.dismiss();
-                        if(task.isSuccessful())
-                        {
-                            Toast.makeText(RegisterActivity.this, "Zarejestrowano", Toast.LENGTH_SHORT).show();
-                            Intent i = new Intent(RegisterActivity.this,LoginActivity.class);
-                            startActivity(i);
+        String sPassword = textInputLayoutPassword.getText().toString();
+        String sPasswordAgain = textInputLayoutPasswordAgain.getText().toString();
+        String sEmail = textInputLayoutEmail.getText().toString();
+        if (!sEmail.matches("") && !sPassword.matches("") && !sPasswordAgain.matches("")) {
+
+            final ProgressDialog progressDialog = ProgressDialog.show(RegisterActivity.this, "Proszę czekać...", "Rejestrowanie", true);
+            (firebaseAuth.createUserWithEmailAndPassword(textInputLayoutEmail.getText().toString(), textInputLayoutPassword.getText().toString()))
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            progressDialog.dismiss();
+                            if (task.isSuccessful()) {
+                                Toast.makeText(RegisterActivity.this, "Zarejestrowano", Toast.LENGTH_SHORT).show();
+                                Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
+                                startActivity(i);
+                            } else {
+                                Log.e("Error", task.getException().toString());
+                                Toast.makeText(RegisterActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
                         }
-                        else
-                        {
-                            Log.e("Error", task.getException().toString());
-                            Toast.makeText(RegisterActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+                    });
+
+        }
+        else {Toast.makeText(this, "Niekompletne dane!", Toast.LENGTH_SHORT).show();}
 
     }
 
