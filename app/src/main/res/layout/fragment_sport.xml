@@ -14,264 +14,259 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <Button
-                android:id="@+id/textViewOpis"
+
+            <TextView
+                android:id="@+id/textView8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
-
-
-                android:text="Ustal rozkład kalorii i makroskładników automatycznie"
-                android:textAlignment="center"
-                android:textAllCaps="false"
-
+                android:text="Ustal rozkład makroskładników i kalorii"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="MissingConstraints" />
 
-            <TextView
-                android:id="@+id/textViewRodzaj"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+            <Button
+                android:id="@+id/buttonAutomatycznie"
+                android:layout_width="150dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="Określ rodzaj sportu który uprawiasz"
+                android:background="@drawable/button_circle"
+                android:text="Automatycznie"
+                android:textAlignment="center"
+                android:textAllCaps="false"
                 android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.495"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view" />
-
-            <TextView
-                android:id="@+id/textViewAktywnosc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="0dp"
-                android:layout_marginEnd="8dp"
-                android:text="Aktywnośc fizyczna"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewOpis" />
-
-
-            <Spinner
-                android:id="@+id/spinnerAktywnosc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#000000"
-                android:textSize="5sp"
-                android:gravity="center"
-
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.515"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewAktywnosc" />
-
-            <Spinner
-                android:id="@+id/spinnerRodzajSportu"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="0dp"
-                android:gravity="center"
-                android:textColor="#000000"
-
-                android:textSize="5sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.501"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewRodzaj" />
-
-            <Spinner
-                android:id="@+id/spinnerCel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="0dp"
-                android:gravity="center"
-                android:textColor="#000000"
-
-                android:textSize="5sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.501"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewCel" />
-
-            <TextView
-                android:id="@+id/textViewCel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="Co planuje "
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view2" />
+                app:layout_constraintTop_toBottomOf="@+id/textView8"
+                tools:ignore="MissingConstraints" />
 
 
             <Button
-                android:id="@+id/buttonSet"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-
-                android:layout_marginTop="15dp"
-                android:text="Sam ustal rozkład makroskładników i kalorii  "
+                android:id="@+id/buttonRęczne"
+                android:layout_width="150dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/button_circle"
+                android:text="Ręcznie"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textColor="#FFFFFF"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
-
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view3"
+                app:layout_constraintTop_toBottomOf="@+id/textView8"
                 tools:ignore="MissingConstraints" />
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/textInputLayoutProtein"
-                android:layout_width="100dp"
-
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="0dp"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.501"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutKalorie">
-
-                <android.support.design.widget.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/protein"
-                    android:textColor="	#808080"
-                    android:textSize="12sp"
-                    android:inputType="number"
-                    android:gravity="center"
-                    android:maxLength="2"
-                    android:singleLine="true"
-
-
-
-                    />
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/textInputLayoutCarb"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="0dp"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutFat">
-
-                <android.support.design.widget.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/carb"
-                    android:textSize="12sp"
-                    android:textColor="	#808080"
-                    android:inputType="number"
-                    android:gravity="center"
-                    android:maxLength="2"
-                    android:singleLine="true"
-                    />
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/textInputLayoutFat"
-
-                android:layout_width="100dp"
-
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="0dp"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutProtein">
-
-                <android.support.design.widget.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/fat"
-                    android:textSize="12sp"
-                    android:textColor="	#808080"
-                    android:inputType="number"
-                    android:gravity="center"
-                    android:maxLength="2"
-                    android:singleLine="true"
-                    />
-            </android.support.design.widget.TextInputLayout>
-
-            <View
-            android:id="@+id/view"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:foreground="#BEBEBE"
-            app:layout_constraintBottom_toBottomOf="@+id/spinnerAktywnosc"
-            tools:layout_editor_absoluteX="0dp" />
-
-            <View
-            android:id="@+id/view2"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:foreground="#BEBEBE"
-            app:layout_constraintBottom_toBottomOf="@+id/spinnerRodzajSportu"
-            tools:layout_editor_absoluteX="0dp" />
-
-            <View
-                android:id="@+id/view3"
+            <LinearLayout
+                android:id="@+id/linearLayoutAutomatyczne"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:foreground="#BEBEBE"
-                app:layout_constraintBottom_toBottomOf="@+id/spinnerCel"
-                tools:layout_editor_absoluteX="0dp" />
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/textInputLayoutKalorie"
-                android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="0dp"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/buttonSet"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@+id/buttonAutomatycznie"
                 tools:ignore="MissingConstraints">
 
-                <android.support.design.widget.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/calories"
-                    android:textSize="15sp"
-                    android:textColor="	#808080"
-                    android:inputType="number"
-                    android:gravity="center"
-                    android:maxLength="4"
-                    android:singleLine="true"
 
-                    />
-            </android.support.design.widget.TextInputLayout>
+                <View
+                    android:id="@+id/view4"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:foreground="#BEBEBE" />
+
+                <TextView
+                    android:id="@+id/textViewRodzaj"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Określ rodzaj sportu który uprawiasz"
+                    android:textSize="14sp"
+                    app:layout_constraintTop_toBottomOf="@+id/view" />
+
+                <Spinner
+                    android:id="@+id/spinnerRodzajSportu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textColor="#000000"
+                    android:textSize="5sp" />
+
+                <View
+                    android:id="@+id/view"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:foreground="#BEBEBE"
+                    app:layout_constraintBottom_toBottomOf="@+id/spinnerAktywnosc"
+                    tools:layout_editor_absoluteX="0dp" />
+
+                <TextView
+                    android:id="@+id/textViewAktywnosc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_gravity="center"
+                    android:text="Aktywnośc fizyczna"
+                    android:textSize="14sp"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewOpis" />
+
+
+                <Spinner
+                    android:id="@+id/spinnerAktywnosc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textColor="#000000"
+
+                    android:textSize="5sp" />
+
+                <View
+                    android:id="@+id/view2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:foreground="#BEBEBE"
+                    app:layout_constraintBottom_toBottomOf="@+id/spinnerRodzajSportu"
+                    tools:layout_editor_absoluteX="0dp" />
+
+                <TextView
+                    android:id="@+id/textViewCel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_gravity="center"
+                    android:text="Co planuje "
+                    android:textSize="14sp" />
+
+                <Spinner
+                    android:id="@+id/spinnerCel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="0dp"
+                    android:gravity="center"
+                    android:textColor="#000000"
+                    android:textSize="5sp" />
+
+
+                <View
+                    android:id="@+id/view3"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:foreground="#BEBEBE" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutRęczne"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayoutAutomatyczne"
+                tools:ignore="MissingConstraints"
+                >
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/textInputLayoutKalorie"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/textInputEditTextKalorie"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:hint="@string/calories"
+                        android:inputType="number"
+                        android:maxLength="4"
+                        android:singleLine="true"
+                        android:textColor="	#808080"
+                        android:textSize="15sp"
+
+                        />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/textInputLayoutProtein"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/textInputEditTextProtein"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:hint="@string/protein"
+                        android:inputType="number"
+                        android:maxLength="2"
+                        android:singleLine="true"
+                        android:textColor="	#808080"
+                        android:textSize="12sp"
+
+                        />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/textInputLayoutCarb"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+
+                    >
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/textInputEditTextCarb"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:hint="@string/carb"
+                        android:inputType="number"
+                        android:maxLength="2"
+
+                        android:singleLine="true"
+                        android:textColor="	#808080"
+                        android:textSize="12sp" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/textInputLayoutFat"
+
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/textInputEditTextFat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:hint="@string/fat"
+                        android:inputType="number"
+                        android:maxLength="2"
+                        android:singleLine="true"
+                        android:textColor="	#808080"
+                        android:textSize="12sp" />
+                </android.support.design.widget.TextInputLayout>
+
+
+            </LinearLayout>
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/buttonSave"
                 android:layout_width="220dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="30dp"
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/button_rounded_aqua"
                 android:text="@string/save"
@@ -279,19 +274,10 @@
                 android:textAllCaps="false"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.571"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutCarb"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayoutRęczne"
                 tools:ignore="MissingConstraints" />
-
-            <Space
-                android:layout_width="50dp"
-                android:layout_height="78dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/button2" />
 
 
         </android.support.constraint.ConstraintLayout>

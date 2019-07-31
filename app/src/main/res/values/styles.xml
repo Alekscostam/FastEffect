@@ -7,9 +7,21 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorPrimary">@color/textColorPrimary</item>
+
     </style>
 
+    <style name="date_picker_theme" parent="@android:style/Widget.DatePicker">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/textColorCalender</item>
+        <item name="android:layout_gravity">center</item>
+       <item name="android:shape">rectangle</item>
+        <item name="android:color">#ffff00</item>
+       <item name="android:background">#787878</item>
 
+
+    </style>
 
 
 <style name="AppTheme2" parent="Theme.AppCompat.Light.NoActionBar">
@@ -20,6 +32,7 @@
 </style>
 
 
-
+    <color name="orange">#ffff00 </color>
+    <color name="white">#FFFFFF</color>
 
 </resources>

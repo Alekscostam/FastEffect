@@ -5,4 +5,5 @@
 <color name="colorAccent">#41AECF</color>
 
     <color name= "textColorPrimary">#FFF</color>
+    <color name= "textColorCalender">#41AECF</color>
 </resources>

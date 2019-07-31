@@ -1,17 +1,23 @@
 package com.example.aleksander.fasteffect;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -23,11 +29,21 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements TextWatcher {
 
     private AutoCompleteTextView autoCompleteTextViewEmail;
     private AutoCompleteTextView autoCompleteTextViewPassword;
     private FirebaseAuth firebaseAuth;
+
+    //Zapamietaj
+    private static final String  PREF_NAME="prefs";
+    private static final String  KEY_REMEMBER="remember";
+    private static final String  KEY_USERNAME="username";
+    private static final String  KEY_PASS="password";
+    SharedPreferences sharedPreferencesRemember;
+    SharedPreferences.Editor editorRemember;
+    CheckBox checkBoxRememberMe;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,12 +52,41 @@ public class LoginActivity extends AppCompatActivity {
 
         final int[] password_show = {0};
 
-
         autoCompleteTextViewEmail = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextViewEmail);
         Button buttonLogin = (Button) findViewById(R.id.buttonLogin);
         autoCompleteTextViewPassword = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextViewPassword);
         ImageButton imageButtonShowPassword = (ImageButton) findViewById(R.id.imageButtonPassword);
         TextView textViewRegister = (TextView) findViewById(R.id.textViewRegister);
+
+
+        sharedPreferencesRemember= getSharedPreferences(PREF_NAME , Context.MODE_PRIVATE);
+        editorRemember = sharedPreferencesRemember.edit();
+        checkBoxRememberMe = (CheckBox) findViewById(R.id.checkBoxRememberMe);
+
+
+        if(sharedPreferencesRemember.getBoolean(KEY_REMEMBER,false))
+        {
+            checkBoxRememberMe.setChecked(true);
+        }
+        else
+            checkBoxRememberMe.setChecked(false);
+
+
+        autoCompleteTextViewEmail.setText(sharedPreferencesRemember.getString(KEY_USERNAME,""));
+        autoCompleteTextViewPassword.setText(sharedPreferencesRemember.getString(KEY_PASS,""));
+
+        autoCompleteTextViewEmail.addTextChangedListener( this);
+        autoCompleteTextViewPassword.addTextChangedListener( this);
+
+
+        checkBoxRememberMe.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                managePrefs();
+            }
+        });
+
+
 
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -117,6 +162,49 @@ public class LoginActivity extends AppCompatActivity {
         }
         else {Toast.makeText(this, "Niekompletne dane!", Toast.LENGTH_SHORT).show();}
     }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        managePrefs();
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+
+    }
+
+
+
+
+
+
+
+
+    private void managePrefs()
+    {
+        if(checkBoxRememberMe.isChecked())
+        {
+            editorRemember.putString(KEY_USERNAME,autoCompleteTextViewEmail.getText().toString().trim());
+            editorRemember.putString(KEY_PASS,autoCompleteTextViewPassword.getText().toString().trim());
+            editorRemember.putBoolean(KEY_REMEMBER,true);
+            editorRemember.apply();
+
+        }
+        else
+        {
+            editorRemember.putBoolean(KEY_REMEMBER,false);
+            editorRemember.remove(KEY_PASS);
+            editorRemember.remove(KEY_USERNAME);
+            editorRemember.apply();
+        }
+    }
+
 }
 
 

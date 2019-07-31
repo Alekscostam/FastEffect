@@ -60,7 +60,7 @@
     <string name="calories">Kcal</string>
 
     //Pory dnia
-    <string name="breakfast">Sniadanie</string>
+    <string name="breakfast">Śniadanie</string>
     <string name="second_breakfast">Drugie śniadanie</string>
     <string name="dinner">Obiad</string>
     <string name="tea">Podwieczorek</string>

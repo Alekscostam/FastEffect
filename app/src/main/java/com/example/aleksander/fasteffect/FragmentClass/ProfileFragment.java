@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,9 +44,9 @@ public class ProfileFragment extends Fragment {
     }
 
 
-    private EditText editTextWiek;
-    private EditText editTextWzrost;
-    private EditText editTextWaga;
+    private TextInputEditText TextInputEditTextWiek;
+    private TextInputEditText TextInputEditTextWaga;
+    private TextInputEditText TextInputEditTextWzrost;
 
     private Button buttonZapisz;
     private Button buttonWczytaj;
@@ -61,15 +62,15 @@ public class ProfileFragment extends Fragment {
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
-/*
 
-        editTextWiek = (EditText) view.findViewById(R.id.editTextWiek);
-        editTextWzrost = (EditText) view.findViewById(R.id.editTextWzrost);
-        editTextWaga = (EditText) view.findViewById(R.id.editTextWaga);
+
+        TextInputEditTextWiek = (TextInputEditText) view.findViewById(R.id.TextInputEditTextWiek);
+        TextInputEditTextWzrost = (TextInputEditText) view.findViewById(R.id.TextInputEditTextWzrost);
+        TextInputEditTextWaga = (TextInputEditText) view.findViewById(R.id.TextInputEditTextWaga);
         radioButtonPlec = (RadioGroup) view.findViewById(R.id.RadioPlec);
         radioButtonM = (RadioButton) view.findViewById(R.id.radioButtonM);
         radioButtonW = (RadioButton) view.findViewById(R.id.radioButtonW);
-
+/*
 
         //  radioButtonM.setClickable(false);
         //  radioButtonW.setClickable(false);
@@ -165,6 +166,9 @@ public class ProfileFragment extends Fragment {
         });
 
 */
+
+
+
         return view;
 
 

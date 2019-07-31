@@ -1,4 +1,4 @@
-package com.example.aleksander.fasteffect.FragmentClass;
+package com.example.aleksander.fasteffect.AuxiliaryClass;
 
 public class BazaDanychStruktura {
 
@@ -7,7 +7,8 @@ public class BazaDanychStruktura {
 
     /////// Tabela Dzien
     public static String TabelaDzien = "Dzien";
-    public static String BazaTabelaidDzien = "idDzien";
+   // public static String BazaTabelaidDzien = "idDzien";
+
     public static String BazaTabelaData = "Data";
 
     /////// Tabela Posilek

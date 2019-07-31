@@ -10,53 +10,54 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:ignore="MissingConstraints">
 
             <TextView
-                android:id="@+id/textViewAlert"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="44dp"
-                android:layout_marginEnd="8dp"
-                android:textSize="22sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/buttonRegister"
-                tools:ignore="MissingConstraints" />
+                android:id="@+id/textViewBack"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="0dp"
+                android:background="#41AECF"
+                android:drawableStart="@drawable/ic_left"
+                android:gravity="center"
 
-            <Button
-                android:id="@+id/buttonRegister"
+                android:text="Tworzenie konta..."
+                android:textColor="#FFFFFF"
+                android:textSize="27sp" />
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/textInputLayoutEmail"
                 android:layout_width="240dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="25dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/button_rounded_aqua"
-                android:text="@string/Create_Account"
-                android:textAllCaps="false"
-                android:textSize="18sp"
-                android:onClick="buttonRegister_Click"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutEmail" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
 
+                android:layout_marginTop="30dp"
+                tools:ignore="MissingConstraints">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/textInputEditTextEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/email"
+                    android:inputType="textEmailAddress"
+                    android:maxLength="20"
+                    android:singleLine="true"
+                    android:textColor="	#808080"
+                    android:textSize="18sp" />
+            </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/textInputLayoutPassword"
                 android:layout_width="240dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginEnd="8dp"
-
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.496"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewBack"
+                android:layout_gravity="center"
                 tools:ignore="MissingConstraints">
 
                 <android.support.design.widget.TextInputEditText
@@ -74,21 +75,14 @@
                 android:id="@+id/textInputLayoutPasswordAgain"
                 android:layout_width="240dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="1dp"
-
-                android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.496"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutPassword"
+                android:layout_gravity="center"
                 tools:ignore="MissingConstraints">
 
                 <android.support.design.widget.TextInputEditText
+                    android:id="@+id/textInputEditTextPasswordAgain"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/passwordAgain"
-                    android:id="@+id/textInputEditTextPasswordAgain"
                     android:inputType="textPassword"
                     android:maxLength="15"
                     android:singleLine="true"
@@ -96,50 +90,111 @@
                     android:textSize="18sp" />
             </android.support.design.widget.TextInputLayout>
 
+
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/textInputLayoutEmail"
+                android:id="@+id/textInputLayoutWaga"
                 android:layout_width="240dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="1dp"
-
-                android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.496"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutPasswordAgain"
+                android:layout_gravity="center"
                 tools:ignore="MissingConstraints">
 
                 <android.support.design.widget.TextInputEditText
+                    android:id="@+id/textInputEditTextWaga"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/email"
-                    android:id="@+id/textInputEditTextEmail"
-                    android:inputType="textEmailAddress"
+                    android:hint="@string/wieght"
+                    android:inputType="numberDecimal"
                     android:maxLength="20"
                     android:singleLine="true"
                     android:textColor="	#808080"
                     android:textSize="18sp" />
             </android.support.design.widget.TextInputLayout>
 
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/textInputLayoutWiek"
+                android:layout_width="240dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                tools:ignore="MissingConstraints">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/textInputEditTextWiek"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/age"
+                   android:inputType="number"
+                    android:maxLength="20"
+                    android:singleLine="true"
+                    android:textColor="	#808080"
+                    android:textSize="18sp" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/textInputLayoutWzrost"
+                android:layout_width="240dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                tools:ignore="MissingConstraints">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/textInputEditTextWzrost"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/height"
+                  android:inputType="number"
+                    android:maxLength="20"
+                    android:singleLine="true"
+                    android:textColor="	#808080"
+                    android:textSize="18sp" />
+            </android.support.design.widget.TextInputLayout>
+
+            <RadioGroup
+                android:id="@+id/RadioPlec"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                tools:ignore="MissingConstraints">
+
+                <RadioButton
+                    android:id="@+id/radioButtonM"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:lines="1"
+                    android:text="@string/man" />
+
+                <RadioButton
+                    android:id="@+id/radioButtonW"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:lines="1"
+                    android:text="@string/women" />
+
+            </RadioGroup>
+
             <TextView
-                android:id="@+id/textViewBack"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="0dp"
-                android:background="#41AECF"
-                android:drawableStart="@drawable/ic_left"
-                android:gravity="center"
+                android:id="@+id/textViewAlert"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                tools:ignore="MissingConstraints" />
 
-                android:text="Tworzenie konta..."
-                android:textColor="#FFFFFF"
-                android:textSize="27sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
-        </android.support.constraint.ConstraintLayout>
+            <Button
+                android:id="@+id/buttonRegister"
+                android:layout_width="240dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/button_rounded_aqua"
+                android:onClick="buttonRegister_Click"
+                android:text="@string/Create_Account"
+                android:textAllCaps="false"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+
     </ScrollView>
 
 </android.support.constraint.ConstraintLayout>
