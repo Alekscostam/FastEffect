@@ -5,98 +5,73 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".FragmentClass.DietFragment">
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-    <android.support.constraint.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:textSize="13sp"
 
-            android:gravity="center"
-            android:text="Zaznacz swoje nietolerancje pokarmowe badz produkty których chcesz unikać"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                tools:ignore="MissingConstraints">
 
-        <Switch
-            android:id="@+id/switchLaktoza"
-            android:layout_width="300dp"
-            android:layout_height="27dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="36dp"
-            android:layout_marginEnd="8dp"
-            android:text="@string/laktoza"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="Zaznacz swoje nietolerancje pokarmowe badz produkty których chcesz unikać"
+                    android:textSize="13sp" />
 
-        <Switch
-            android:id="@+id/switchStraczki"
-            android:layout_width="300dp"
-            android:layout_height="27dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="8dp"
-           android:text="@string/strączki"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/switchLaktoza" />
+                <Switch
+                    android:id="@+id/switchLaktoza"
+                    android:layout_width="300dp"
+                    android:layout_height="27dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/laktoza" />
 
-        <Switch
-            android:id="@+id/switchCukry"
-            android:layout_width="300dp"
-            android:layout_height="27dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="8dp"
-            android:text="@string/cukry"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/switchStraczki" />
+                <Switch
+                    android:id="@+id/switchStraczki"
+                    android:layout_width="300dp"
+                    android:layout_height="27dp"
+                    android:layout_gravity="center"
+                    android:text="@string/strączki" />
 
-        <Switch
-            android:id="@+id/switchGluten"
-            android:layout_width="300dp"
-            android:layout_height="27dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="8dp"
-            android:text="@string/gluten"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/switchCukry" />
+                <Switch
+                    android:id="@+id/switchCukry"
+                    android:layout_width="300dp"
+                    android:layout_height="27dp"
+                    android:layout_gravity="center"
+
+                    android:text="@string/cukry" />
+
+                <Switch
+                    android:id="@+id/switchGluten"
+                    android:layout_width="300dp"
+                    android:layout_height="27dp"
+                    android:layout_gravity="center"
+                    android:text="@string/gluten" />
+
+
+                <Button
+                    android:id="@+id/buttonSave"
+                    android:layout_width="240dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/button_rounded_aqua"
+                    android:text="@string/save"
+                    android:textSize="18sp" />
+            </LinearLayout>
 
 
 
-        <Button
-            android:id="@+id/buttonSave"
-            android:layout_width="240dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="52dp"
-            android:layout_marginEnd="8dp"
-            android:textSize="18sp"
-            android:text="@string/save"
-            android:background="@drawable/button_rounded_aqua"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/switchGluten" />
-
-    </android.support.constraint.ConstraintLayout>
-
-
-</ScrollView>
+    </ScrollView>
 
 
 </RelativeLayout>

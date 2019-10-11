@@ -9,31 +9,28 @@ public class Produkt {
     public String Nietolerancje;
 
 
-
-
-    public  Produkt (Double Kalorie , Double Białko, Double Tłuszcze,Double Węglowodany,Double Błonnik,String Nietolerancje )
-    {
-        this.Kalorie=Kalorie;
-        this.Białko=Białko;
-        this.Tłuszcze=Tłuszcze;
-        this.Węglowodany=Węglowodany;
-        this.Błonnik=Błonnik;
-        this.Nietolerancje=Nietolerancje;
-
-    }
-    public Produkt ()
-    {
+    public Produkt(Double Kalorie, Double Białko, Double Tłuszcze, Double Węglowodany, Double Błonnik, String Nietolerancje) {
+        this.Kalorie = Kalorie;
+        this.Białko = Białko;
+        this.Tłuszcze = Tłuszcze;
+        this.Węglowodany = Węglowodany;
+        this.Błonnik = Błonnik;
+        this.Nietolerancje = Nietolerancje;
 
     }
 
-    public String toString()
-    {
+    public Produkt() {
 
-
-
-        return
-
-              "| "+  this.Kalorie+" kcal \nB: " + Białko +" | T: " + Tłuszcze + " | W: " + Węglowodany+ " | Błonnik: "+Błonnik ;
     }
+
+    public String toString() {
+
+
+        return "| " + this.Kalorie + " kcal \nB: " + Białko + " | T: " + Tłuszcze + " | W: " + Węglowodany + " | Błonnik: " + Błonnik + " | Nietolerancje:"+Nietolerancje;
+
+    }
+
+
+
 
 }

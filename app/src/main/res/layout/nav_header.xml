@@ -6,17 +6,15 @@
     android:gravity="bottom"
     android:orientation="vertical"
     android:padding="16dp"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark"
-    >
-
+    android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="FastEffect"
-        android:textSize="20sp"
         android:textColor="#ffffff"
+        android:textSize="20sp"
 
 
         />

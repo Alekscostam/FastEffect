@@ -23,12 +23,11 @@
             tools:ignore="MissingConstraints">
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/textViewEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-
                 android:text="Twój E-mail"
                 android:textSize="18sp"
 
@@ -86,7 +85,6 @@
                     android:hint="@string/age"
                     android:inputType="number"
                     android:maxLength="2"
-
                     android:textColor="	#808080" />
             </android.support.design.widget.TextInputLayout>
 
@@ -94,9 +92,7 @@
             <RadioGroup
                 android:id="@+id/RadioPlec"
                 android:layout_width="wrap_content"
-
                 android:layout_height="wrap_content"
-
                 android:layout_gravity="center"
                 android:orientation="horizontal"
                 tools:ignore="MissingConstraints">
@@ -106,7 +102,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lines="1"
-
                     android:text="@string/man" />
 
                 <RadioButton
@@ -114,15 +109,13 @@
                     android:id="@+id/radioButtonW"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
                     android:lines="1"
-
                     android:text="@string/women" />
 
             </RadioGroup>
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/buttonSave"
                 android:layout_width="190dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
@@ -131,7 +124,6 @@
                 android:background="@drawable/button_rounded_aqua"
                 android:text="@string/save"
                 android:textAllCaps="false"
-
                 android:textSize="18sp" />
 
 

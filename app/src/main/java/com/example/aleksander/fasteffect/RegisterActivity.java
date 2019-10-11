@@ -40,7 +40,6 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +53,6 @@ public class RegisterActivity extends AppCompatActivity {
         textInputEditTextEmail = (TextInputEditText) findViewById(R.id.textInputEditTextEmail);
 
 
-
         //opcjonalne
         textInputEditTextWaga = (TextInputEditText) findViewById(R.id.textInputEditTextWaga);
         textInputEditTextWiek = (TextInputEditText) findViewById(R.id.textInputEditTextWiek);
@@ -63,13 +61,6 @@ public class RegisterActivity extends AppCompatActivity {
         radioButtonM = (RadioButton) findViewById(R.id.radioButtonM);
         radioButtonW = (RadioButton) findViewById(R.id.radioButtonW);
         radioGroupGender = (RadioGroup) findViewById(R.id.RadioPlec);
-
-     /*  int radioButtonID = radioGroupGender.getCheckedRadioButtonId();
-        View radioButton = radioGroupGender.findViewById(radioButtonID);
-        int idx = radioGroupGender.indexOfChild(radioButton);
-        RadioButton r = (RadioButton) radioGroupGender.getChildAt(idx);
-        String selectedtext = r.getText().toString();
-        Toast.makeText(this, String.valueOf(selectedtext) , Toast.LENGTH_SHORT).show();*/
 
 
 
@@ -111,11 +102,9 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        if(firebaseAuth.getCurrentUser()!=null)
-        {
+        if (firebaseAuth.getCurrentUser() != null) {
 
         }
-
 
 
     }
@@ -134,7 +123,7 @@ public class RegisterActivity extends AppCompatActivity {
         if (!sEmail.matches("") && !sPassword.matches("") && !sPasswordAgain.matches("")) {
 
             final ProgressDialog progressDialog = ProgressDialog.show(RegisterActivity.this, "Proszę czekać...", "Rejestrowanie", true);
-            (firebaseAuth.createUserWithEmailAndPassword(sEmail,sPassword))
+            (firebaseAuth.createUserWithEmailAndPassword(sEmail, sPassword))
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -142,24 +131,22 @@ public class RegisterActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
 
 
-                               User user = new User(
-                                       sWeight,
-                                       sAge,
-                                       sHeight,
-                                       sGender,
-                                       sEmail
+                                User user = new User(
+                                        sWeight,
+                                        sAge,
+                                        sHeight,
+                                        sGender,
+                                        sEmail
 
                                 );
                                 FirebaseDatabase.getInstance().getReference("Users")
-                                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                        .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        if(task.isSuccessful())
-                                        {
+                                        if (task.isSuccessful()) {
                                             Toast.makeText(RegisterActivity.this, "Zarejestrowano", Toast.LENGTH_SHORT).show();
-                                        }else
-                                        {
+                                        } else {
                                             Toast.makeText(RegisterActivity.this, "fail", Toast.LENGTH_SHORT).show();
 
                                         }
@@ -167,10 +154,8 @@ public class RegisterActivity extends AppCompatActivity {
                                 });
 
 
-
                                 Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
                                 startActivity(i);
-
 
 
                             } else {
@@ -180,14 +165,12 @@ public class RegisterActivity extends AppCompatActivity {
                         }
                     });
 
+        } else {
+            Toast.makeText(this, "Niekompletne dane!", Toast.LENGTH_SHORT).show();
         }
-        else {Toast.makeText(this, "Niekompletne dane!", Toast.LENGTH_SHORT).show();}
-
 
 
     }
-
-
 
 
 }

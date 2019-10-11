@@ -131,9 +131,9 @@ public class HouseFragment extends Fragment {
                 addToDatabse(dateSend);
 
 
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+               SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
                 SharedPreferences.Editor editor = prefs.edit();
-                editor.putString("wartoscOdlozona", dateSend); //InputString: from the EditText
+                editor.putString("DataSend", dateSend); //InputString: from the EditText
                 editor.commit();
 
 
@@ -190,6 +190,13 @@ public class HouseFragment extends Fragment {
             public void onClick(View view) {
                 Intent AddProduct = new Intent(getContext(), AddProductActivity.class);
                 startActivity(AddProduct);
+
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putString("PoraDnia", "1"); //InputString: from the EditText
+                editor.commit();
+
+
             }
         });
 

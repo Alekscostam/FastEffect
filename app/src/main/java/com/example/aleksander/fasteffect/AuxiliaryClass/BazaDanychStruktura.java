@@ -7,9 +7,8 @@ public class BazaDanychStruktura {
 
     /////// Tabela Dzien
     public static String TabelaDzien = "Dzien";
-   // public static String BazaTabelaidDzien = "idDzien";
-
     public static String BazaTabelaData = "Data";
+
 
     /////// Tabela Posilek
     public static String TabelaPosilek = "Posilek";
@@ -18,6 +17,11 @@ public class BazaDanychStruktura {
     public static String BazaTabelaBialko = "Bialko";
     public static String BazaTabelaWeglowodany = "Weglowodany";
     public static String BazaTabelaTluszcze = "Tluszcze";
+    public static String BazaTabelaBłonnik = "Błonnik";
+    public static String BazaTabelaKalorie= "Kalorie";
+    public static String BazaTabelaNietolerancje= "NIETOLERANCJE";
+    public static String BazaTabelaIlość= "Ilość";
+
 
     /////// Tabela Pora dnia
     public static String TabelaPoraDnia = "PoraDnia";
@@ -28,7 +32,7 @@ public class BazaDanychStruktura {
     /////// Tabela Hash
     public static String TabelaHash = "Hash";
     public static String Hash_idPoradnia = "idPoraDnia";
-    public static String Hash_idPosilek= "idPosilek";
-    public static String Hash_idDzien = "idDzien";
+    public static String Hash_idPosilek = "idPosilek";
+    public static String Hash_Data = "Data";
 }
 

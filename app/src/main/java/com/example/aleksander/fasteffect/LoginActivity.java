@@ -36,10 +36,10 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
     private FirebaseAuth firebaseAuth;
 
     //Zapamietaj
-    private static final String  PREF_NAME="prefs";
-    private static final String  KEY_REMEMBER="remember";
-    private static final String  KEY_USERNAME="username";
-    private static final String  KEY_PASS="password";
+    private static final String PREF_NAME = "prefs";
+    private static final String KEY_REMEMBER = "remember";
+    private static final String KEY_USERNAME = "username";
+    private static final String KEY_PASS = "password";
     SharedPreferences sharedPreferencesRemember;
     SharedPreferences.Editor editorRemember;
     CheckBox checkBoxRememberMe;
@@ -59,24 +59,22 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
         TextView textViewRegister = (TextView) findViewById(R.id.textViewRegister);
 
 
-        sharedPreferencesRemember= getSharedPreferences(PREF_NAME , Context.MODE_PRIVATE);
+        sharedPreferencesRemember = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         editorRemember = sharedPreferencesRemember.edit();
         checkBoxRememberMe = (CheckBox) findViewById(R.id.checkBoxRememberMe);
 
 
-        if(sharedPreferencesRemember.getBoolean(KEY_REMEMBER,false))
-        {
+        if (sharedPreferencesRemember.getBoolean(KEY_REMEMBER, false)) {
             checkBoxRememberMe.setChecked(true);
-        }
-        else
+        } else
             checkBoxRememberMe.setChecked(false);
 
 
-        autoCompleteTextViewEmail.setText(sharedPreferencesRemember.getString(KEY_USERNAME,""));
-        autoCompleteTextViewPassword.setText(sharedPreferencesRemember.getString(KEY_PASS,""));
+        autoCompleteTextViewEmail.setText(sharedPreferencesRemember.getString(KEY_USERNAME, ""));
+        autoCompleteTextViewPassword.setText(sharedPreferencesRemember.getString(KEY_PASS, ""));
 
-        autoCompleteTextViewEmail.addTextChangedListener( this);
-        autoCompleteTextViewPassword.addTextChangedListener( this);
+        autoCompleteTextViewEmail.addTextChangedListener(this);
+        autoCompleteTextViewPassword.addTextChangedListener(this);
 
 
         checkBoxRememberMe.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -85,8 +83,6 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
                 managePrefs();
             }
         });
-
-
 
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -159,8 +155,9 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
                     });
 
 
+        } else {
+            Toast.makeText(this, "Niekompletne dane!", Toast.LENGTH_SHORT).show();
         }
-        else {Toast.makeText(this, "Niekompletne dane!", Toast.LENGTH_SHORT).show();}
     }
 
     @Override
@@ -180,25 +177,15 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
     }
 
 
-
-
-
-
-
-
-    private void managePrefs()
-    {
-        if(checkBoxRememberMe.isChecked())
-        {
-            editorRemember.putString(KEY_USERNAME,autoCompleteTextViewEmail.getText().toString().trim());
-            editorRemember.putString(KEY_PASS,autoCompleteTextViewPassword.getText().toString().trim());
-            editorRemember.putBoolean(KEY_REMEMBER,true);
+    private void managePrefs() {
+        if (checkBoxRememberMe.isChecked()) {
+            editorRemember.putString(KEY_USERNAME, autoCompleteTextViewEmail.getText().toString().trim());
+            editorRemember.putString(KEY_PASS, autoCompleteTextViewPassword.getText().toString().trim());
+            editorRemember.putBoolean(KEY_REMEMBER, true);
             editorRemember.apply();
 
-        }
-        else
-        {
-            editorRemember.putBoolean(KEY_REMEMBER,false);
+        } else {
+            editorRemember.putBoolean(KEY_REMEMBER, false);
             editorRemember.remove(KEY_PASS);
             editorRemember.remove(KEY_USERNAME);
             editorRemember.apply();

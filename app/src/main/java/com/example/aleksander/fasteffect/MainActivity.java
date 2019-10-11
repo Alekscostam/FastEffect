@@ -1,6 +1,8 @@
 package com.example.aleksander.fasteffect;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
@@ -19,15 +21,13 @@ import com.example.aleksander.fasteffect.FragmentClass.DietFragment;
 import com.example.aleksander.fasteffect.FragmentClass.HouseFragment;
 import com.example.aleksander.fasteffect.FragmentClass.ProfileFragment;
 import com.example.aleksander.fasteffect.FragmentClass.SportFragment;
+import com.google.firebase.auth.FirebaseAuth;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawer;
     ActionBar actionBar;
-
-
-
 
 
     @Override
@@ -38,13 +38,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         BazaDanychStruktura bazaDanychStruktura = new BazaDanychStruktura();
 
         SQLiteDatabase baza = openOrCreateDatabase(bazaDanychStruktura.BazaPlik, Context.MODE_PRIVATE, null);
+        baza.execSQL("DROP TABLE IF EXISTS PoraDnia");
 
-
-
+        baza.execSQL("CREATE TABLE IF NOT EXISTS 'PoraDnia'( idPoraDnia INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,Pora TEXT)");
         baza.execSQL("CREATE TABLE IF NOT EXISTS 'Dzien'( Data NUMERIC PRIMARY KEY )");
-        baza.execSQL("CREATE TABLE IF NOT EXISTS 'Posilek'( idPosilek INTEGER PRIMARY KEY AUTOINCREMENT,Nazwa TEXT,Bialko REAL,Weglowodany REAL,Tluszcze REAL, Błonnik REAL, NIETOLERANCJE TEXT)");
-        baza.execSQL("CREATE TABLE IF NOT EXISTS 'PoraDnia'( idPoraDnia INTEGER PRIMARY KEY AUTOINCREMENT,Pora TEXT)");
+        baza.execSQL("CREATE TABLE IF NOT EXISTS 'Posilek'( idPosilek INTEGER PRIMARY KEY AUTOINCREMENT,Nazwa TEXT,Bialko REAL,Weglowodany REAL,Tluszcze REAL, Błonnik REAL, Kalorie REAL, NIETOLERANCJE TEXT, Ilość INTEGER NOT NULL)");
         baza.execSQL("CREATE TABLE IF NOT EXISTS 'Hash'( Data NUMERIC NOT NULL, idPosilek INTEGER NOT NULL,idPoraDnia INTEGER NOT NULL,  CONSTRAINT fk_Data FOREIGN KEY(Data) REFERENCES Dzien(Data),CONSTRAINT fk_idPosilek FOREIGN KEY(idPosilek) REFERENCES Posilek(idPosilek),CONSTRAINT fk_idPoraDnia FOREIGN KEY(idPoraDnia) REFERENCES PoraDnia(idPoraDnia))");
+
+
+        ContentValues rekordŚniadanie = new ContentValues();
+        ContentValues rekordPosiłek1 = new ContentValues();
+        ContentValues rekordObiad = new ContentValues();
+        ContentValues rekordPosiłek2 = new ContentValues();
+        ContentValues rekordKolacja = new ContentValues();
+
+        rekordŚniadanie.put(bazaDanychStruktura.BazaTabelaPora, "Śniadanie");
+        rekordPosiłek1.put(bazaDanychStruktura.BazaTabelaPora, "Posiłek 1");
+        rekordObiad.put(bazaDanychStruktura.BazaTabelaPora, "Obiad");
+        rekordPosiłek2.put(bazaDanychStruktura.BazaTabelaPora, "Posiłek 2");
+        rekordKolacja.put(bazaDanychStruktura.BazaTabelaPora, "Kolacja");
+
+
+
+        baza.insert(bazaDanychStruktura.TabelaPoraDnia, null, rekordŚniadanie);
+        baza.insert(bazaDanychStruktura.TabelaPoraDnia, null, rekordPosiłek1);
+        baza.insert(bazaDanychStruktura.TabelaPoraDnia, null, rekordObiad);
+        baza.insert(bazaDanychStruktura.TabelaPoraDnia, null, rekordPosiłek2);
+        baza.insert(bazaDanychStruktura.TabelaPoraDnia, null, rekordKolacja);
+
+        baza.close();
+
 
 
         android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar);
@@ -75,7 +98,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             super.onBackPressed();
         }
     }
-//update
+
+    //update
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
@@ -94,9 +118,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DietFragment()).commit();
                 break;
 
+            case R.id.nav_logOut:
+                logout();
+                break;
+
 
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    private void logout() {
+        FirebaseAuth.getInstance().signOut();
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
 }
+

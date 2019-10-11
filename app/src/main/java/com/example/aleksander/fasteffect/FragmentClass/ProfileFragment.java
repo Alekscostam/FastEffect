@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -16,16 +17,25 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.aleksander.fasteffect.MainActivity;
 import com.example.aleksander.fasteffect.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicMarkableReference;
 
 import static android.content.Context.MODE_APPEND;
 import static android.content.Context.MODE_PRIVATE;
@@ -54,6 +64,23 @@ public class ProfileFragment extends Fragment {
     private RadioButton radioButtonM;
     private RadioButton radioButtonW;
 
+    FirebaseUser user;
+    String uid;
+    DatabaseReference databaseReference;
+    FirebaseAuth firebaseAuth;
+
+    String referenceName = "Users";
+    String user_plec;
+    String childWaga = "waga";
+    String childWiek = "wiek";
+    String childWzrost = "wzrost";
+    String childEmial = "email";
+    String childPlec = "plec";
+
+    String user_email;
+    String user_wiek;
+    String user_waga;
+    String user_wzrost;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,103 +97,76 @@ public class ProfileFragment extends Fragment {
         radioButtonPlec = (RadioGroup) view.findViewById(R.id.RadioPlec);
         radioButtonM = (RadioButton) view.findViewById(R.id.radioButtonM);
         radioButtonW = (RadioButton) view.findViewById(R.id.radioButtonW);
-/*
-
-        //  radioButtonM.setClickable(false);
-        //  radioButtonW.setClickable(false);
+        final TextView textViewEmail = (TextView) view.findViewById(R.id.textViewEmail);
+        Button buttonSave = (Button) view.findViewById(R.id.buttonSave);
 
 
-        final String[] plec = {""};
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        uid = user.getUid();
 
-        radioButtonM.setOnClickListener(new View.OnClickListener() {
+        //DatabaseReference databaseReference = getReference("Users").child(firebaseAuth.getCurrentUser().getUid())
+        databaseReference = FirebaseDatabase.getInstance().getReference(referenceName);
+
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onClick(View v) {
-                plec[0] = "M";
-            }
-        });
-        radioButtonW.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                plec[0] = "W";
-            }
-        });
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                user_email = dataSnapshot.child(uid).child(childEmial).getValue(String.class);
+                user_wiek = dataSnapshot.child(uid).child(childWiek).getValue(String.class);
+                user_waga = dataSnapshot.child(uid).child(childWaga).getValue(String.class);
+                user_wzrost = dataSnapshot.child(uid).child(childWzrost).getValue(String.class);
+                user_plec = dataSnapshot.child(uid).child(childPlec).getValue(String.class);
+                // Toast.makeText(getContext(), user_email, Toast.LENGTH_SHORT).show();
 
+                textViewEmail.setText(user_email);
 
-        try {
-            String nazwa_pliku = "uzytkownik.txt";
+                // Toast.makeText(getContext(), user_wiek, Toast.LENGTH_SHORT).show();
+                TextInputEditTextWiek.setText(user_wiek);
+                TextInputEditTextWaga.setText(user_waga);
+                TextInputEditTextWzrost.setText(user_wzrost);
 
-            String[] wartosc = new String[20];
-
-            //input do odczytu
-            try {
-                int a = 0;
-                FileInputStream plik1 = getActivity().openFileInput(nazwa_pliku);
-                DataInputStream dataIO = new DataInputStream(plik1);
-                String odczyt_l = "", odczyt = "";
-                while ((odczyt_l = dataIO.readLine()) != null) {
-
-                    odczyt = odczyt + "," + odczyt_l;
-                    wartosc[a] = odczyt_l;
-                    a = a + 1;
-                }
-                plik1.close();
-                editTextWaga.setText(wartosc[0]);
-                editTextWzrost.setText(wartosc[1]);
-                editTextWiek.setText(wartosc[2]);
-
-                String wybor = wartosc[3];
-
-                if (wybor.equals("M")) {
+                if (user_plec.equals("M")) {
                     radioButtonM.setChecked(true);
-                    radioButtonW.setChecked(false);
-
-                } else if (wybor.equals("W")) {
-
+                } else if (user_plec.equals("W")) {
                     radioButtonW.setChecked(true);
-                    radioButtonM.setChecked(false);
                 }
 
-                // Toast.makeText(getActivity(), odczyt, Toast.LENGTH_SHORT).show();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
             }
 
-        } catch (Exception e) {
-            Toast.makeText(getActivity(), "brak danych", Toast.LENGTH_SHORT).show();
-        }
-
-      //  buttonZapisz = (Button) view.findViewById(R.id.buttonSave);
-
-
-        buttonZapisz.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                String nazwa_pliku = "uzytkownik.txt";
-
-                //output do zapisu
-                try {
-                    String zawartosc = editTextWaga.getText().toString() + "\r\n"
-                            + editTextWiek.getText().toString() + "\r\n"
-                            + editTextWzrost.getText().toString() + "\r\n"
-                            + plec[0].toString() + "\r\n";
-
-                    FileOutputStream plik = getActivity().openFileOutput(nazwa_pliku, MODE_PRIVATE);
-                    plik.write(zawartosc.getBytes());
-                    plik.close();
-                    Toast.makeText(getActivity(), "Zapisano dane", Toast.LENGTH_SHORT).show();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
             }
         });
 
-*/
+        buttonSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                databaseReference = FirebaseDatabase.getInstance().getReference(referenceName);
 
+
+                user_waga = TextInputEditTextWaga.getText().toString();
+                user_wiek = TextInputEditTextWiek.getText().toString();
+                user_wzrost = TextInputEditTextWzrost.getText().toString();
+
+
+                if (radioButtonM.isChecked()) {
+                    user_plec = "M";
+
+                } else if (radioButtonW.isChecked()) {
+                    user_plec = "W";
+
+                }
+
+
+                databaseReference.child(uid).child(childWaga).setValue(user_waga);
+                databaseReference.child(uid).child(childWiek).setValue(user_wiek);
+                databaseReference.child(uid).child(childWzrost).setValue(user_wzrost);
+                databaseReference.child(uid).child(childPlec).setValue(user_plec);
+
+
+            }
+        });
 
 
         return view;
