@@ -59,11 +59,18 @@
     <string name="carb">Węglowodany %</string>
     <string name="calories">Kcal</string>
 
+
+    //stringi do strony glownej
+    <string name="proteinE">0</string>
+    <string name="fatE">0</string>
+    <string name="carbE">0</string>
+    <string name="caloriesE">0</string>
+
     //Pory dnia
     <string name="breakfast">Śniadanie</string>
-    <string name="second_breakfast">Drugie śniadanie</string>
+    <string name="lunch">Lunch</string>
     <string name="dinner">Obiad</string>
-    <string name="tea">Podwieczorek</string>
+    <string name="snack">Przekąska</string>
     <string name="supper">Kolacja</string>
 
     //Nietolerancje

@@ -1,5 +1,8 @@
 <resources>
 
+
+
+
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
@@ -11,16 +14,22 @@
 
     </style>
 
-    <style name="date_picker_theme" parent="@android:style/Widget.DatePicker">
+
+    <!--<style name="MyDatePicker" parent="@android:style/Widget.DatePicker">
+        <item name="android:calendarViewShown">false</item>
+        <item name="android:datePickerMode">spinner</item>
+    </style>-->
+
+
+
+    <style  name="myDataPicker" parent="@android:style/Widget.DatePicker">
+
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="colorControlActivated">#808080</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorControlHighlight">#d50000</item>
         <item name="android:textColorPrimary">@color/textColorCalender</item>
-        <item name="android:layout_gravity">center</item>
-       <item name="android:shape">rectangle</item>
-        <item name="android:color">#ffff00</item>
-       <item name="android:background">#787878</item>
-
 
     </style>
 

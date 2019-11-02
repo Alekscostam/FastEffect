@@ -41,6 +41,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class AddProductActivity extends AppCompatActivity {
@@ -384,7 +385,7 @@ public class AddProductActivity extends AppCompatActivity {
      //   Toast.makeText(this, ilosc, Toast.LENGTH_SHORT).show();
       //  Toast.makeText(this,String.valueOf(converterValue) , Toast.LENGTH_SHORT).show();
 
-
+     DecimalFormat df = new DecimalFormat("#.#");
 
 
         int indexWęglowodany = selectedItem.indexOf("W:")+2;
@@ -413,20 +414,27 @@ public class AddProductActivity extends AppCompatActivity {
         String ciagNazwa= selectedItem.substring(0,znakNazwaKalorie);
         String ciagKalorie= selectedItem.substring(znakNazwaKalorie+1,indexKcal);
 
-        kalorie = Double.valueOf(ciagKalorie)*converterValue;
+        kalorie = (Double.valueOf(ciagKalorie)*converterValue);
         białko= Double.valueOf(ciagBiałko)*converterValue;
         tłuszcze= Double.valueOf(ciagTłszcze)*converterValue;
         węglowodany= Double.valueOf(ciagWęglowodany)*converterValue;
         błonnik= Double.valueOf(ciagBłonnik)*converterValue;
 
+        String kalorieS = (df.format(kalorie)).replace("," , ".");
+        String białkoS = (df.format(białko)).replace("," , ".");
+        String tłuszczeS = (df.format(tłuszcze)).replace("," , ".");
+        String węglowodanyS = (df.format(węglowodany)).replace("," , ".");
+        String błonnikS = (df.format(błonnik)).replace("," , ".");
 
 
-        /*Toast.makeText(getApplicationContext(), kalorie.toString(), Toast.LENGTH_SHORT).show();
-        Toast.makeText(getApplicationContext(), białko.toString(), Toast.LENGTH_SHORT).show();
-        Toast.makeText(getApplicationContext(), tłuszcze.toString(), Toast.LENGTH_SHORT).show();
-        Toast.makeText(getApplicationContext(), błonnik.toString(), Toast.LENGTH_SHORT).show();
-        Toast.makeText(getApplicationContext(), ciagNazwa, Toast.LENGTH_SHORT).show();
-        Toast.makeText(getApplicationContext(), ciagNietolerancje, Toast.LENGTH_SHORT).show();*/
+
+
+      //  Toast.makeText(getApplicationContext(), kalorie.toString(), Toast.LENGTH_SHORT).show();
+  /*     Toast.makeText(getApplicationContext(), białkoS, Toast.LENGTH_SHORT).show();
+       Toast.makeText(getApplicationContext(), tłuszczeS, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), błonnikS, Toast.LENGTH_SHORT).show();*/
+     /*   Toast.makeText(getApplicationContext(), ciagNazwa, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), ciagNietolerancje, Toast.LENGTH_SHORT).show(); */
 
 
         BazaDanychStruktura bazaDanychStruktura = new BazaDanychStruktura();
@@ -437,11 +445,11 @@ public class AddProductActivity extends AppCompatActivity {
         ContentValues rekordProdukt = new ContentValues();
         ContentValues rekordHash = new ContentValues();
         rekordProdukt.put(bazaDanychStruktura.BazaTabelaNazwa, ciagNazwa.toString());
-        rekordProdukt.put(bazaDanychStruktura.BazaTabelaBialko ,Double.valueOf(białko) );
-        rekordProdukt.put(bazaDanychStruktura.BazaTabelaWeglowodany ,Double.valueOf( węglowodany));
-        rekordProdukt.put(bazaDanychStruktura.BazaTabelaTluszcze  ,Double.valueOf( tłuszcze));
-        rekordProdukt.put(bazaDanychStruktura.BazaTabelaBłonnik  ,Double.valueOf( błonnik));
-        rekordProdukt.put(bazaDanychStruktura.BazaTabelaKalorie   ,Double.valueOf( kalorie));
+        rekordProdukt.put(bazaDanychStruktura.BazaTabelaBialko ,białkoS );
+        rekordProdukt.put(bazaDanychStruktura.BazaTabelaWeglowodany , węglowodanyS);
+        rekordProdukt.put(bazaDanychStruktura.BazaTabelaTluszcze  ,tłuszczeS);
+        rekordProdukt.put(bazaDanychStruktura.BazaTabelaBłonnik  , błonnikS);
+        rekordProdukt.put(bazaDanychStruktura.BazaTabelaKalorie   , kalorieS);
         rekordProdukt.put(bazaDanychStruktura.BazaTabelaNietolerancje  , ciagNietolerancje.toString());
         rekordProdukt.put(bazaDanychStruktura.BazaTabelaIlość   ,Integer.valueOf( ilosc));
 

@@ -53,9 +53,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ContentValues rekordKolacja = new ContentValues();
 
         rekordŚniadanie.put(bazaDanychStruktura.BazaTabelaPora, "Śniadanie");
-        rekordPosiłek1.put(bazaDanychStruktura.BazaTabelaPora, "Posiłek 1");
+        rekordPosiłek1.put(bazaDanychStruktura.BazaTabelaPora, "Lunch");
         rekordObiad.put(bazaDanychStruktura.BazaTabelaPora, "Obiad");
-        rekordPosiłek2.put(bazaDanychStruktura.BazaTabelaPora, "Posiłek 2");
+        rekordPosiłek2.put(bazaDanychStruktura.BazaTabelaPora, "Przekąska");
         rekordKolacja.put(bazaDanychStruktura.BazaTabelaPora, "Kolacja");
 
 
