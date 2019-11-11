@@ -27,6 +27,9 @@ import com.example.aleksander.fasteffect.R;
  */
 public class SportFragment extends Fragment {
 
+    int option =1;
+
+
 
     public SportFragment() {
         // Required empty public constructor
@@ -36,10 +39,13 @@ public class SportFragment extends Fragment {
     int wartoscAktywnosc;
     int wartoscRodzajSportu;
     int wartoscCel;
+
     TextInputEditText textInputEditTextCalories;
     TextInputEditText textInputEditTextProtein;
     TextInputEditText textInputEditTextCarb;
     TextInputEditText textInputEditTextFat;
+    LinearLayout linearLayoutAutomatyczne;
+    LinearLayout linearLayoutReczne;
 
 
     @Override
@@ -52,8 +58,19 @@ public class SportFragment extends Fragment {
         Button buttonAutomatycznie = (Button) view.findViewById(R.id.buttonAutomatycznie);
         Button buttonRecznie = (Button) view.findViewById(R.id.buttonRęczne);
 
-        final LinearLayout linearLayoutAutomatyczne = (LinearLayout) view.findViewById(R.id.linearLayoutAutomatyczne);
-        final LinearLayout linearLayoutReczne = (LinearLayout) view.findViewById(R.id.linearLayoutRęczne);
+        linearLayoutAutomatyczne = (LinearLayout) view.findViewById(R.id.linearLayoutAutomatyczne);
+        linearLayoutReczne = (LinearLayout) view.findViewById(R.id.linearLayoutRęczne);
+
+        SharedPreferences SharedPreferencesOptionSelected = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String optionSelected = SharedPreferencesOptionSelected.getString("optionSelected", "0"); //no id: default value
+        final String[] currentValue = {optionSelected};
+
+
+       /* Toast.makeText(getContext(), currentValue[0], Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), optionSelected, Toast.LENGTH_SHORT).show();*/
+
+        option=Integer.valueOf(currentValue[0]);
+        setPref(option);
 
 
         textInputEditTextCalories = (TextInputEditText) view.findViewById(R.id.textInputEditTextKalorie);
@@ -95,6 +112,8 @@ public class SportFragment extends Fragment {
                 linearLayoutAutomatyczne.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
 
 
+                currentValue[0] = "0";
+
             }
         });
 
@@ -109,7 +128,7 @@ public class SportFragment extends Fragment {
 
                 linearLayoutReczne.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
                 linearLayoutReczne.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
-
+                currentValue[0] = "1";
 
             }
         });
@@ -209,75 +228,84 @@ public class SportFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                SharedPreferences prefsAktywnosc = PreferenceManager.getDefaultSharedPreferences(getContext());
-                SharedPreferences.Editor editorAktywnosc = prefsAktywnosc.edit();
-                editorAktywnosc.putString("spinnerAktywnosc", String.valueOf(wartoscAktywnosc)); //InputString: from the EditText
-                editorAktywnosc.commit();
-                spinnerAktywnosc.setSelection(wartoscAktywnosc);
+                if (currentValue[0].equals("0")) {
+                    optionSet("0");
+                    SharedPreferences prefsAktywnosc = PreferenceManager.getDefaultSharedPreferences(getContext());
+                    SharedPreferences.Editor editorAktywnosc = prefsAktywnosc.edit();
+                    editorAktywnosc.putString("spinnerAktywnosc", String.valueOf(wartoscAktywnosc)); //InputString: from the EditText
+                    editorAktywnosc.commit();
+                    spinnerAktywnosc.setSelection(wartoscAktywnosc);
 
-                SharedPreferences prefsRodzaj = PreferenceManager.getDefaultSharedPreferences(getContext());
-                SharedPreferences.Editor editorRodzaj = prefsRodzaj.edit();
-                editorRodzaj.putString("spinnerRodzajSportu", String.valueOf(wartoscRodzajSportu)); //InputString: from the EditText
-                editorRodzaj.commit();
-                spinnerRodzajSportu.setSelection(wartoscRodzajSportu);
+                    SharedPreferences prefsRodzaj = PreferenceManager.getDefaultSharedPreferences(getContext());
+                    SharedPreferences.Editor editorRodzaj = prefsRodzaj.edit();
+                    editorRodzaj.putString("spinnerRodzajSportu", String.valueOf(wartoscRodzajSportu)); //InputString: from the EditText
+                    editorRodzaj.commit();
+                    spinnerRodzajSportu.setSelection(wartoscRodzajSportu);
 
-                SharedPreferences prefsCel = PreferenceManager.getDefaultSharedPreferences(getContext());
-                SharedPreferences.Editor editorCel = prefsCel.edit();
-                editorCel.putString("spinnerCel", String.valueOf(wartoscCel)); //InputString: from the EditText
-                editorCel.commit();
-                spinnerCel.setSelection(wartoscCel);
+                    SharedPreferences prefsCel = PreferenceManager.getDefaultSharedPreferences(getContext());
+                    SharedPreferences.Editor editorCel = prefsCel.edit();
+                    editorCel.putString("spinnerCel", String.valueOf(wartoscCel)); //InputString: from the EditText
+                    editorCel.commit();
+                    spinnerCel.setSelection(wartoscCel);
 
 
+
+                }
                 // druga opcja
-                int Protein = Integer.valueOf(textInputEditTextProtein.getText().toString());
-                int Carb = Integer.valueOf(textInputEditTextCarb.getText().toString());
-                int Fat = Integer.valueOf(textInputEditTextFat.getText().toString());
+                if(currentValue[0].equals("1")) {
+                    optionSet("1");
+                    int Protein = Integer.valueOf(textInputEditTextProtein.getText().toString());
+                    int Carb = Integer.valueOf(textInputEditTextCarb.getText().toString());
+                    int Fat = Integer.valueOf(textInputEditTextFat.getText().toString());
 
-                {
-                    if ((Protein + Carb + Fat) == 100) {
+                    {
+                        if ((Protein + Carb + Fat) == 100) {
 
-                        SharedPreferences SharedPreferencesProtein = PreferenceManager.getDefaultSharedPreferences(getContext());
-                        SharedPreferences.Editor editorProtein = SharedPreferencesProtein.edit();
-                        editorProtein.putString("textProtein", String.valueOf(Protein));
-                        editorProtein.commit();
-
-
-                        SharedPreferences SharedPreferencesCarb = PreferenceManager.getDefaultSharedPreferences(getContext());
-                        SharedPreferences.Editor editorCarb = SharedPreferencesCarb.edit();
-                        editorCarb.putString("textCarb", String.valueOf(Carb));
-                        editorCarb.commit();
+                            SharedPreferences SharedPreferencesProtein = PreferenceManager.getDefaultSharedPreferences(getContext());
+                            SharedPreferences.Editor editorProtein = SharedPreferencesProtein.edit();
+                            editorProtein.putString("textProtein", String.valueOf(Protein));
+                            editorProtein.commit();
 
 
-                        SharedPreferences SharedPreferencesFat = PreferenceManager.getDefaultSharedPreferences(getContext());
-                        SharedPreferences.Editor editorFat = SharedPreferencesFat.edit();
-                        editorFat.putString("textFat", String.valueOf(Fat));
-                        editorFat.commit();
-
-                    } else {
+                            SharedPreferences SharedPreferencesCarb = PreferenceManager.getDefaultSharedPreferences(getContext());
+                            SharedPreferences.Editor editorCarb = SharedPreferencesCarb.edit();
+                            editorCarb.putString("textCarb", String.valueOf(Carb));
+                            editorCarb.commit();
 
 
-                        Toast.makeText(getContext(), "Wartość procentowa nie jest równa 100%", Toast.LENGTH_SHORT).show();
+                            SharedPreferences SharedPreferencesFat = PreferenceManager.getDefaultSharedPreferences(getContext());
+                            SharedPreferences.Editor editorFat = SharedPreferencesFat.edit();
+                            editorFat.putString("textFat", String.valueOf(Fat));
+                            editorFat.commit();
+
+                        } else {
+
+
+                            Toast.makeText(getContext(), "Wartość procentowa nie jest równa 100%", Toast.LENGTH_SHORT).show();
+
+                        }
 
                     }
 
-                }
+                    {
 
-                {
+                        int Calories = Integer.valueOf(textInputEditTextCalories.getText().toString());
 
-                    int Calories = Integer.valueOf(textInputEditTextCalories.getText().toString());
 
-                    Toast.makeText(getContext(), String.valueOf(Calories), Toast.LENGTH_SHORT).show();
-                    if ((Calories) < 100) {
-                        Toast.makeText(getContext(), "Wartosc za mala", Toast.LENGTH_SHORT).show();
-                    } else {
-                        SharedPreferences SharedPreferencesCalories = PreferenceManager.getDefaultSharedPreferences(getContext());
-                        SharedPreferences.Editor editorCalories = SharedPreferencesCalories.edit();
-                        editorCalories.putString("textCalories", String.valueOf(Calories));
-                        editorCalories.commit();
+                        if ((Calories) < 100) {
+                            Toast.makeText(getContext(), "Wartosc za mala", Toast.LENGTH_SHORT).show();
+                        } else {
+                            SharedPreferences SharedPreferencesCalories = PreferenceManager.getDefaultSharedPreferences(getContext());
+                            SharedPreferences.Editor editorCalories = SharedPreferencesCalories.edit();
+                            editorCalories.putString("textCalories", String.valueOf(Calories));
+                            editorCalories.commit();
+                        }
                     }
+
+
                 }
 
-
+                Toast.makeText(getContext(), "Zapisano", Toast.LENGTH_SHORT).show();
                 buttonSave.setEnabled(true);
 
             }
@@ -285,6 +313,41 @@ public class SportFragment extends Fragment {
 
         return view;
 
+    }
+
+
+    public void optionSet( String option)
+    {
+
+        SharedPreferences SharedPreferencesOptionSelected = PreferenceManager.getDefaultSharedPreferences(getContext());
+        SharedPreferences.Editor editorSelected = SharedPreferencesOptionSelected.edit();
+        editorSelected.putString("optionSelected", String.valueOf(option));
+        editorSelected.commit();
+
+
+
+    }
+    public void setPref( int optionSelected)
+    {
+        if(optionSelected == 0)
+        {
+            ViewGroup.LayoutParams paramsReczne = linearLayoutReczne.getLayoutParams();
+            paramsReczne.height = 0;
+            paramsReczne.width = 0;
+            linearLayoutReczne.setLayoutParams(paramsReczne);
+
+            linearLayoutAutomatyczne.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
+            linearLayoutAutomatyczne.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
+        }
+        if(optionSelected ==1)
+        {
+            ViewGroup.LayoutParams paramsAutomatyczne = linearLayoutAutomatyczne.getLayoutParams();
+            paramsAutomatyczne.height = 0;
+            paramsAutomatyczne.width = 0;
+            linearLayoutAutomatyczne.setLayoutParams(paramsAutomatyczne);
+            linearLayoutReczne.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
+            linearLayoutReczne.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
+        }
     }
 
 }
