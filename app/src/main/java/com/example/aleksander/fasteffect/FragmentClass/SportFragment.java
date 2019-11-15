@@ -28,6 +28,8 @@ import com.example.aleksander.fasteffect.R;
 public class SportFragment extends Fragment {
 
     int option =1;
+    private SharedPreferences sharedPreferences;
+    public static final String SHARED_PREFERENCES_SPORT = "sharedPrefsSport";
 
 
 
@@ -46,6 +48,7 @@ public class SportFragment extends Fragment {
     TextInputEditText textInputEditTextFat;
     LinearLayout linearLayoutAutomatyczne;
     LinearLayout linearLayoutReczne;
+
 
 
     @Override

@@ -85,14 +85,10 @@ public class AddProductActivity extends AppCompatActivity {
         setContentView(R.layout.product_main);
 
 
-
-
-        HouseFragment asd = new HouseFragment();
-
         databaseReference = FirebaseDatabase.getInstance().getReference("Produkty");
 
 
-        sharedPreferencesFromFietFragment();
+        sharedPreferencesFromDietFragment();
 
         TextView textViewBack = (TextView) findViewById(R.id.textViewOpis);
 
@@ -102,8 +98,6 @@ public class AddProductActivity extends AppCompatActivity {
         SharedPreferences prefsPoraDnia = PreferenceManager.getDefaultSharedPreferences(this);
         poraDnia = prefsPoraDnia.getString("PoraDnia", "no id"); //no id: default value
 
-      /*  Toast.makeText(this, poraDnia, Toast.LENGTH_SHORT).show();
-        Toast.makeText(this, dateOpen, Toast.LENGTH_SHORT).show();*/
 
         listViewProdukty = (ListView) findViewById(R.id.listViewProdukty);
 
@@ -115,7 +109,6 @@ public class AddProductActivity extends AppCompatActivity {
                 final EditText input = new EditText(AddProductActivity.this);
 
                 final String selectedItem = (String) adapterView.getItemAtPosition(i);
-
 
 
                 databaseReference.addValueEventListener(new ValueEventListener() {
@@ -130,8 +123,6 @@ public class AddProductActivity extends AppCompatActivity {
                     }
                 });
 
-
-                //   Toast.makeText(AddProductActivity.this,String.valueOf(nazwaProdukt), Toast.LENGTH_SHORT).show();
                 AlertDialog.Builder builder = new AlertDialog.Builder(AddProductActivity.this, R.style.Dialog);
 
                 builder.setTitle("Ile gram produktu chcesz wybrać?");
@@ -146,7 +137,7 @@ public class AddProductActivity extends AppCompatActivity {
                         String iloscValue = String.valueOf(ilosc);
 
                         addProductToDatabase(selectedItem, iloscValue);
-                   //     addToDatabse(dateOpen, poraDnia, selectedItem, ilosc);
+                        //     addToDatabse(dateOpen, poraDnia, selectedItem, ilosc);
 
 
                         try {
@@ -172,6 +163,7 @@ public class AddProductActivity extends AppCompatActivity {
                 input.setInputType(InputType.TYPE_CLASS_NUMBER);
                 alertDialog.setView(input);
                 alertDialog.show();
+                alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setTextColor(Color.GREEN);
 
 
             }
@@ -220,14 +212,15 @@ public class AddProductActivity extends AppCompatActivity {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 String value = dataSnapshot.getValue(Produkt.class).toString();
 
-
                 String valueReduce = value.replace("Nietolerancje:", " ");
-                int indexNietolerancje = valueReduce.indexOf("Błonnik:") + 13;
+                int indexNietolerancje = valueReduce.indexOf("Błonnik:") + 16;
                 String ciagNietolerancje = valueReduce.substring(indexNietolerancje);
 
-                //   Toast.makeText(getApplicationContext(), ciagNietolerancje, Toast.LENGTH_SHORT).show();
+                if (ciagNietolerancje == "Brak") {
 
-                //   String strNew = valueReduce.substring(0, valueReduce.length()-2);
+                    listViewProdukty.getSelectedItem();
+
+                }
                 String strNew = value;
 
                 arrayList.add(dataSnapshot.getKey() + " " + strNew);
@@ -237,8 +230,6 @@ public class AddProductActivity extends AppCompatActivity {
                 ResizeListView resizeListView = new ResizeListView();
                 resizeListView.resize(listViewProdukty);
 
-
-                // Toast.makeText(AddProductActivity.this, value, Toast.LENGTH_SHORT).show();
 
             }
 
@@ -290,7 +281,7 @@ public class AddProductActivity extends AppCompatActivity {
 
     public void addProductToDatabase(String selectedItem, String ilosc) {
 
-
+      //  Toast.makeText(this, selectedItem, Toast.LENGTH_SHORT).show();
         double converterValue = (Double.valueOf(ilosc) / 100);
 
 
@@ -351,6 +342,7 @@ public class AddProductActivity extends AppCompatActivity {
         rekordProdukt.put(bazaDanychStruktura.BazaTabelaIlość, Integer.valueOf(ilosc));
 
 
+
         rekordHash.put(bazaDanychStruktura.Hash_idPoradnia, Integer.valueOf(poraDnia));
 
         rekordHash.put(bazaDanychStruktura.Hash_Data, dateOpen);
@@ -363,12 +355,8 @@ public class AddProductActivity extends AppCompatActivity {
             String[] args = {ciagNazwa, ilosc};
             Cursor k = baza.query(bazaDanychStruktura.TabelaPosilek, kolumny, where, args, null, null, null);
             k.moveToFirst();
-            Toast.makeText(getApplicationContext(), k.getString(0) + ", " + k.getString(1) + ", " + k.getString(2), Toast.LENGTH_SHORT).show();
-
             rekordHash.put(bazaDanychStruktura.Hash_idPosilek, Integer.valueOf(k.getString(0)));
             baza.insert(bazaDanychStruktura.TabelaHash, null, rekordHash);
-
-
             k.close();
 
 
@@ -376,12 +364,10 @@ public class AddProductActivity extends AppCompatActivity {
             baza.execSQL("CREATE TABLE IF NOT EXISTS 'Posilek'(Data NUMERIC PRIMARY KEY)");
             baza.execSQL("CREATE TABLE IF NOT EXISTS 'Hash'( Data NUMERIC NOT NULL, idPosilek INTEGER NOT NULL,idPoraDnia INTEGER NOT NULL,  CONSTRAINT fk_Data FOREIGN KEY(Data) REFERENCES Dzien(Data),CONSTRAINT fk_idPosilek FOREIGN KEY(idPosilek) REFERENCES Posilek(idPosilek),CONSTRAINT fk_idPoraDnia FOREIGN KEY(idPoraDnia) REFERENCES PoraDnia(idPoraDnia))");
             baza.insert(bazaDanychStruktura.TabelaPosilek, null, rekordProdukt);
-
             String where = "Nazwa=? AND Ilość=?";
             String[] args = {ciagNazwa, ilosc};
             Cursor k = baza.query(bazaDanychStruktura.TabelaPosilek, kolumny, where, args, null, null, null);
             k.moveToFirst();
-            Toast.makeText(getApplicationContext(), k.getString(0), Toast.LENGTH_SHORT).show();
             rekordHash.put(bazaDanychStruktura.Hash_idPosilek, Integer.valueOf(k.getString(0)));
             baza.insert(bazaDanychStruktura.TabelaHash, null, rekordHash);
             k.close();
@@ -396,9 +382,7 @@ public class AddProductActivity extends AppCompatActivity {
     }
 
 
-
-    public void sharedPreferencesFromFietFragment()
-    {
+    public void sharedPreferencesFromDietFragment() {
 
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
         switchOnOfS = sharedPreferences.getBoolean(SWITCHS, false);
@@ -406,9 +390,12 @@ public class AddProductActivity extends AppCompatActivity {
         switchOnOfC = sharedPreferences.getBoolean(SWITCHC, false);
         switchOnOfG = sharedPreferences.getBoolean(SWITCHG, false);
 
-      //  Toast.makeText(getApplicationContext(), String.valueOf(switchOnOfC), Toast.LENGTH_SHORT).show();
+    }
+
+    public void item(AdapterView<?> adapterView, int i) {
 
     }
+
 
 }
 

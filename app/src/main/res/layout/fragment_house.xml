@@ -473,6 +473,7 @@
                         android:layout_margin="2dp"
                         android:textColor="#551A8B"
                         android:textSize="12dp"
+                        android:textStyle="bold"
                         android:text="@string/caloriesE" />
                 </LinearLayout>
 
@@ -496,9 +497,10 @@
                         android:id="@+id/textViewAllProtein"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="2dp"
+                        android:layout_margin="3dp"
                         android:textColor="#41AECF"
-                        android:textSize="12dp"
+                        android:textSize="11dp"
+                        android:textStyle="bold"
                         android:text="@string/proteinE" />
                 </LinearLayout>
 
@@ -519,9 +521,10 @@
                         android:id="@+id/textViewAllCarb"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="2dp"
+                        android:layout_margin="3dp"
                         android:textColor="#00C853"
-                        android:textSize="12dp"
+                        android:textSize="11dp"
+                        android:textStyle="bold"
                         android:text="@string/carbE" />
                 </LinearLayout>
 
@@ -536,7 +539,7 @@
                         style="?android:attr/progressBarStyleHorizontal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="2dp"
+                        android:layout_margin="3dp"
 
                         />
 
@@ -545,7 +548,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="2dp"
-                        android:textSize="12dp"
+                        android:textSize="11dp"
+                        android:textStyle="bold"
                         android:textColor="#FFA500"
                         android:text="@string/fatE" />
                 </LinearLayout>

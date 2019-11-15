@@ -12,19 +12,24 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.inputmethodservice.Keyboard;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -136,10 +141,12 @@ public class HouseFragment extends Fragment {
     ArrayAdapter adapterPrzekąska;
     ArrayAdapter adapterKolacja;
 
+
     private DatePickerDialog.OnDateSetListener mDateSetListener;
 
     public HouseFragment() {
         // Required empty public constructor
+
     }
 
 
@@ -151,6 +158,8 @@ public class HouseFragment extends Fragment {
 
         final View view = inflater.inflate(R.layout.fragment_house, container, false);
 
+
+        closeKeyaboard();
 
         progressBarCalories = (ProgressBar) view.findViewById(R.id.progressBarCalories);
         progressBarProtein = (ProgressBar) view.findViewById(R.id.progressBarProtein);
@@ -376,10 +385,10 @@ public class HouseFragment extends Fragment {
                 dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
                     @Override
                     public void onCancel(DialogInterface dialogInterface) {
-
-                        resetAllTextview();
+                      /*resetAllTextview();
                         viewDatabase();
-                        sumUpEverything();
+                        sumUpEverything();*/
+                        refreshAfterDbChanged();
                     }
                 });
                 checkAdapter(adapterSniadanie, cardViewSniadanie, listViewSniadanie, textViewSniadanie);
@@ -422,10 +431,7 @@ public class HouseFragment extends Fragment {
 
                 DataHolder.getInstance().setData(dateSend);
 
-                resetAllTextview();
-                hideAllListview();
-                viewDatabase();
-                sumUpEverything();
+                refreshApp();
 
 
             }
@@ -474,11 +480,7 @@ public class HouseFragment extends Fragment {
         });
 
 
-        resetAllTextview();
-
-        hideAllListview();
-        viewDatabase();
-        sumUpEverything();
+        refreshApp();
 
 
         return view;
@@ -672,48 +674,46 @@ public class HouseFragment extends Fragment {
 
     public void checkTimeOfDay(int timeOfDay, int calories, Double protein, Double carb, Double Fat) {
 
-        DecimalFormat df = new DecimalFormat("#.#");
-
         if (timeOfDay == 0) {
 
 
-            textViewKcalS.setText(String.valueOf(df.format(calories)).replace(",", "."));
-            textViewWS.setText(String.valueOf(df.format(carb)).replace(",", "."));
-            textViewPS.setText(String.valueOf(df.format(protein)).replace(",", "."));
-            textViewTS.setText(String.valueOf(df.format(Fat)).replace(",", "."));
+            textViewKcalS.setText(String.valueOf(calories));
+            textViewWS.setText(String.valueOf(formaterDouble(carb)));
+            textViewPS.setText(String.valueOf(formaterDouble(protein)));
+            textViewTS.setText(String.valueOf(formaterDouble(Fat)));
 
         }
         if (timeOfDay == 1) {
 
 
-            textViewKcalL.setText(String.valueOf(df.format(calories)).replace(",", "."));
-            textViewWL.setText(String.valueOf(df.format(carb)).replace(",", "."));
-            textViewPL.setText(String.valueOf(df.format(protein)).replace(",", "."));
-            textViewTL.setText(String.valueOf(df.format(Fat)).replace(",", "."));
+            textViewKcalL.setText(String.valueOf(calories));
+            textViewWL.setText(String.valueOf(formaterDouble(carb)));
+            textViewPL.setText(String.valueOf(formaterDouble(protein)));
+            textViewTL.setText(String.valueOf(formaterDouble(Fat)));
         }
         if (timeOfDay == 2) {
 
 
-            textViewKcalO.setText(String.valueOf(df.format(calories)).replace(",", "."));
-            textViewWO.setText(String.valueOf(df.format(carb)).replace(",", "."));
-            textViewPO.setText(String.valueOf(df.format(protein)).replace(",", "."));
-            textViewTO.setText(String.valueOf(df.format(Fat)).replace(",", "."));
+            textViewKcalO.setText(String.valueOf(calories));
+            textViewWO.setText(String.valueOf(formaterDouble(carb)));
+            textViewPO.setText(String.valueOf(formaterDouble(protein)));
+            textViewTO.setText(String.valueOf(formaterDouble(Fat)));
         }
         if (timeOfDay == 3) {
 
 
-            textViewKcalP.setText(String.valueOf(df.format(calories)).replace(",", "."));
-            textViewWP.setText(String.valueOf(df.format(carb)).replace(",", "."));
-            textViewPP.setText(String.valueOf(df.format(protein)).replace(",", "."));
-            textViewTP.setText(String.valueOf(df.format(Fat)).replace(",", "."));
+            textViewKcalP.setText(String.valueOf(calories));
+            textViewWP.setText(String.valueOf(formaterDouble(carb)));
+            textViewPP.setText(String.valueOf(formaterDouble(protein)));
+            textViewTP.setText(String.valueOf(formaterDouble(Fat)));
         }
         if (timeOfDay == 4) {
 
 
-            textViewKcalK.setText(String.valueOf(df.format(calories)).replace(",", "."));
-            textViewWK.setText(String.valueOf(df.format(carb)).replace(",", "."));
-            textViewPK.setText(String.valueOf(df.format(protein)).replace(",", "."));
-            textViewTK.setText(String.valueOf(df.format(Fat)).replace(",", "."));
+            textViewKcalK.setText(String.valueOf(calories));
+            textViewWK.setText(String.valueOf(formaterDouble(carb)));
+            textViewPK.setText(String.valueOf(formaterDouble(protein)));
+            textViewTK.setText(String.valueOf(formaterDouble(Fat)));
         }
 
 
@@ -796,11 +796,9 @@ public class HouseFragment extends Fragment {
         double sumT = Double.valueOf(textViewTS.getText().toString()) + Double.valueOf(textViewTL.getText().toString()) + Double.valueOf(textViewTO.getText().toString()) + Double.valueOf(textViewTP.getText().toString()) + Double.valueOf(textViewTK.getText().toString());
 
 
-        DecimalFormat df = new DecimalFormat("#.#");
-
-        String białkoS = (df.format(sumP)).replace(",", ".");
-        String tłuszczeS = (df.format(sumT)).replace(",", ".");
-        String węglowodanyS = (df.format(sumW)).replace(",", ".");
+        double białkoS = formaterDouble(sumP);
+        double tłuszczeS = formaterDouble(sumT);
+        double węglowodanyS = formaterDouble(sumW);
 
         if (optionSportFragment == 1) {
 
@@ -909,9 +907,9 @@ public class HouseFragment extends Fragment {
 
 
         textViewAllCalories.setText("Kcal:\n " + String.valueOf(kcalSum) + "/" + String.valueOf(Math.round(sumKcal)));
-        textViewAllProtein.setText("Białko:\n " + String.valueOf(maxValue[0]) + "/" + białkoS);
-        textViewAllCarb.setText("Węglowodany:\n " + String.valueOf(maxValue[1]) + "/" + węglowodanyS);
-        textViewAllFat.setText("Tłuszcze:\n " + String.valueOf(maxValue[2]) + "/" + tłuszczeS);
+        textViewAllProtein.setText("Białko:\n " + String.valueOf(maxValue[0]) + "/" + String.valueOf(białkoS));
+        textViewAllCarb.setText("Węglowodany:\n " + String.valueOf(maxValue[1]) + "/" + String.valueOf(węglowodanyS));
+        textViewAllFat.setText("Tłuszcze:\n " + String.valueOf(maxValue[2]) + "/" + String.valueOf(tłuszczeS));
 
 
         setProgressBar(Integer.valueOf(kcalSum), sumKcal, progressBarCalories);
@@ -927,10 +925,8 @@ public class HouseFragment extends Fragment {
         double converterStringKcal = Double.valueOf(kcal);
         double converterStringMacro = Double.valueOf(macro);
         Double mathematicalFormulas = ((converterStringKcal * converterStringMacro) / 100) / division;
-        DecimalFormat df = new DecimalFormat("#.#");
-        String result = (df.format(mathematicalFormulas)).replace(",", ".");
-        double mathematicalFormulasResult = Double.valueOf(result);
-        return mathematicalFormulasResult;
+        double result = formaterDouble(mathematicalFormulas);
+        return result;
 
 
     }
@@ -1052,17 +1048,36 @@ public class HouseFragment extends Fragment {
         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(getContext(), R.style.Dialog);
 
 
-        Toast.makeText(getContext(), String.valueOf(poraDnia), Toast.LENGTH_SHORT).show();
-        Toast.makeText(getContext(), String.valueOf(position), Toast.LENGTH_SHORT).show();
-
-        builder.setTitle("Czy chcesz usunąc produkt?");
+        builder.setTitle("Edytuj ilość gram bądź usuń produkt");
         builder.setCancelable(true);
+        final EditText input = new EditText(getActivity());
 
-
-        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+        builder.setNeutralButton("Edytuj", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                deleteFromDatabase(poraDnia, position, adapter, cardView, listView, textView);
+
+                try{
+                int wartoscGram = Integer.valueOf(input.getText().toString());
+
+
+                    editProductInDatabase(wartoscGram, poraDnia, position);
+
+                }catch
+                (Exception ex)
+                {
+                    Toast.makeText(getContext(), "Nie wybrano wartosci do zmiany!", Toast.LENGTH_SHORT).show();
+                }
+
+
+
+            }
+        });
+
+        builder.setPositiveButton("Usuń", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                deleteFromDatabase(poraDnia, position);
+
             }
         });
         builder.setNegativeButton("Anuluj", new DialogInterface.OnClickListener() {
@@ -1075,33 +1090,141 @@ public class HouseFragment extends Fragment {
         });
 
         android.support.v7.app.AlertDialog alertDialog = builder.create();
-        //  alertDialog.setTitle("asd");
+
+        input.setTextColor(Color.GRAY);
+        input.setInputType(InputType.TYPE_CLASS_NUMBER);
+        alertDialog.setView(input);
         alertDialog.show();
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED);
+        alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(Color.GREEN);
 
     }
 
-
-    public void deleteFromDatabase(int poraDnia, int position, final ArrayAdapter adapter, final CardView cardView, final ListView listView, final TextView textView) {
-
+    public void deleteFromDatabase(int poraDnia, int position) {
 
         BazaDanychStruktura bazaDanychStruktura = new BazaDanychStruktura();
         SQLiteDatabase baza = getActivity().openOrCreateDatabase(bazaDanychStruktura.BazaPlik, Context.MODE_PRIVATE, null);
         baza.execSQL("CREATE TABLE IF NOT EXISTS 'Hash'( Data NUMERIC NOT NULL, idPosilek INTEGER NOT NULL,idPoraDnia INTEGER NOT NULL,  CONSTRAINT fk_Data FOREIGN KEY(Data) REFERENCES Dzien(Data),CONSTRAINT fk_idPosilek FOREIGN KEY(idPosilek) REFERENCES Posilek(idPosilek),CONSTRAINT fk_idPoraDnia FOREIGN KEY(idPoraDnia) REFERENCES PoraDnia(idPoraDnia))");
-
         Cursor k = baza.rawQuery("SELECT Hash.idPosilek  FROM  Hash WHERE Hash.idPoraDnia = '" + poraDnia + "' AND Hash.Data = '" + textViewData.getText().toString() + "'" + "LIMIT 1 OFFSET '" + position + "'", null);
         k.moveToFirst();
-        Cursor usun = baza.rawQuery("DELETE FROM Hash WHERE Hash.idPosilek = '" + k.getString(0) + "' ", null);
-
+        Cursor usun = baza.rawQuery("DELETE FROM Hash WHERE Hash.idPosilek = '" + k.getString(0) + "' AND Hash.idPoraDnia='"+poraDnia+"' " , null);
         usun.moveToFirst();
         baza.close();
+        refreshAfterDbChanged();
+
+
+    }
+
+    public void editProductInDatabase(int wartoscGram, int poraDnia, int position) {
+
+
+            int kcal, il;
+            double b, w, t, bl;
+
+
+            BazaDanychStruktura bazaDanychStruktura = new BazaDanychStruktura();
+            SQLiteDatabase baza = getActivity().openOrCreateDatabase(bazaDanychStruktura.BazaPlik, Context.MODE_PRIVATE, null);
+            baza.execSQL("CREATE TABLE IF NOT EXISTS 'Hash'( Data NUMERIC NOT NULL, idPosilek INTEGER NOT NULL,idPoraDnia INTEGER NOT NULL,  CONSTRAINT fk_Data FOREIGN KEY(Data) REFERENCES Dzien(Data),CONSTRAINT fk_idPosilek FOREIGN KEY(idPosilek) REFERENCES Posilek(idPosilek),CONSTRAINT fk_idPoraDnia FOREIGN KEY(idPoraDnia) REFERENCES PoraDnia(idPoraDnia))");
+            baza.execSQL("CREATE TABLE IF NOT EXISTS 'Posilek'( idPosilek INTEGER PRIMARY KEY AUTOINCREMENT,Nazwa TEXT,Bialko REAL,Weglowodany REAL,Tluszcze REAL, Błonnik REAL, Kalorie REAL, NIETOLERANCJE TEXT, Ilość INTEGER NOT NULL)");
+
+
+            Cursor idProduktu = baza.rawQuery("SELECT Hash.idPosilek  FROM  Hash WHERE Hash.idPoraDnia = '" + poraDnia + "' AND Hash.Data = '" + textViewData.getText().toString() + "'" + "LIMIT 1 OFFSET '" + position + "'", null);
+            idProduktu.moveToFirst();
+            Cursor daneProduktu = baza.rawQuery("SELECT Posilek.Bialko, Posilek.Błonnik, Posilek.Kalorie ,Posilek.Tluszcze,Posilek.Weglowodany, Posilek.Ilość, Posilek.Nazwa, Posilek.NIETOLERANCJE FROM Posilek , Hash, PoraDnia, Dzien  WHERE  Hash.Data = Dzien.Data AND Hash.idPoraDnia = PoraDnia.idPoraDnia AND Hash.idPosilek = Posilek.idPosilek  AND Posilek.idPosilek='" + idProduktu.getString(0) + "'", null);
+
+            // Cursor edytuj = baza.rawQuery("DELETE FROM Hash WHERE Hash.idPosilek = '" + k.getString(0) + "' ", null);
+
+
+            daneProduktu.moveToFirst();
+
+            {
+                b = Double.valueOf(daneProduktu.getString(0));
+                bl = Double.valueOf(daneProduktu.getString(1));
+                kcal = Integer.valueOf(daneProduktu.getString(2));
+                t = Double.valueOf(daneProduktu.getString(3));
+                w = Double.valueOf(daneProduktu.getString(4));
+                il = Integer.valueOf(daneProduktu.getString(5));
+            }
+
+            {
+
+                b = formaterDouble((wartoscGram * b) / il);
+                bl = formaterDouble((wartoscGram * bl) / il);
+                kcal = doubleToInt((wartoscGram * kcal) / il);
+                t = formaterDouble((wartoscGram * t) / il);
+                w = formaterDouble((wartoscGram * w) / il);
+                il = wartoscGram;
+
+            }
+
+            try
+            {
+                Cursor checkInDatabse = baza.rawQuery("SELECT Posilek.idPosilek  FROM  Posilek WHERE Posilek.Nazwa like '"+daneProduktu.getString(6)+"' AND Posilek.Ilość='"+wartoscGram+"' "  , null);
+                checkInDatabse.moveToFirst();
+                deleteFromDatabase(poraDnia,position);
+                Cursor insertToDatabaseHash = baza.rawQuery("INSERT INTO Hash(Data,idPosilek,idPoraDnia) VALUES ('"+textViewData.getText().toString()+"','"+checkInDatabse.getString(0)+"','"+poraDnia+"')",null);
+                insertToDatabaseHash.moveToFirst();
+
+            }catch(Exception ex)
+            {
+                Cursor insertToDatabsePosilek = baza.rawQuery("INSERT INTO Posilek(Nazwa,Bialko,Weglowodany,Tluszcze,Błonnik,Kalorie,NIETOLERANCJE,Ilość)" +
+                        "VALUES('"+daneProduktu.getString(6)+"','"+b+"','"+w+"','"+t+"','"+bl+"','"+kcal+"','"+daneProduktu.getString(7)+"','"+il+"')",null);
+                insertToDatabsePosilek.moveToFirst();
+                Cursor checkInDatabse = baza.rawQuery("SELECT Posilek.idPosilek  FROM  Posilek WHERE Posilek.Nazwa like '"+daneProduktu.getString(6)+"' AND Posilek.Ilość='"+wartoscGram+"' "  , null);
+                checkInDatabse.moveToFirst();
+                Cursor insertToDatabaseHash = baza.rawQuery("INSERT INTO Hash(Data,idPosilek,idPoraDnia) VALUES ('"+textViewData.getText().toString()+"','"+checkInDatabse.getString(0)+"','"+poraDnia+"')",null);
+                insertToDatabaseHash.moveToFirst();
+                deleteFromDatabase(poraDnia,position);
+
+            }
+
+
+          //  Cursor updateProduct = baza.rawQuery("UPDATE Posilek SET Bialko='" + b + "' , Błonnik='" + bl + "' , Kalorie='" + kcal + "', Tluszcze='" + t + "' , Weglowodany='" + w + "' , Ilość = '" + il + "' WHERE Posilek.idPosilek='" + idProduktu.getString(0) + "'AND Hash.idPoraDnia='"+poraDnia+"' ", null);
+
+       /*     Toast.makeText(getContext(), String.valueOf(kcal), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), String.valueOf(b), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), String.valueOf(bl), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), String.valueOf(w), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), String.valueOf(kcal), Toast.LENGTH_SHORT).show();
+*/
+           // updateProduct.moveToFirst();
+            baza.close();
+            refreshApp();
+            refreshAfterDbChanged();
+
+        //  refreshAfterDbChanged();
+
+
+    }
+
+    public void refreshApp() {
 
         resetAllTextview();
-
+        hideAllListview();
         viewDatabase();
         sumUpEverything();
-        checkAdapter(adapter, cardView, listView, textView);
+    }
 
+    public void closeKeyaboard() {
+        View view = getActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
 
+    public double formaterDouble(double variables) {
+        DecimalFormat df = new DecimalFormat("#.#");
+        Double doubleFormat = Double.valueOf(df.format(variables).replace(",", "."));
+        return doubleFormat;
+    }
+
+    public void refreshAfterDbChanged() {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        if (Build.VERSION.SDK_INT >= 26) {
+            ft.setReorderingAllowed(false);
+        }
+        ft.detach(this).attach(this).commit();
     }
 
 
