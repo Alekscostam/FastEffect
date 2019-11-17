@@ -39,6 +39,7 @@ import android.widget.Toast;
 import com.example.aleksander.fasteffect.AddProductActivity;
 import com.example.aleksander.fasteffect.AuxiliaryClass.BazaDanychStruktura;
 import com.example.aleksander.fasteffect.AuxiliaryClass.DataHolder;
+import com.example.aleksander.fasteffect.AuxiliaryClass.InformationProduct;
 import com.example.aleksander.fasteffect.AuxiliaryClass.ResizeListView;
 import com.example.aleksander.fasteffect.LoginActivity;
 import com.example.aleksander.fasteffect.R;
@@ -239,6 +240,8 @@ public class HouseFragment extends Fragment {
         ImageButton buttonAddProduct5 = (ImageButton) view.findViewById(R.id.buttonAddProduct5);
         textViewData = (TextView) view.findViewById(R.id.textViewData);
 
+        final InformationProduct informationProduct = new InformationProduct();
+
         //listviewitemlistener
         {
             listViewSniadanie.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -246,40 +249,64 @@ public class HouseFragment extends Fragment {
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                     int poraDnia = 1;
-                    alert(poraDnia, i, adapterSniadanie, cardViewSniadanie, listViewSniadanie, textViewSniadanie);
+                    informationProduct.setNazwa((String) adapterView.getItemAtPosition(i));
+                    String nazwa = informationProduct.getNazwa();
+
+                    informationProduct.setIlosc((String) adapterView.getItemAtPosition(i));
+                    String ilosc = informationProduct.getIlosc();
+
+                    //  final String selectedItem = (String) adapterView.getItemAtPosition(i);
+                    //  Toast.makeText(getContext(), Ilosc, Toast.LENGTH_SHORT).show();
+                    alert(poraDnia, i, ilosc, nazwa);
 
                 }
             });
             listViewLunch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    informationProduct.setNazwa((String) adapterView.getItemAtPosition(i));
+                    String nazwa = informationProduct.getNazwa();
 
+                    informationProduct.setIlosc((String) adapterView.getItemAtPosition(i));
+                    String ilosc = informationProduct.getIlosc();
                     int poraDnia = 2;
-                    alert(poraDnia, i, adapterLunch, cardViewLunch, listViewLunch, textViewLunch);
+                    alert(poraDnia, i, ilosc, nazwa);
                 }
             });
             listViewObiad.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    informationProduct.setNazwa((String) adapterView.getItemAtPosition(i));
+                    String nazwa = informationProduct.getNazwa();
 
+                    informationProduct.setIlosc((String) adapterView.getItemAtPosition(i));
+                    String ilosc = informationProduct.getIlosc();
                     int poraDnia = 3;
-                    alert(poraDnia, i, adapterObiad, cardViewObiad, listViewObiad, textViewObiad);
+                    alert(poraDnia, i, ilosc, nazwa);
                 }
             });
             listViewPrzekąska.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    informationProduct.setNazwa((String) adapterView.getItemAtPosition(i));
+                    String nazwa = informationProduct.getNazwa();
 
+                    informationProduct.setIlosc((String) adapterView.getItemAtPosition(i));
+                    String ilosc = informationProduct.getIlosc();
                     int poraDnia = 4;
-                    alert(poraDnia, i, adapterPrzekąska, cardViewPrzekąska, listViewPrzekąska, textViewPrzekąska);
+                    alert(poraDnia, i, ilosc, nazwa);
                 }
             });
             listViewKolacja.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    informationProduct.setNazwa((String) adapterView.getItemAtPosition(i));
+                    String nazwa = informationProduct.getNazwa();
 
+                    informationProduct.setIlosc((String) adapterView.getItemAtPosition(i));
+                    String ilosc = informationProduct.getIlosc();
                     int poraDnia = 5;
-                    alert(poraDnia, i, adapterKolacja, cardViewKolacja, listViewKolacja, textViewKolacja);
+                    alert(poraDnia, i, ilosc, nazwa);
                 }
             });
         }
@@ -1042,7 +1069,7 @@ public class HouseFragment extends Fragment {
 
     }
 
-    public void alert(final int poraDnia, final int position, final ArrayAdapter adapter, final CardView cardView, final ListView listView, final TextView textView) {
+    public void alert(final int poraDnia, final int position, final String ilosc, final String nazwa) {
 
 
         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(getContext(), R.style.Dialog);
@@ -1056,18 +1083,15 @@ public class HouseFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
-                try{
-                int wartoscGram = Integer.valueOf(input.getText().toString());
+                try {
+                    int wartoscGram = Integer.valueOf(input.getText().toString());
 
+                    editProductInDatabase(wartoscGram, poraDnia, position, ilosc, nazwa);
 
-                    editProductInDatabase(wartoscGram, poraDnia, position);
-
-                }catch
-                (Exception ex)
-                {
+                } catch
+                (Exception ex) {
                     Toast.makeText(getContext(), "Nie wybrano wartosci do zmiany!", Toast.LENGTH_SHORT).show();
                 }
-
 
 
             }
@@ -1076,7 +1100,7 @@ public class HouseFragment extends Fragment {
         builder.setPositiveButton("Usuń", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                deleteFromDatabase(poraDnia, position);
+                deleteFromDatabase(poraDnia, position, ilosc, nazwa);
 
             }
         });
@@ -1100,14 +1124,24 @@ public class HouseFragment extends Fragment {
 
     }
 
-    public void deleteFromDatabase(int poraDnia, int position) {
+    public void deleteFromDatabase(int poraDnia, int position, String ilosc, String nazwa) {
 
         BazaDanychStruktura bazaDanychStruktura = new BazaDanychStruktura();
         SQLiteDatabase baza = getActivity().openOrCreateDatabase(bazaDanychStruktura.BazaPlik, Context.MODE_PRIVATE, null);
-        baza.execSQL("CREATE TABLE IF NOT EXISTS 'Hash'( Data NUMERIC NOT NULL, idPosilek INTEGER NOT NULL,idPoraDnia INTEGER NOT NULL,  CONSTRAINT fk_Data FOREIGN KEY(Data) REFERENCES Dzien(Data),CONSTRAINT fk_idPosilek FOREIGN KEY(idPosilek) REFERENCES Posilek(idPosilek),CONSTRAINT fk_idPoraDnia FOREIGN KEY(idPoraDnia) REFERENCES PoraDnia(idPoraDnia))");
-        Cursor k = baza.rawQuery("SELECT Hash.idPosilek  FROM  Hash WHERE Hash.idPoraDnia = '" + poraDnia + "' AND Hash.Data = '" + textViewData.getText().toString() + "'" + "LIMIT 1 OFFSET '" + position + "'", null);
-        k.moveToFirst();
-        Cursor usun = baza.rawQuery("DELETE FROM Hash WHERE Hash.idPosilek = '" + k.getString(0) + "' AND Hash.idPoraDnia='"+poraDnia+"' " , null);
+        baza.execSQL("CREATE TABLE IF NOT EXISTS 'Hash'(idHash INTEGER PRIMARY KEY AUTOINCREMENT, Data NUMERIC NOT NULL, idPosilek INTEGER NOT NULL,idPoraDnia INTEGER NOT NULL,  CONSTRAINT fk_Data FOREIGN KEY(Data) REFERENCES Dzien(Data),CONSTRAINT fk_idPosilek FOREIGN KEY(idPosilek) REFERENCES Posilek(idPosilek),CONSTRAINT fk_idPoraDnia FOREIGN KEY(idPoraDnia) REFERENCES PoraDnia(idPoraDnia))");
+        // Cursor idPosilek = baza.rawQuery("SELECT Posilek.idPosilek  FROM  Posilek WHERE Posilek.Nazwa LIKE '"+nazwa+"' AND Posilek.Ilość='"+ilosc+"' ", null);
+
+        int iloscCON = Integer.valueOf(ilosc.replaceAll("\\s+", ""));
+        String nazwaCON = nazwa.replaceAll("\\s+", "");
+
+        Cursor idPosilek = baza.rawQuery(" SELECT " + bazaDanychStruktura.BazaTabelaidPosilek + " FROM " + bazaDanychStruktura.TabelaPosilek + " WHERE " + bazaDanychStruktura.BazaTabelaNazwa + " LIKE '" + nazwaCON + "%' AND " + bazaDanychStruktura.BazaTabelaIlość + " = " + iloscCON + " LIMIT 1 ", null);
+
+        idPosilek.moveToFirst();
+
+        Cursor idHashu = baza.rawQuery("SELECT Hash.idHash FROM  Hash WHERE Hash.idPoraDnia = '" + poraDnia + "' AND Hash.Data = '" + textViewData.getText().toString() + "' AND Hash.idPosilek ='" + idPosilek.getString(0) + "'", null);
+        idHashu.moveToFirst();
+
+        Cursor usun = baza.rawQuery("DELETE FROM Hash WHERE Hash.idHash='" + idHashu.getString(0) + "' ", null);
         usun.moveToFirst();
         baza.close();
         refreshAfterDbChanged();
@@ -1115,84 +1149,79 @@ public class HouseFragment extends Fragment {
 
     }
 
-    public void editProductInDatabase(int wartoscGram, int poraDnia, int position) {
+    public void editProductInDatabase(int wartoscGram, int poraDnia, int position, String ilosc, String nazwa) {
 
 
-            int kcal, il;
-            double b, w, t, bl;
+        int kcal, il;
+        double b, w, t, bl;
 
 
-            BazaDanychStruktura bazaDanychStruktura = new BazaDanychStruktura();
-            SQLiteDatabase baza = getActivity().openOrCreateDatabase(bazaDanychStruktura.BazaPlik, Context.MODE_PRIVATE, null);
-            baza.execSQL("CREATE TABLE IF NOT EXISTS 'Hash'( Data NUMERIC NOT NULL, idPosilek INTEGER NOT NULL,idPoraDnia INTEGER NOT NULL,  CONSTRAINT fk_Data FOREIGN KEY(Data) REFERENCES Dzien(Data),CONSTRAINT fk_idPosilek FOREIGN KEY(idPosilek) REFERENCES Posilek(idPosilek),CONSTRAINT fk_idPoraDnia FOREIGN KEY(idPoraDnia) REFERENCES PoraDnia(idPoraDnia))");
-            baza.execSQL("CREATE TABLE IF NOT EXISTS 'Posilek'( idPosilek INTEGER PRIMARY KEY AUTOINCREMENT,Nazwa TEXT,Bialko REAL,Weglowodany REAL,Tluszcze REAL, Błonnik REAL, Kalorie REAL, NIETOLERANCJE TEXT, Ilość INTEGER NOT NULL)");
+        BazaDanychStruktura bazaDanychStruktura = new BazaDanychStruktura();
+        SQLiteDatabase baza = getActivity().openOrCreateDatabase(bazaDanychStruktura.BazaPlik, Context.MODE_PRIVATE, null);
+        baza.execSQL("CREATE TABLE IF NOT EXISTS 'Hash'(idHash INTEGER PRIMARY KEY AUTOINCREMENT, Data NUMERIC NOT NULL, idPosilek INTEGER NOT NULL,idPoraDnia INTEGER NOT NULL,  CONSTRAINT fk_Data FOREIGN KEY(Data) REFERENCES Dzien(Data),CONSTRAINT fk_idPosilek FOREIGN KEY(idPosilek) REFERENCES Posilek(idPosilek),CONSTRAINT fk_idPoraDnia FOREIGN KEY(idPoraDnia) REFERENCES PoraDnia(idPoraDnia))");
+        baza.execSQL("CREATE TABLE IF NOT EXISTS 'Posilek'( idPosilek INTEGER PRIMARY KEY AUTOINCREMENT,Nazwa TEXT,Bialko REAL,Weglowodany REAL,Tluszcze REAL, Błonnik REAL, Kalorie REAL, NIETOLERANCJE TEXT, Ilość INTEGER NOT NULL)");
+
+        int iloscCON = Integer.valueOf(ilosc.replaceAll("\\s+", ""));
+        String nazwaCON = nazwa.replaceAll("\\s+", "");
+        Cursor idPosilek = baza.rawQuery(" SELECT " + bazaDanychStruktura.BazaTabelaidPosilek + " FROM " + bazaDanychStruktura.TabelaPosilek + " WHERE " + bazaDanychStruktura.BazaTabelaNazwa + " LIKE '" + nazwaCON + "%' AND " + bazaDanychStruktura.BazaTabelaIlość + " = " + iloscCON + " LIMIT 1 ", null);
+
+        idPosilek.moveToFirst();
+        Cursor daneProduktu = baza.rawQuery("SELECT Posilek.Bialko, Posilek.Błonnik, Posilek.Kalorie ,Posilek.Tluszcze,Posilek.Weglowodany, Posilek.Ilość, Posilek.Nazwa, Posilek.NIETOLERANCJE FROM Posilek , Hash, PoraDnia, Dzien  WHERE  Hash.Data = Dzien.Data AND Hash.idPoraDnia = PoraDnia.idPoraDnia AND Hash.idPosilek = Posilek.idPosilek  AND Posilek.idPosilek='" + idPosilek.getString(0) + "'", null);
+
+        Cursor idHashu = baza.rawQuery("SELECT Hash.idHash FROM  Hash WHERE Hash.idPoraDnia = '" + poraDnia + "' AND Hash.Data = '" + textViewData.getText().toString() + "' AND Hash.idPosilek ='" + idPosilek.getString(0) + "'", null);
+        idHashu.moveToFirst();
 
 
-            Cursor idProduktu = baza.rawQuery("SELECT Hash.idPosilek  FROM  Hash WHERE Hash.idPoraDnia = '" + poraDnia + "' AND Hash.Data = '" + textViewData.getText().toString() + "'" + "LIMIT 1 OFFSET '" + position + "'", null);
-            idProduktu.moveToFirst();
-            Cursor daneProduktu = baza.rawQuery("SELECT Posilek.Bialko, Posilek.Błonnik, Posilek.Kalorie ,Posilek.Tluszcze,Posilek.Weglowodany, Posilek.Ilość, Posilek.Nazwa, Posilek.NIETOLERANCJE FROM Posilek , Hash, PoraDnia, Dzien  WHERE  Hash.Data = Dzien.Data AND Hash.idPoraDnia = PoraDnia.idPoraDnia AND Hash.idPosilek = Posilek.idPosilek  AND Posilek.idPosilek='" + idProduktu.getString(0) + "'", null);
 
-            // Cursor edytuj = baza.rawQuery("DELETE FROM Hash WHERE Hash.idPosilek = '" + k.getString(0) + "' ", null);
+        daneProduktu.moveToFirst();
 
+        {
+            b = Double.valueOf(daneProduktu.getString(0));
+            bl = Double.valueOf(daneProduktu.getString(1));
+            kcal = Integer.valueOf(daneProduktu.getString(2));
+            t = Double.valueOf(daneProduktu.getString(3));
+            w = Double.valueOf(daneProduktu.getString(4));
+            il = Integer.valueOf(daneProduktu.getString(5));
+        }
 
-            daneProduktu.moveToFirst();
+        {
 
-            {
-                b = Double.valueOf(daneProduktu.getString(0));
-                bl = Double.valueOf(daneProduktu.getString(1));
-                kcal = Integer.valueOf(daneProduktu.getString(2));
-                t = Double.valueOf(daneProduktu.getString(3));
-                w = Double.valueOf(daneProduktu.getString(4));
-                il = Integer.valueOf(daneProduktu.getString(5));
-            }
+            b = formaterDouble((wartoscGram * b) / il);
+            bl = formaterDouble((wartoscGram * bl) / il);
+            kcal = doubleToInt((wartoscGram * kcal) / il);
+            t = formaterDouble((wartoscGram * t) / il);
+            w = formaterDouble((wartoscGram * w) / il);
+            il = wartoscGram;
 
-            {
+        }
 
-                b = formaterDouble((wartoscGram * b) / il);
-                bl = formaterDouble((wartoscGram * bl) / il);
-                kcal = doubleToInt((wartoscGram * kcal) / il);
-                t = formaterDouble((wartoscGram * t) / il);
-                w = formaterDouble((wartoscGram * w) / il);
-                il = wartoscGram;
-
-            }
-
-            try
-            {
-                Cursor checkInDatabse = baza.rawQuery("SELECT Posilek.idPosilek  FROM  Posilek WHERE Posilek.Nazwa like '"+daneProduktu.getString(6)+"' AND Posilek.Ilość='"+wartoscGram+"' "  , null);
-                checkInDatabse.moveToFirst();
-                deleteFromDatabase(poraDnia,position);
-                Cursor insertToDatabaseHash = baza.rawQuery("INSERT INTO Hash(Data,idPosilek,idPoraDnia) VALUES ('"+textViewData.getText().toString()+"','"+checkInDatabse.getString(0)+"','"+poraDnia+"')",null);
-                insertToDatabaseHash.moveToFirst();
-
-            }catch(Exception ex)
-            {
-                Cursor insertToDatabsePosilek = baza.rawQuery("INSERT INTO Posilek(Nazwa,Bialko,Weglowodany,Tluszcze,Błonnik,Kalorie,NIETOLERANCJE,Ilość)" +
-                        "VALUES('"+daneProduktu.getString(6)+"','"+b+"','"+w+"','"+t+"','"+bl+"','"+kcal+"','"+daneProduktu.getString(7)+"','"+il+"')",null);
-                insertToDatabsePosilek.moveToFirst();
-                Cursor checkInDatabse = baza.rawQuery("SELECT Posilek.idPosilek  FROM  Posilek WHERE Posilek.Nazwa like '"+daneProduktu.getString(6)+"' AND Posilek.Ilość='"+wartoscGram+"' "  , null);
-                checkInDatabse.moveToFirst();
-                Cursor insertToDatabaseHash = baza.rawQuery("INSERT INTO Hash(Data,idPosilek,idPoraDnia) VALUES ('"+textViewData.getText().toString()+"','"+checkInDatabse.getString(0)+"','"+poraDnia+"')",null);
-                insertToDatabaseHash.moveToFirst();
-                deleteFromDatabase(poraDnia,position);
-
-            }
+        try {
+            Cursor checkInDatabse = baza.rawQuery("SELECT Posilek.idPosilek  FROM  Posilek WHERE Posilek.Nazwa like '" + daneProduktu.getString(6) + "' AND Posilek.Ilość='" + wartoscGram + "' ", null);
+            checkInDatabse.moveToFirst();
+            Cursor usun = baza.rawQuery("DELETE FROM Hash WHERE Hash.idHash='" + idHashu.getString(0) + "' ", null);
+            usun.moveToFirst();
+            Cursor insertToDatabaseHash = baza.rawQuery("INSERT INTO Hash(Data,idPosilek,idPoraDnia) " +
+                    "VALUES ('" + textViewData.getText().toString() + "','" + checkInDatabse.getString(0) + "','" + poraDnia + "')", null);
+            insertToDatabaseHash.moveToFirst();
 
 
-          //  Cursor updateProduct = baza.rawQuery("UPDATE Posilek SET Bialko='" + b + "' , Błonnik='" + bl + "' , Kalorie='" + kcal + "', Tluszcze='" + t + "' , Weglowodany='" + w + "' , Ilość = '" + il + "' WHERE Posilek.idPosilek='" + idProduktu.getString(0) + "'AND Hash.idPoraDnia='"+poraDnia+"' ", null);
+        } catch (Exception ex) {
+            Cursor insertToDatabsePosilek = baza.rawQuery("INSERT INTO Posilek(Nazwa,Bialko,Weglowodany,Tluszcze,Błonnik,Kalorie,NIETOLERANCJE,Ilość)" +
+                    "VALUES('" + daneProduktu.getString(6) + "','" + b + "','" + w + "','" + t + "','" + bl + "','" + kcal + "','" + daneProduktu.getString(7) + "','" + il + "')", null);
+            insertToDatabsePosilek.moveToFirst();
+            Cursor checkInDatabse = baza.rawQuery("SELECT Posilek.idPosilek  FROM  Posilek WHERE Posilek.Nazwa like '" + daneProduktu.getString(6) + "' AND Posilek.Ilość='" + wartoscGram + "' ", null);
+            checkInDatabse.moveToFirst();
+            Cursor usun = baza.rawQuery("DELETE FROM Hash WHERE Hash.idHash='" + idHashu.getString(0) + "' ", null);
+            usun.moveToFirst();
+            Cursor insertToDatabaseHash = baza.rawQuery("INSERT INTO Hash(Data,idPosilek,idPoraDnia) VALUES ('" + textViewData.getText().toString() + "','" + checkInDatabse.getString(0) + "','" + poraDnia + "')", null);
+            insertToDatabaseHash.moveToFirst();
 
-       /*     Toast.makeText(getContext(), String.valueOf(kcal), Toast.LENGTH_SHORT).show();
-            Toast.makeText(getContext(), String.valueOf(b), Toast.LENGTH_SHORT).show();
-            Toast.makeText(getContext(), String.valueOf(bl), Toast.LENGTH_SHORT).show();
-            Toast.makeText(getContext(), String.valueOf(w), Toast.LENGTH_SHORT).show();
-            Toast.makeText(getContext(), String.valueOf(kcal), Toast.LENGTH_SHORT).show();
-*/
-           // updateProduct.moveToFirst();
-            baza.close();
-            refreshApp();
-            refreshAfterDbChanged();
+        }
 
-        //  refreshAfterDbChanged();
+
+        baza.close();
+        refreshApp();
+        refreshAfterDbChanged();
 
 
     }

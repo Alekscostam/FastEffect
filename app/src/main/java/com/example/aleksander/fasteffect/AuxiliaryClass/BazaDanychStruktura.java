@@ -31,6 +31,7 @@ public class BazaDanychStruktura {
 
     /////// Tabela Hash
     public static String TabelaHash = "Hash";
+    public static String Hash_idHash = "idHashHash";
     public static String Hash_idPoradnia = "idPoraDnia";
     public static String Hash_idPosilek = "idPosilek";
     public static String Hash_Data = "Data";
