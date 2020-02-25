@@ -43,7 +43,7 @@
             <item
                 android:id="@+id/nav_importExport"
                 android:icon="@drawable/ic_import_export"
-                android:title="Export bazy" />
+                android:title="Prześlij dziennik" />
         </group>
         <item
             android:id="@+id/nav_logOut"

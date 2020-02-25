@@ -25,23 +25,29 @@ public class DietFragment extends Fragment {
         // Required empty public constructor
     }
 
-    private SharedPreferences sharedPreferences;
 
+    private SharedPreferences sharedPreferences;
     public static final String SHARED_PREFS = "shaaredPrefs";
-    //public static final String SHARED_PREFS="shaaredPrefs";
     public static final String SWITCHL = "switchLaktoza";
-    public static final String SWITCHC = "switchCukry";
-    public static final String SWITCHG = "switchGluten";
-    public static final String SWITCHS = "switchStraczki";
+    public static final String SWITCHS = "switchSacharoza";
+    public static final String SWITCHFOS = "switchFOS";
+    public static final String SWITCHGOS = "switchGOS";
+    public static final String SWITCHP = "switchPoliole";
+    public static final String SWITCHF = "switchFruktoza";
+
     private boolean switchOnOfL;
-    private boolean switchOnOfC;
-    private boolean switchOnOfG;
     private boolean switchOnOfS;
+    private boolean switchOnOfGOS;
+    private boolean switchOnOfFOS;
+    private boolean switchOnOfP;
+    private boolean switchOnOfF;
 
     Switch switchLaktoza;
-    Switch switchCukry;
-    Switch switchGluten;
-    Switch switchStraczki;
+    Switch switchSacharoza;
+    Switch switchFOS;
+    Switch switchGOS;
+    Switch switchPoliole;
+    Switch switchFruktoza;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -51,16 +57,15 @@ public class DietFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_diet, container, false);
 
         switchLaktoza = (Switch) view.findViewById(R.id.switchLaktoza);
-        switchCukry = (Switch) view.findViewById(R.id.switchCukry);
-        switchGluten = (Switch) view.findViewById(R.id.switchGluten);
-        switchStraczki = (Switch) view.findViewById(R.id.switchStraczki);
+        switchSacharoza = (Switch) view.findViewById(R.id.switchSacharoza);
+        switchFOS = (Switch) view.findViewById(R.id.switchFOS);
+        switchGOS = (Switch) view.findViewById(R.id.switchGOS);
+        switchPoliole = (Switch) view.findViewById(R.id.switchPoliole);
+        switchFruktoza = (Switch) view.findViewById(R.id.switchFruktoza);
 
         Button buttonSave = (Button) view.findViewById(R.id.buttonSave);
 
-
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        //   boolean isChecked= sharedPreferences.getBoolean(ex,false);
-
 
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,7 +77,6 @@ public class DietFragment extends Fragment {
         loadData();
         updateViews();
 
-
         return view;
     }
 
@@ -80,10 +84,12 @@ public class DietFragment extends Fragment {
     public void saveData() {
         SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(SWITCHS, switchStraczki.isChecked());
-        editor.putBoolean(SWITCHG, switchGluten.isChecked());
-        editor.putBoolean(SWITCHC, switchCukry.isChecked());
+        editor.putBoolean(SWITCHGOS, switchGOS.isChecked());
+        editor.putBoolean(SWITCHFOS, switchFOS.isChecked());
+        editor.putBoolean(SWITCHS, switchSacharoza.isChecked());
         editor.putBoolean(SWITCHL, switchLaktoza.isChecked());
+        editor.putBoolean(SWITCHP, switchPoliole.isChecked());
+        editor.putBoolean(SWITCHF, switchFruktoza.isChecked());
         editor.apply();
 
     }
@@ -91,18 +97,22 @@ public class DietFragment extends Fragment {
     public void loadData() {
 
         SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        switchOnOfGOS = sharedPreferences.getBoolean(SWITCHGOS, false);
+        switchOnOfFOS = sharedPreferences.getBoolean(SWITCHFOS, false);
         switchOnOfS = sharedPreferences.getBoolean(SWITCHS, false);
         switchOnOfL = sharedPreferences.getBoolean(SWITCHL, false);
-        switchOnOfC = sharedPreferences.getBoolean(SWITCHC, false);
-        switchOnOfG = sharedPreferences.getBoolean(SWITCHG, false);
+        switchOnOfP = sharedPreferences.getBoolean(SWITCHP, false);
+        switchOnOfF = sharedPreferences.getBoolean(SWITCHF, false);
 
     }
 
     public void updateViews() {
-        switchStraczki.setChecked(switchOnOfS);
+        switchGOS.setChecked(switchOnOfGOS);
         switchLaktoza.setChecked(switchOnOfL);
-        switchCukry.setChecked(switchOnOfC);
-        switchGluten.setChecked(switchOnOfG);
+        switchSacharoza.setChecked(switchOnOfS);
+        switchFOS.setChecked(switchOnOfFOS);
+        switchPoliole.setChecked(switchOnOfP);
+        switchFruktoza.setChecked(switchOnOfF);
 
     }
 

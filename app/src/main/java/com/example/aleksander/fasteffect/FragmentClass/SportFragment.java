@@ -1,6 +1,7 @@
 package com.example.aleksander.fasteffect.FragmentClass;
 
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -27,15 +28,13 @@ import com.example.aleksander.fasteffect.R;
  */
 public class SportFragment extends Fragment {
 
-    int option =1;
-    private SharedPreferences sharedPreferences;
-    public static final String SHARED_PREFERENCES_SPORT = "sharedPrefsSport";
-
-
+    int option = 1;
 
     public SportFragment() {
         // Required empty public constructor
     }
+
+    public static final String SHARED_PREFS = "shaaredPrefs";
 
     Button buttonSave;
     int wartoscAktywnosc;
@@ -50,13 +49,13 @@ public class SportFragment extends Fragment {
     LinearLayout linearLayoutReczne;
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment_sport, container, false);
+
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
 
         Button buttonAutomatycznie = (Button) view.findViewById(R.id.buttonAutomatycznie);
         Button buttonRecznie = (Button) view.findViewById(R.id.buttonRęczne);
@@ -64,41 +63,27 @@ public class SportFragment extends Fragment {
         linearLayoutAutomatyczne = (LinearLayout) view.findViewById(R.id.linearLayoutAutomatyczne);
         linearLayoutReczne = (LinearLayout) view.findViewById(R.id.linearLayoutRęczne);
 
-        SharedPreferences SharedPreferencesOptionSelected = PreferenceManager.getDefaultSharedPreferences(getContext());
-        String optionSelected = SharedPreferencesOptionSelected.getString("optionSelected", "0"); //no id: default value
+        String optionSelected = sharedPreferences.getString("optionSelected", "0");
         final String[] currentValue = {optionSelected};
 
-
-       /* Toast.makeText(getContext(), currentValue[0], Toast.LENGTH_SHORT).show();
-        Toast.makeText(getContext(), optionSelected, Toast.LENGTH_SHORT).show();*/
-
-        option=Integer.valueOf(currentValue[0]);
+        option = Integer.valueOf(currentValue[0]);
         setPref(option);
-
 
         textInputEditTextCalories = (TextInputEditText) view.findViewById(R.id.textInputEditTextKalorie);
         textInputEditTextProtein = (TextInputEditText) view.findViewById(R.id.textInputEditTextProtein);
         textInputEditTextCarb = (TextInputEditText) view.findViewById(R.id.textInputEditTextCarb);
         textInputEditTextFat = (TextInputEditText) view.findViewById(R.id.textInputEditTextFat);
 
-
-        SharedPreferences SharedPreferencesCalories = PreferenceManager.getDefaultSharedPreferences(getContext());
-        String dataCalories = SharedPreferencesCalories.getString("textCalories", "0"); //no id: default value
+        String dataCalories = sharedPreferences.getString("textCalories", "0"); //no id: default value
         textInputEditTextCalories.setText(dataCalories);
 
-
-        SharedPreferences SharedPreferencesProtein = PreferenceManager.getDefaultSharedPreferences(getContext());
-        String dataProtein = SharedPreferencesProtein.getString("textProtein", "0"); //no id: default value
+        String dataProtein = sharedPreferences.getString("textProtein", "0"); //no id: default value
         textInputEditTextProtein.setText(dataProtein);
 
-
-        SharedPreferences sharedPreferencesCarb = PreferenceManager.getDefaultSharedPreferences(getContext());
-        String dataCarb = sharedPreferencesCarb.getString("textCarb", "0"); //no id: default value
+        String dataCarb = sharedPreferences.getString("textCarb", "0"); //no id: default value
         textInputEditTextCarb.setText(dataCarb);
 
-
-        SharedPreferences sharedPreferencesFat = PreferenceManager.getDefaultSharedPreferences(getContext());
-        String dataFat = sharedPreferencesFat.getString("textFat", "0"); //no id: default value
+        String dataFat = sharedPreferences.getString("textFat", "0"); //no id: default value
         textInputEditTextFat.setText(dataFat);
 
 
@@ -110,10 +95,8 @@ public class SportFragment extends Fragment {
                 paramsReczne.height = 0;
                 paramsReczne.width = 0;
                 linearLayoutReczne.setLayoutParams(paramsReczne);
-
                 linearLayoutAutomatyczne.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
                 linearLayoutAutomatyczne.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
-
 
                 currentValue[0] = "0";
 
@@ -128,9 +111,9 @@ public class SportFragment extends Fragment {
                 paramsAutomatyczne.height = 0;
                 paramsAutomatyczne.width = 0;
                 linearLayoutAutomatyczne.setLayoutParams(paramsAutomatyczne);
-
                 linearLayoutReczne.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
                 linearLayoutReczne.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
+
                 currentValue[0] = "1";
 
             }
@@ -146,11 +129,8 @@ public class SportFragment extends Fragment {
 
         buttonSave.setEnabled(true);
 
-
-        SharedPreferences sharedPreferencesAktywnosc = PreferenceManager.getDefaultSharedPreferences(getContext());
-        String dataAktywnosc = sharedPreferencesAktywnosc.getString("spinnerAktywnosc", "0"); //no id: default value
+        String dataAktywnosc = sharedPreferences.getString("spinnerAktywnosc", "0");
         spinnerAktywnosc.setSelection(Integer.valueOf(dataAktywnosc));
-
 
         spinnerAktywnosc.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -158,10 +138,8 @@ public class SportFragment extends Fragment {
                 String text = adapterView.getItemAtPosition(i).toString();
                 String position = String.valueOf(spinnerAktywnosc.getSelectedItemPosition());
 
-
                 wartoscAktywnosc = Integer.valueOf(position);
                 buttonSave.setEnabled(true);
-
             }
 
             @Override
@@ -170,24 +148,21 @@ public class SportFragment extends Fragment {
             }
         });
 
-
         final Spinner spinnerRodzajSportu = (Spinner) view.findViewById(R.id.spinnerRodzajSportu);
         ArrayAdapter<CharSequence> adapterRodzajSportu = ArrayAdapter.createFromResource(getActivity(), R.array.spinnerTypeOfActivities, R.layout.spinner_item_my);
         adapterRodzajSportu.setDropDownViewResource(R.layout.spinner_item_my);
         spinnerRodzajSportu.setAdapter(adapterRodzajSportu);
 
-
-        SharedPreferences sharedPreferencesRodzajSportu = PreferenceManager.getDefaultSharedPreferences(getContext());
-        String dataRodzajSportu = sharedPreferencesRodzajSportu.getString("spinnerRodzajSportu", "0"); //no id: default value
+        String dataRodzajSportu = sharedPreferences.getString("spinnerRodzajSportu", "0"); //no id: default value
         spinnerRodzajSportu.setSelection(Integer.valueOf(dataRodzajSportu));
 
         spinnerRodzajSportu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
                 String text = adapterView.getItemAtPosition(i).toString();
 
                 String position = String.valueOf(spinnerRodzajSportu.getSelectedItemPosition());
-
 
                 wartoscRodzajSportu = Integer.valueOf(position);
                 buttonSave.setEnabled(true);
@@ -195,30 +170,23 @@ public class SportFragment extends Fragment {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
             }
         });
-
 
         final Spinner spinnerCel = (Spinner) view.findViewById(R.id.spinnerCel);
         ArrayAdapter<CharSequence> adapterCel = ArrayAdapter.createFromResource(getActivity(), R.array.spinnerGoals, R.layout.spinner_item_my);
         adapterCel.setDropDownViewResource(R.layout.spinner_item_my);
         spinnerCel.setAdapter(adapterCel);
 
-
-        SharedPreferences sharedPreferencesCel = PreferenceManager.getDefaultSharedPreferences(getContext());
-        String dataCel = sharedPreferencesCel.getString("spinnerCel", "0"); //no id: default value
+        String dataCel = sharedPreferences.getString("spinnerCel", "0"); //no id: default value
         spinnerCel.setSelection(Integer.valueOf(dataCel));
 
         spinnerCel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String position = String.valueOf(spinnerCel.getSelectedItemPosition());
-
-
                 wartoscCel = Integer.valueOf(position);
                 buttonSave.setEnabled(true);
-
             }
 
             @Override
@@ -230,32 +198,24 @@ public class SportFragment extends Fragment {
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                SharedPreferences sharedPreferences = getContext().getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
 
                 if (currentValue[0].equals("0")) {
                     optionSet("0");
-                    SharedPreferences prefsAktywnosc = PreferenceManager.getDefaultSharedPreferences(getContext());
-                    SharedPreferences.Editor editorAktywnosc = prefsAktywnosc.edit();
-                    editorAktywnosc.putString("spinnerAktywnosc", String.valueOf(wartoscAktywnosc)); //InputString: from the EditText
-                    editorAktywnosc.commit();
+
+                    editor.putString("spinnerAktywnosc", String.valueOf(wartoscAktywnosc)); //InputString: from the EditText
                     spinnerAktywnosc.setSelection(wartoscAktywnosc);
-
-                    SharedPreferences prefsRodzaj = PreferenceManager.getDefaultSharedPreferences(getContext());
-                    SharedPreferences.Editor editorRodzaj = prefsRodzaj.edit();
-                    editorRodzaj.putString("spinnerRodzajSportu", String.valueOf(wartoscRodzajSportu)); //InputString: from the EditText
-                    editorRodzaj.commit();
+                    editor.putString("spinnerRodzajSportu", String.valueOf(wartoscRodzajSportu)); //InputString: from the EditText
                     spinnerRodzajSportu.setSelection(wartoscRodzajSportu);
-
-                    SharedPreferences prefsCel = PreferenceManager.getDefaultSharedPreferences(getContext());
-                    SharedPreferences.Editor editorCel = prefsCel.edit();
-                    editorCel.putString("spinnerCel", String.valueOf(wartoscCel)); //InputString: from the EditText
-                    editorCel.commit();
+                    editor.putString("spinnerCel", String.valueOf(wartoscCel)); //InputString: from the EditText
                     spinnerCel.setSelection(wartoscCel);
 
-
+                    editor.commit();
 
                 }
                 // druga opcja
-                if(currentValue[0].equals("1")) {
+                if (currentValue[0].equals("1")) {
                     optionSet("1");
                     int Protein = Integer.valueOf(textInputEditTextProtein.getText().toString());
                     int Carb = Integer.valueOf(textInputEditTextCarb.getText().toString());
@@ -264,53 +224,33 @@ public class SportFragment extends Fragment {
                     {
                         if ((Protein + Carb + Fat) == 100) {
 
-                            SharedPreferences SharedPreferencesProtein = PreferenceManager.getDefaultSharedPreferences(getContext());
-                            SharedPreferences.Editor editorProtein = SharedPreferencesProtein.edit();
-                            editorProtein.putString("textProtein", String.valueOf(Protein));
-                            editorProtein.commit();
+                            editor.putString("textProtein", String.valueOf(Protein));
+                            editor.putString("textCarb", String.valueOf(Carb));
+                            editor.putString("textFat", String.valueOf(Fat));
 
-
-                            SharedPreferences SharedPreferencesCarb = PreferenceManager.getDefaultSharedPreferences(getContext());
-                            SharedPreferences.Editor editorCarb = SharedPreferencesCarb.edit();
-                            editorCarb.putString("textCarb", String.valueOf(Carb));
-                            editorCarb.commit();
-
-
-                            SharedPreferences SharedPreferencesFat = PreferenceManager.getDefaultSharedPreferences(getContext());
-                            SharedPreferences.Editor editorFat = SharedPreferencesFat.edit();
-                            editorFat.putString("textFat", String.valueOf(Fat));
-                            editorFat.commit();
+                            editor.commit();
 
                         } else {
-
-
                             Toast.makeText(getContext(), "Wartość procentowa nie jest równa 100%", Toast.LENGTH_SHORT).show();
 
                         }
 
                     }
-
                     {
-
                         int Calories = Integer.valueOf(textInputEditTextCalories.getText().toString());
-
-
                         if ((Calories) < 100) {
                             Toast.makeText(getContext(), "Wartosc za mala", Toast.LENGTH_SHORT).show();
                         } else {
-                            SharedPreferences SharedPreferencesCalories = PreferenceManager.getDefaultSharedPreferences(getContext());
-                            SharedPreferences.Editor editorCalories = SharedPreferencesCalories.edit();
-                            editorCalories.putString("textCalories", String.valueOf(Calories));
-                            editorCalories.commit();
+
+                            editor.putString("textCalories", String.valueOf(Calories));
+                            editor.commit();
                         }
                     }
-
 
                 }
 
                 Toast.makeText(getContext(), "Zapisano", Toast.LENGTH_SHORT).show();
                 buttonSave.setEnabled(true);
-
             }
         });
 
@@ -318,32 +258,25 @@ public class SportFragment extends Fragment {
 
     }
 
+    public void optionSet(String option) {
 
-    public void optionSet( String option)
-    {
-
-        SharedPreferences SharedPreferencesOptionSelected = PreferenceManager.getDefaultSharedPreferences(getContext());
-        SharedPreferences.Editor editorSelected = SharedPreferencesOptionSelected.edit();
-        editorSelected.putString("optionSelected", String.valueOf(option));
-        editorSelected.commit();
-
-
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("optionSelected", String.valueOf(option));
+        editor.commit();
 
     }
-    public void setPref( int optionSelected)
-    {
-        if(optionSelected == 0)
-        {
+
+    public void setPref(int optionSelected) {
+        if (optionSelected == 0) {
             ViewGroup.LayoutParams paramsReczne = linearLayoutReczne.getLayoutParams();
             paramsReczne.height = 0;
             paramsReczne.width = 0;
             linearLayoutReczne.setLayoutParams(paramsReczne);
-
             linearLayoutAutomatyczne.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
             linearLayoutAutomatyczne.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
         }
-        if(optionSelected ==1)
-        {
+        if (optionSelected == 1) {
             ViewGroup.LayoutParams paramsAutomatyczne = linearLayoutAutomatyczne.getLayoutParams();
             paramsAutomatyczne.height = 0;
             paramsAutomatyczne.width = 0;

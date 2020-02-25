@@ -18,7 +18,9 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.example.aleksander.fasteffect.AuxiliaryClass.BazaDanychStruktura;
+import com.example.aleksander.fasteffect.AuxiliaryClass.CommandDatabase;
 import com.example.aleksander.fasteffect.FragmentClass.DietFragment;
+import com.example.aleksander.fasteffect.FragmentClass.ExportFragment;
 import com.example.aleksander.fasteffect.FragmentClass.HouseFragment;
 import com.example.aleksander.fasteffect.FragmentClass.ProfileFragment;
 import com.example.aleksander.fasteffect.FragmentClass.SportFragment;
@@ -39,36 +41,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         BazaDanychStruktura bazaDanychStruktura = new BazaDanychStruktura();
 
         SQLiteDatabase baza = openOrCreateDatabase(bazaDanychStruktura.BazaPlik, Context.MODE_PRIVATE, null);
+
         baza.execSQL("DROP TABLE IF EXISTS PoraDnia");
-
         baza.execSQL("CREATE TABLE IF NOT EXISTS 'PoraDnia'( idPoraDnia INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,Pora TEXT)");
-        baza.execSQL("CREATE TABLE IF NOT EXISTS 'Dzien'( Data NUMERIC PRIMARY KEY )");
-        baza.execSQL("CREATE TABLE IF NOT EXISTS 'Posilek'( idPosilek INTEGER PRIMARY KEY AUTOINCREMENT,Nazwa TEXT,Bialko REAL,Weglowodany REAL,Tluszcze REAL, Błonnik REAL, Kalorie REAL, NIETOLERANCJE TEXT, Ilość INTEGER NOT NULL)");
-        baza.execSQL("CREATE TABLE IF NOT EXISTS 'Hash'(idHash INTEGER PRIMARY KEY AUTOINCREMENT, Data NUMERIC NOT NULL, idPosilek INTEGER NOT NULL,idPoraDnia INTEGER NOT NULL,  CONSTRAINT fk_Data FOREIGN KEY(Data) REFERENCES Dzien(Data),CONSTRAINT fk_idPosilek FOREIGN KEY(idPosilek) REFERENCES Posilek(idPosilek),CONSTRAINT fk_idPoraDnia FOREIGN KEY(idPoraDnia) REFERENCES PoraDnia(idPoraDnia))");
+        baza.execSQL("CREATE TABLE IF NOT EXISTS 'Posilek'( idPosilek INTEGER PRIMARY KEY AUTOINCREMENT,Nazwa TEXT,Bialko REAL,Weglowodany REAL,Tluszcze REAL, Błonnik REAL, Kalorie REAL, Ilość INTEGER NOT NULL)");
+        baza.execSQL("CREATE TABLE IF NOT EXISTS 'Hash'(idHash INTEGER PRIMARY KEY AUTOINCREMENT, Data NUMERIC NOT NULL, idPosilek INTEGER NOT NULL,idPoraDnia INTEGER NOT NULL,  CONSTRAINT fk_idPosilek FOREIGN KEY(idPosilek) REFERENCES Posilek(idPosilek),CONSTRAINT fk_idPoraDnia FOREIGN KEY(idPoraDnia) REFERENCES PoraDnia(idPoraDnia))");
 
 
-        ContentValues rekordŚniadanie = new ContentValues();
-        ContentValues rekordPosiłek1 = new ContentValues();
-        ContentValues rekordObiad = new ContentValues();
-        ContentValues rekordPosiłek2 = new ContentValues();
-        ContentValues rekordKolacja = new ContentValues();
+        ContentValues contentValuesŚniadanie = new ContentValues();
+        ContentValues contentValuesLunch = new ContentValues();
+        ContentValues contentValuesObiad = new ContentValues();
+        ContentValues contentValuesPrzekąska = new ContentValues();
+        ContentValues contentValuesKolacja = new ContentValues();
 
-        rekordŚniadanie.put(bazaDanychStruktura.BazaTabelaPora, "Śniadanie");
-        rekordPosiłek1.put(bazaDanychStruktura.BazaTabelaPora, "Lunch");
-        rekordObiad.put(bazaDanychStruktura.BazaTabelaPora, "Obiad");
-        rekordPosiłek2.put(bazaDanychStruktura.BazaTabelaPora, "Przekąska");
-        rekordKolacja.put(bazaDanychStruktura.BazaTabelaPora, "Kolacja");
+        contentValuesŚniadanie.put(bazaDanychStruktura.BazaTabelaPora, "Śniadanie");
+        contentValuesLunch.put(bazaDanychStruktura.BazaTabelaPora, "Lunch");
+        contentValuesObiad.put(bazaDanychStruktura.BazaTabelaPora, "Obiad");
+        contentValuesPrzekąska.put(bazaDanychStruktura.BazaTabelaPora, "Przekąska");
+        contentValuesKolacja.put(bazaDanychStruktura.BazaTabelaPora, "Kolacja");
 
-
-
-        baza.insert(bazaDanychStruktura.TabelaPoraDnia, null, rekordŚniadanie);
-        baza.insert(bazaDanychStruktura.TabelaPoraDnia, null, rekordPosiłek1);
-        baza.insert(bazaDanychStruktura.TabelaPoraDnia, null, rekordObiad);
-        baza.insert(bazaDanychStruktura.TabelaPoraDnia, null, rekordPosiłek2);
-        baza.insert(bazaDanychStruktura.TabelaPoraDnia, null, rekordKolacja);
+        baza.insert(bazaDanychStruktura.TabelaPoraDnia, null, contentValuesŚniadanie);
+        baza.insert(bazaDanychStruktura.TabelaPoraDnia, null, contentValuesLunch);
+        baza.insert(bazaDanychStruktura.TabelaPoraDnia, null, contentValuesObiad);
+        baza.insert(bazaDanychStruktura.TabelaPoraDnia, null, contentValuesPrzekąska);
+        baza.insert(bazaDanychStruktura.TabelaPoraDnia, null, contentValuesKolacja);
 
         baza.close();
-
 
 
         android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar);
@@ -114,19 +112,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_activity:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SportFragment()).commit();
                 break;
-
             case R.id.nav_diet:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DietFragment()).commit();
                 break;
-
+            case R.id.nav_importExport:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ExportFragment()).commit();
+                break;
             case R.id.nav_logOut:
                 logout();
                 break;
 
-
         }
+
         drawer.closeDrawer(GravityCompat.START);
         return true;
+
     }
 
     private void logout() {

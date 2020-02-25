@@ -56,8 +56,7 @@ public class ProfileFragment extends Fragment {
 //
     }
 
-
-
+    public static final String SHARED_PREFS = "shaaredPrefs";
 
     private TextInputEditText TextInputEditTextWiek;
     private TextInputEditText TextInputEditTextWaga;
@@ -91,10 +90,8 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
-
 
         TextInputEditTextWiek = (TextInputEditText) view.findViewById(R.id.TextInputEditTextWiek);
         TextInputEditTextWzrost = (TextInputEditText) view.findViewById(R.id.TextInputEditTextWzrost);
@@ -105,11 +102,9 @@ public class ProfileFragment extends Fragment {
         final TextView textViewEmail = (TextView) view.findViewById(R.id.textViewEmail);
         Button buttonSave = (Button) view.findViewById(R.id.buttonSave);
 
-
         user = FirebaseAuth.getInstance().getCurrentUser();
         uid = user.getUid();
 
-        //DatabaseReference databaseReference = getReference("Users").child(firebaseAuth.getCurrentUser().getUid())
         databaseReference = FirebaseDatabase.getInstance().getReference(referenceName);
 
 
@@ -121,11 +116,9 @@ public class ProfileFragment extends Fragment {
                 user_waga = dataSnapshot.child(uid).child(childWaga).getValue(String.class);
                 user_wzrost = dataSnapshot.child(uid).child(childWzrost).getValue(String.class);
                 user_plec = dataSnapshot.child(uid).child(childPlec).getValue(String.class);
-                // Toast.makeText(getContext(), user_email, Toast.LENGTH_SHORT).show();
 
                 textViewEmail.setText(user_email);
 
-                // Toast.makeText(getContext(), user_wiek, Toast.LENGTH_SHORT).show();
                 TextInputEditTextWiek.setText(user_wiek);
                 TextInputEditTextWaga.setText(user_waga);
                 TextInputEditTextWzrost.setText(user_wzrost);
@@ -135,7 +128,6 @@ public class ProfileFragment extends Fragment {
                 } else if (user_plec.equals("W")) {
                     radioButtonW.setChecked(true);
                 }
-
             }
 
             @Override
@@ -148,12 +140,9 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-
-
-                if(Double.valueOf(TextInputEditTextWaga.getText().toString())>200) {
+                if (Double.valueOf(TextInputEditTextWaga.getText().toString()) > 200) {
                     Toast.makeText(getContext(), "Nieprawidłowa waga", Toast.LENGTH_SHORT).show();
-                }
-                else {
+                } else {
                     databaseReference = FirebaseDatabase.getInstance().getReference(referenceName);
 
                     if (Double.valueOf(TextInputEditTextWaga.getText().toString()) > 200)
@@ -164,7 +153,6 @@ public class ProfileFragment extends Fragment {
                     user_wiek = TextInputEditTextWiek.getText().toString();
                     user_wzrost = TextInputEditTextWzrost.getText().toString();
 
-
                     if (radioButtonM.isChecked()) {
                         user_plec = "M";
 
@@ -173,12 +161,10 @@ public class ProfileFragment extends Fragment {
 
                     }
 
-
                     databaseReference.child(uid).child(childWaga).setValue(user_waga);
                     databaseReference.child(uid).child(childWiek).setValue(user_wiek);
                     databaseReference.child(uid).child(childWzrost).setValue(user_wzrost);
                     databaseReference.child(uid).child(childPlec).setValue(user_plec);
-
 
                     setShared(TextInputEditTextWaga.getText().toString(), TextInputEditTextWiek.getText().toString(), TextInputEditTextWzrost.getText().toString(), user_plec);
 
@@ -187,38 +173,20 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-
-
-
-
         return view;
-
 
     }
 
-    public void setShared(String waga, String wiek,  String wzrost, String plec)
-    {
+    public void setShared(String waga, String wiek, String wzrost, String plec) {
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
 
+        editor.putString("optionWaga", waga);
+        editor.putString("optionWiek", wiek);
+        editor.putString("optionWzrost", wzrost);
+        editor.putString("optionPlec", plec);
 
-        SharedPreferences SharedPreferencesWaga = PreferenceManager.getDefaultSharedPreferences(getContext());
-        SharedPreferences.Editor editorWaga = SharedPreferencesWaga.edit();
-        editorWaga.putString("optionWaga", waga);
-        editorWaga.commit();
-
-        SharedPreferences SharedPreferencesWiek = PreferenceManager.getDefaultSharedPreferences(getContext());
-        SharedPreferences.Editor editorWiek = SharedPreferencesWiek.edit();
-        editorWiek.putString("optionWiek", wiek);
-        editorWiek.commit();
-
-        SharedPreferences SharedPreferencesWzrost = PreferenceManager.getDefaultSharedPreferences(getContext());
-        SharedPreferences.Editor editorWzrost= SharedPreferencesWzrost.edit();
-        editorWzrost.putString("optionWzrost", wzrost);
-        editorWzrost.commit();
-
-        SharedPreferences SharedPreferencesPlec = PreferenceManager.getDefaultSharedPreferences(getContext());
-        SharedPreferences.Editor editorPlec = SharedPreferencesPlec.edit();
-       editorPlec.putString("optionPlec", plec);
-        editorPlec.commit();
+        editor.commit();
 
 
     }

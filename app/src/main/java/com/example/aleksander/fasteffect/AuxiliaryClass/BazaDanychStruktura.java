@@ -5,10 +5,6 @@ public class BazaDanychStruktura {
     /////// BAZA
     public static String BazaPlik = "bazaEksport.db";
 
-    /////// Tabela Dzien
-    public static String TabelaDzien = "Dzien";
-    public static String BazaTabelaData = "Data";
-
 
     /////// Tabela Posilek
     public static String TabelaPosilek = "Posilek";
@@ -19,15 +15,12 @@ public class BazaDanychStruktura {
     public static String BazaTabelaTluszcze = "Tluszcze";
     public static String BazaTabelaBłonnik = "Błonnik";
     public static String BazaTabelaKalorie= "Kalorie";
-    public static String BazaTabelaNietolerancje= "NIETOLERANCJE";
     public static String BazaTabelaIlość= "Ilość";
-
 
     /////// Tabela Pora dnia
     public static String TabelaPoraDnia = "PoraDnia";
     public static String BazaTabelaidPoraDnia = "idPoraDnia";
     public static String BazaTabelaPora = "Pora";
-
 
     /////// Tabela Hash
     public static String TabelaHash = "Hash";

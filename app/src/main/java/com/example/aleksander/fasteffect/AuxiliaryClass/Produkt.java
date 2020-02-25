@@ -25,12 +25,12 @@ public class Produkt {
 
     public String toString() {
 
+        String wynik = "";
+        wynik = "| " + this.Kalorie + " kcal \nB: " + Białko + " | T: " + Tłuszcze + " | W: " + Węglowodany + " | Błonnik: " + Błonnik + " | Zawiera:" + Nietolerancje;
 
-        return "| " + this.Kalorie + " kcal \nB: " + Białko + " | T: " + Tłuszcze + " | W: " + Węglowodany + " | Błonnik: " + Błonnik + " | Nietolerancje:"+Nietolerancje;
+        return wynik;
 
     }
-
-
 
 
 }

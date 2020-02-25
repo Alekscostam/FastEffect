@@ -45,18 +45,23 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import static com.example.aleksander.fasteffect.FragmentClass.DietFragment.SHARED_PREFS;
-import static com.example.aleksander.fasteffect.FragmentClass.DietFragment.SWITCHC;
-import static com.example.aleksander.fasteffect.FragmentClass.DietFragment.SWITCHG;
+import static com.example.aleksander.fasteffect.FragmentClass.DietFragment.SWITCHFOS;
+import static com.example.aleksander.fasteffect.FragmentClass.DietFragment.SWITCHGOS;
 import static com.example.aleksander.fasteffect.FragmentClass.DietFragment.SWITCHL;
+import static com.example.aleksander.fasteffect.FragmentClass.DietFragment.SWITCHF;
 import static com.example.aleksander.fasteffect.FragmentClass.DietFragment.SWITCHS;
+import static com.example.aleksander.fasteffect.FragmentClass.DietFragment.SWITCHP;
 
 public class AddProductActivity extends AppCompatActivity {
 
 
     public boolean switchOnOfS;
     public boolean switchOnOfL;
-    public boolean switchOnOfC;
-    public boolean switchOnOfG;
+    public boolean switchOnOfFOS;
+    public boolean switchOnOfGOS;
+    public boolean switchOnOfP;
+    public boolean switchOnOfF;
+    public String valueToReplace;
 
     public Double kalorie;
     public Double białko;
@@ -84,23 +89,18 @@ public class AddProductActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.product_main);
 
-
         databaseReference = FirebaseDatabase.getInstance().getReference("Produkty");
-
 
         sharedPreferencesFromDietFragment();
 
         TextView textViewBack = (TextView) findViewById(R.id.textViewOpis);
-
         EditText editTextFilter = (EditText) findViewById(R.id.editTextSearch);
 
         dateOpen = DataHolder.getInstance().getData();
         SharedPreferences prefsPoraDnia = PreferenceManager.getDefaultSharedPreferences(this);
         poraDnia = prefsPoraDnia.getString("PoraDnia", "no id"); //no id: default value
 
-
         listViewProdukty = (ListView) findViewById(R.id.listViewProdukty);
-
 
         listViewProdukty.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -124,7 +124,6 @@ public class AddProductActivity extends AppCompatActivity {
                 });
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(AddProductActivity.this, R.style.Dialog);
-
                 builder.setTitle("Ile gram produktu chcesz wybrać?");
                 builder.setCancelable(true);
 
@@ -133,12 +132,8 @@ public class AddProductActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
 
                         int ilosc = Integer.valueOf(input.getText().toString());
-
                         String iloscValue = String.valueOf(ilosc);
-
                         addProductToDatabase(selectedItem, iloscValue);
-                        //     addToDatabse(dateOpen, poraDnia, selectedItem, ilosc);
-
 
                         try {
                             wartoscGram = Integer.valueOf(input.getText().toString());
@@ -152,7 +147,6 @@ public class AddProductActivity extends AppCompatActivity {
                 builder.setNegativeButton("Anuluj", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-
                         dialogInterface.cancel();
 
                     }
@@ -165,11 +159,9 @@ public class AddProductActivity extends AppCompatActivity {
                 alertDialog.show();
                 alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setTextColor(Color.GREEN);
 
-
             }
 
         });
-
 
         arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrayList) {
             @Override
@@ -211,25 +203,74 @@ public class AddProductActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 String value = dataSnapshot.getValue(Produkt.class).toString();
-
+                //   Toast.makeText(AddProductActivity.this, value, Toast.LENGTH_SHORT).show();
                 String valueReduce = value.replace("Nietolerancje:", " ");
                 int indexNietolerancje = valueReduce.indexOf("Błonnik:") + 16;
                 String ciagNietolerancje = valueReduce.substring(indexNietolerancje);
 
-                if (ciagNietolerancje == "Brak") {
-
-                    listViewProdukty.getSelectedItem();
-
-                }
                 String strNew = value;
 
-                arrayList.add(dataSnapshot.getKey() + " " + strNew);
+                ArrayList<String> arrayListReduce = new ArrayList<>();
+                arrayListReduce.add(dataSnapshot.getKey() + " " + strNew);
+
+
+                for (int a = 0; a < arrayListReduce.size(); a++) {
+                    valueToReplace = (arrayListReduce.get(a)).toString();
+                    boolean findValue = arrayListReduce.get(a).contains("null");
+
+                    if (findValue) {
+
+                        valueToReplace = valueToReplace.replace("Zawiera:null", "");
+
+                        arrayList.add(a, valueToReplace);
+                    } else {
+
+                        if (switchOnOfF) {
+
+                        } else {
+                            valueToReplace = valueToReplace.replace("Zawiera:Fruktoza", " ");
+                            valueToReplace = valueToReplace.replace("Fruktoza i", " ");
+
+                        }
+
+                        if (switchOnOfFOS) {
+
+                        } else {
+                            valueToReplace = valueToReplace.replace("Zawiera:FOS", " ");
+                            valueToReplace = valueToReplace.replace("FOS i", " ");
+
+                        }
+                        if (switchOnOfL) {
+
+                        } else {
+                            valueToReplace = valueToReplace.replace("Zawiera:Laktoza", " ");
+                        }
+
+                        if (switchOnOfGOS) {
+                        } else {
+                            valueToReplace = valueToReplace.replace("Zawiera:GOS", " ");
+                            valueToReplace = valueToReplace.replace("i GOS", " ");
+                        }
+
+                        if (switchOnOfS) {
+                        } else {
+                            valueToReplace = valueToReplace.replace("Zawiera:Sacharoza", " ");
+                            valueToReplace = valueToReplace.replace("i sacharoza", " ");
+                        }
+
+                        if (switchOnOfP) {
+
+                        } else {
+                            valueToReplace = valueToReplace.replace("Zawiera:Poliole", "");
+                            valueToReplace = valueToReplace.replace("i poliole", "");
+                        }
+
+                        arrayList.add(a, valueToReplace);
+                    }
+                }
                 arrayAdapter.notifyDataSetChanged();
-
-
                 ResizeListView resizeListView = new ResizeListView();
                 resizeListView.resize(listViewProdukty);
-
 
             }
 
@@ -266,9 +307,7 @@ public class AddProductActivity extends AppCompatActivity {
 
     }
 
-
     public void addToList(String addClickItem) {
-
 
         String putValue = addClickItem;
         Intent intent = new Intent(AddProductActivity.this, MainActivity.class);
@@ -281,20 +320,16 @@ public class AddProductActivity extends AppCompatActivity {
 
     public void addProductToDatabase(String selectedItem, String ilosc) {
 
-      //  Toast.makeText(this, selectedItem, Toast.LENGTH_SHORT).show();
         double converterValue = (Double.valueOf(ilosc) / 100);
 
 
         DecimalFormat df = new DecimalFormat("#.#");
-
 
         int indexWęglowodany = selectedItem.indexOf("W:") + 2;
         int indexBiałko = selectedItem.indexOf("B:") + 2;
         int indexTłuszcze = selectedItem.indexOf("T:") + 2;
         int indexBłonnik = selectedItem.indexOf("Błonnik:") + 8;
         int indexKcal = selectedItem.indexOf("kcal");
-        int indexNietolerancje = selectedItem.indexOf("Nietolerancje:") + 14;
-
 
         int znakWęglowodany = selectedItem.indexOf("|", indexWęglowodany);
         int znakBiałko = selectedItem.indexOf("|", indexBiałko);
@@ -302,13 +337,10 @@ public class AddProductActivity extends AppCompatActivity {
         int znakBłonnik = selectedItem.indexOf("|", indexBłonnik);
         int znakNazwaKalorie = selectedItem.indexOf("|");
 
-
         String ciagWęglowodany = selectedItem.substring(indexWęglowodany, znakWęglowodany);
         String ciagBiałko = selectedItem.substring(indexBiałko, znakBiałko);
         String ciagTłszcze = selectedItem.substring(indexTłuszcze, znakTłszcze);
         String ciagBłonnik = selectedItem.substring(indexBłonnik, znakBłonnik);
-        String ciagNietolerancje = selectedItem.substring(indexNietolerancje);
-
 
         String ciagNazwa = selectedItem.substring(0, znakNazwaKalorie);
         String ciagKalorie = selectedItem.substring(znakNazwaKalorie + 1, indexKcal);
@@ -325,9 +357,7 @@ public class AddProductActivity extends AppCompatActivity {
         String węglowodanyS = (df.format(węglowodany)).replace(",", ".");
         String błonnikS = (df.format(błonnik)).replace(",", ".");
 
-
         BazaDanychStruktura bazaDanychStruktura = new BazaDanychStruktura();
-
 
         SQLiteDatabase baza = openOrCreateDatabase(bazaDanychStruktura.BazaPlik, android.content.Context.MODE_PRIVATE, null);
         ContentValues rekordProdukt = new ContentValues();
@@ -338,19 +368,14 @@ public class AddProductActivity extends AppCompatActivity {
         rekordProdukt.put(bazaDanychStruktura.BazaTabelaTluszcze, tłuszczeS);
         rekordProdukt.put(bazaDanychStruktura.BazaTabelaBłonnik, błonnikS);
         rekordProdukt.put(bazaDanychStruktura.BazaTabelaKalorie, kalorieS);
-        rekordProdukt.put(bazaDanychStruktura.BazaTabelaNietolerancje, ciagNietolerancje.toString());
         rekordProdukt.put(bazaDanychStruktura.BazaTabelaIlość, Integer.valueOf(ilosc));
 
-
-
         rekordHash.put(bazaDanychStruktura.Hash_idPoradnia, Integer.valueOf(poraDnia));
-
         rekordHash.put(bazaDanychStruktura.Hash_Data, dateOpen);
 
-
         String kolumny[] = {bazaDanychStruktura.BazaTabelaidPosilek, bazaDanychStruktura.BazaTabelaNazwa, bazaDanychStruktura.BazaTabelaIlość};
-        try {
 
+        try {
             String where = "Nazwa=? AND Ilość=?";
             String[] args = {ciagNazwa, ilosc};
             Cursor k = baza.query(bazaDanychStruktura.TabelaPosilek, kolumny, where, args, null, null, null);
@@ -358,11 +383,8 @@ public class AddProductActivity extends AppCompatActivity {
             rekordHash.put(bazaDanychStruktura.Hash_idPosilek, Integer.valueOf(k.getString(0)));
             baza.insert(bazaDanychStruktura.TabelaHash, null, rekordHash);
             k.close();
-
-
-        } catch (Exception ex) {
-            baza.execSQL("CREATE TABLE IF NOT EXISTS 'Posilek'(Data NUMERIC PRIMARY KEY)");
-            baza.execSQL("CREATE TABLE IF NOT EXISTS 'Hash'(idHash INTEGER PRIMARY KEY AUTOINCREMENT, Data NUMERIC NOT NULL, idPosilek INTEGER NOT NULL,idPoraDnia INTEGER NOT NULL,  CONSTRAINT fk_Data FOREIGN KEY(Data) REFERENCES Dzien(Data),CONSTRAINT fk_idPosilek FOREIGN KEY(idPosilek) REFERENCES Posilek(idPosilek),CONSTRAINT fk_idPoraDnia FOREIGN KEY(idPoraDnia) REFERENCES PoraDnia(idPoraDnia))");
+        }
+        catch (Exception ex) {
             baza.insert(bazaDanychStruktura.TabelaPosilek, null, rekordProdukt);
             String where = "Nazwa=? AND Ilość=?";
             String[] args = {ciagNazwa, ilosc};
@@ -371,29 +393,24 @@ public class AddProductActivity extends AppCompatActivity {
             rekordHash.put(bazaDanychStruktura.Hash_idPosilek, Integer.valueOf(k.getString(0)));
             baza.insert(bazaDanychStruktura.TabelaHash, null, rekordHash);
             k.close();
-
             baza.close();
-
-
         }
         baza.close();
-
 
     }
 
 
     public void sharedPreferencesFromDietFragment() {
-
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
         switchOnOfS = sharedPreferences.getBoolean(SWITCHS, false);
         switchOnOfL = sharedPreferences.getBoolean(SWITCHL, false);
-        switchOnOfC = sharedPreferences.getBoolean(SWITCHC, false);
-        switchOnOfG = sharedPreferences.getBoolean(SWITCHG, false);
-
+        switchOnOfGOS = sharedPreferences.getBoolean(SWITCHGOS, false);
+        switchOnOfFOS = sharedPreferences.getBoolean(SWITCHFOS, false);
+        switchOnOfP = sharedPreferences.getBoolean(SWITCHP, false);
+        switchOnOfF = sharedPreferences.getBoolean(SWITCHF, false);
     }
 
     public void item(AdapterView<?> adapterView, int i) {
-
     }
 
 

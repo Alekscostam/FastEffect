@@ -26,8 +26,50 @@
     <string name="plec">Płeć</string>
 
 
-
     //spinnerAktywnosc
+    <string name="protein">Białko %</string>
+
+    //spinnerRodzajSportu
+    <string name="fat">Tłuszcze %</string>
+
+    //spinnerCel
+    <string name="carb">Węglowodany %</string>
+
+
+    //makroskładniki i kalorie
+    <string name="calories">Kcal</string>
+    <string name="proteinE">0</string>
+    <string name="fatE">0</string>
+    <string name="carbE">0</string>
+
+
+    //stringi do strony glownej
+    <string name="caloriesE">0</string>
+    <string name="breakfast">Śniadanie</string>
+    <string name="lunch">Lunch</string>
+    <string name="dinner">Obiad</string>
+
+    //Pory dnia
+    <string name="snack">Przekąska</string>
+    <string name="supper">Kolacja</string>
+    <string name="laktoza">Laktoza</string>
+    <string name="fos">FOS</string>
+    <string name="cukry">Sacharoza</string>
+
+    //Nietolerancje
+    <string name="gos">GOS</string>
+    <string name="fruktoza">Fruktoza</string>
+    <string name="poliole">Poliole</string>
+    <string name="name_app">FastEffect</string>
+    <string name="Log_in">Log in</string>
+    <string name="Create_Account">Zarejestruj się</string>
+
+    //Export data
+    <string name="d_export">Zapisz lub wyślij swój dziennik żywieniowy</string>
+    <string name="d_import">Import</string>
+
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string-array name="spinnerActivities">
         <item>brak aktywności, praca siedząca</item>
         <item>niska aktywność(praca siedzaca, i 1-2 treningi w tygodniu)</item>
@@ -35,8 +77,6 @@
         <item>wysoka aktywność(praca fizyczna, i 3-4 treningi w tygodniu)</item>
         <item>bardzo wysoka aktywność(sportowcy, osoby codziennie trenujące)</item>
     </string-array>
-
-    //spinnerRodzajSportu
     <string-array name="spinnerTypeOfActivities">
         <item>Siłowy</item>
         <item>Wytrzymałościowy</item>
@@ -44,48 +84,13 @@
         <item>Żaden</item>
     </string-array>
 
-    //spinnerCel
+    <!-- TODO: Remove or change this placeholder text -->
     <string-array name="spinnerGoals">
         <item>utrzymanie wagi</item>
         <item>zwiększenie wagi</item>
         <item>zmniejszenie wagi</item>
 
     </string-array>
-
-
-    //makroskładniki i kalorie
-    <string name="protein">Białko %</string>
-    <string name="fat">Tłuszcze %</string>
-    <string name="carb">Węglowodany %</string>
-    <string name="calories">Kcal</string>
-
-
-    //stringi do strony glownej
-    <string name="proteinE">0</string>
-    <string name="fatE">0</string>
-    <string name="carbE">0</string>
-    <string name="caloriesE">0</string>
-
-    //Pory dnia
-    <string name="breakfast">Śniadanie</string>
-    <string name="lunch">Lunch</string>
-    <string name="dinner">Obiad</string>
-    <string name="snack">Przekąska</string>
-    <string name="supper">Kolacja</string>
-
-    //Nietolerancje
-    <string name="laktoza">Laktoza</string>
-    <string name="gluten">Gluten</string>
-    <string name="cukry">Cukry Proste</string>
-    <string name="strączki">Warzywa strączkowe</string>
-    <string name="fruktoza">Fruktoza</string>
-
-    <string name="name_app">FastEffect</string>
-    <string name="Log_in">Log in</string>
-    <string name="Create_Account">Zarejestruj się</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

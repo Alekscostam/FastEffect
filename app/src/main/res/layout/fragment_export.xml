@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FragmentClass.ExportFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+
+        <Button
+            android:id="@+id/d_export"
+            android:layout_width="256dp"
+            android:layout_height="63dp"
+            android:textSize="18sp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20px"
+            android:background="@drawable/button_rounded_aqua"
+            android:text="@string/d_export"
+            android:textAllCaps="false" />
+
+
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>
