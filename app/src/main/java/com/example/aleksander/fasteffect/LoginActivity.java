@@ -134,8 +134,10 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
         if (!sEmail.matches("") && !sPassword.matches("")) {
 
 
-            final ProgressDialog progressDialog = ProgressDialog.show(LoginActivity.this, "Proszę czekać...", "Uwierzytelnianie", true);
-            (firebaseAuth.signInWithEmailAndPassword(autoCompleteTextViewEmail.getText().toString(), autoCompleteTextViewPassword.getText().toString()))
+            final ProgressDialog progressDialog = ProgressDialog.show(LoginActivity.this, "Proszę czekać...",
+                    "Uwierzytelnianie", true);
+            (firebaseAuth.signInWithEmailAndPassword(autoCompleteTextViewEmail.getText().toString(),
+                    autoCompleteTextViewPassword.getText().toString()))
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {

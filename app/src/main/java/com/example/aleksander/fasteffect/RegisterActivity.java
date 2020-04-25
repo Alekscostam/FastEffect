@@ -24,7 +24,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class RegisterActivity extends AppCompatActivity {
 
-
     private TextInputEditText textInputEditTextPassword;
     private TextInputEditText textInputEditTextPasswordAgain;
     private TextInputEditText textInputEditTextEmail;
@@ -33,36 +32,28 @@ public class RegisterActivity extends AppCompatActivity {
     private TextInputEditText textInputEditTextWzrost;
     private RadioButton radioButtonM;
     private RadioButton radioButtonW;
-    private RadioGroup radioGroupGender;
     final String[] plec = {""};
 
-
     private FirebaseAuth firebaseAuth;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_main);
 
+        firebaseAuth = FirebaseAuth.getInstance();
         TextView textViewBack = (TextView) findViewById(R.id.textViewBack);
 
-        //przymseowe
         textInputEditTextPassword = (TextInputEditText) findViewById(R.id.textInputEditTextPassword);
         textInputEditTextPasswordAgain = (TextInputEditText) findViewById(R.id.textInputEditTextPasswordAgain);
         textInputEditTextEmail = (TextInputEditText) findViewById(R.id.textInputEditTextEmail);
 
-
-        //opcjonalne
         textInputEditTextWaga = (TextInputEditText) findViewById(R.id.textInputEditTextWaga);
         textInputEditTextWiek = (TextInputEditText) findViewById(R.id.textInputEditTextWiek);
         textInputEditTextWzrost = (TextInputEditText) findViewById(R.id.textInputEditTextWzrost);
 
         radioButtonM = (RadioButton) findViewById(R.id.radioButtonM);
         radioButtonW = (RadioButton) findViewById(R.id.radioButtonW);
-        radioGroupGender = (RadioGroup) findViewById(R.id.RadioPlec);
-
-
 
         radioButtonM.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,10 +73,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-
         Button buttonRegister = (Button) findViewById(R.id.buttonRegister);
-        firebaseAuth = FirebaseAuth.getInstance();
-
 
         textViewBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,7 +82,6 @@ public class RegisterActivity extends AppCompatActivity {
                 startActivity(cofnij);
             }
         });
-
 
     }
 
@@ -105,7 +92,6 @@ public class RegisterActivity extends AppCompatActivity {
         if (firebaseAuth.getCurrentUser() != null) {
 
         }
-
 
     }
 
@@ -119,25 +105,22 @@ public class RegisterActivity extends AppCompatActivity {
         final String sHeight = textInputEditTextWzrost.getText().toString();
         final String sGender = plec[0];
 
-
         if (!sEmail.matches("") && !sPassword.matches("") && !sPasswordAgain.matches("")) {
 
-            final ProgressDialog progressDialog = ProgressDialog.show(RegisterActivity.this, "Proszę czekać...", "Rejestrowanie", true);
+            final ProgressDialog progressDialog = ProgressDialog.show(RegisterActivity.this, "Proszę czekać...",
+                    "Rejestrowanie", true);
             (firebaseAuth.createUserWithEmailAndPassword(sEmail, sPassword))
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             progressDialog.dismiss();
                             if (task.isSuccessful()) {
-
-
                                 User user = new User(
                                         sWeight,
                                         sAge,
                                         sHeight,
                                         sGender,
                                         sEmail
-
                                 );
                                 FirebaseDatabase.getInstance().getReference("Users")
                                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -153,10 +136,8 @@ public class RegisterActivity extends AppCompatActivity {
                                     }
                                 });
 
-
                                 Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
                                 startActivity(i);
-
 
                             } else {
                                 Log.e("Error", task.getException().toString());

@@ -249,8 +249,7 @@ public class HouseFragment extends Fragment {
                     informationProduct.setIlosc((String) adapterView.getItemAtPosition(i));
                     String ilosc = informationProduct.getIlosc();
 
-                    alert(poraDnia, i, ilosc, nazwa);
-
+                    alert(poraDnia,  ilosc, nazwa);
                 }
             });
             listViewLunch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -262,7 +261,7 @@ public class HouseFragment extends Fragment {
                     informationProduct.setIlosc((String) adapterView.getItemAtPosition(i));
                     String ilosc = informationProduct.getIlosc();
                     int poraDnia = 2;
-                    alert(poraDnia, i, ilosc, nazwa);
+                    alert(poraDnia,  ilosc, nazwa);
                 }
             });
             listViewObiad.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -274,7 +273,7 @@ public class HouseFragment extends Fragment {
                     informationProduct.setIlosc((String) adapterView.getItemAtPosition(i));
                     String ilosc = informationProduct.getIlosc();
                     int poraDnia = 3;
-                    alert(poraDnia, i, ilosc, nazwa);
+                    alert(poraDnia,  ilosc, nazwa);
                 }
             });
             listViewPrzekąska.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -286,7 +285,7 @@ public class HouseFragment extends Fragment {
                     informationProduct.setIlosc((String) adapterView.getItemAtPosition(i));
                     String ilosc = informationProduct.getIlosc();
                     int poraDnia = 4;
-                    alert(poraDnia, i, ilosc, nazwa);
+                    alert(poraDnia,  ilosc, nazwa);
                 }
             });
             listViewKolacja.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -298,7 +297,7 @@ public class HouseFragment extends Fragment {
                     informationProduct.setIlosc((String) adapterView.getItemAtPosition(i));
                     String ilosc = informationProduct.getIlosc();
                     int poraDnia = 5;
-                    alert(poraDnia, i, ilosc, nazwa);
+                    alert(poraDnia,  ilosc, nazwa);
                 }
             });
         }
@@ -392,12 +391,12 @@ public class HouseFragment extends Fragment {
                         mDateSetListener,
                         year, month, day);
 
+
                 dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
                     @Override
                     public void onCancel(DialogInterface dialogInterface) {
-                      /*resetAllTextview();
-                        viewDatabase();
-                        sumUpEverything();*/
+
+                        refreshApp();
                         refreshAfterDbChanged();
                     }
                 });
@@ -434,10 +433,9 @@ public class HouseFragment extends Fragment {
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putString("DataSend", dateSend); //InputString: from the EditText
                 editor.commit();
-
                 DataHolder.getInstance().setData(dateSend);
-
                 refreshApp();
+                refreshAfterDbChanged();
             }
         };
 
@@ -483,124 +481,108 @@ public class HouseFragment extends Fragment {
 
     public void setDate() {
         Date today = Calendar.getInstance().getTime();//getting date
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");//formating according to my need
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         String date = formatter.format(today);
         textViewData.setText(date);
         String dateSend = date;
         addToDatabse(dateSend);
         DataHolder.getInstance().setData(dateSend);
-
-
     }
-
-
     public void addToDatabse(String dateSend) {
         BazaDanychStruktura bazaDanychStruktura = new BazaDanychStruktura();
-        SQLiteDatabase baza = getActivity().openOrCreateDatabase(bazaDanychStruktura.BazaPlik, android.content.Context.MODE_PRIVATE, null);
+        SQLiteDatabase baza = getActivity().openOrCreateDatabase(bazaDanychStruktura.BazaPlik,
+                android.content.Context.MODE_PRIVATE, null);
         ContentValues rekord = new ContentValues();
         rekord.put(bazaDanychStruktura.TabelaHash, dateSend);
-        baza.execSQL("CREATE TABLE IF NOT EXISTS 'Hash'(idHash INTEGER PRIMARY KEY AUTOINCREMENT, Data NUMERIC NOT NULL, idPosilek INTEGER NOT NULL,idPoraDnia INTEGER NOT NULL,  CONSTRAINT fk_idPosilek FOREIGN KEY(idPosilek) REFERENCES Posilek(idPosilek),CONSTRAINT fk_idPoraDnia FOREIGN KEY(idPoraDnia) REFERENCES PoraDnia(idPoraDnia))");
         baza.insert(bazaDanychStruktura.TabelaHash, null, rekord);
         baza.close();
-
     }
 
     public void viewDatabase() {
-        listItemSniadanie.clear();
-        adapterSniadanie = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, listItemSniadanie);
-        listViewSniadanie.setAdapter(adapterSniadanie);
 
-        listItemLunch.clear();
-        adapterLunch = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, listItemLunch);
-        listViewLunch.setAdapter(adapterLunch);
+            listItemSniadanie.clear();
+            adapterSniadanie = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, listItemSniadanie);
+            listViewSniadanie.setAdapter(adapterSniadanie);
 
-        listItemObiad.clear();
-        adapterObiad = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, listItemObiad);
-        listViewObiad.setAdapter(adapterObiad);
+            listItemLunch.clear();
+            adapterLunch = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, listItemLunch);
+            listViewLunch.setAdapter(adapterLunch);
 
-        listItemPrzekąska.clear();
-        adapterPrzekąska = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, listItemPrzekąska);
-        listViewPrzekąska.setAdapter(adapterPrzekąska);
+            listItemObiad.clear();
+            adapterObiad = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, listItemObiad);
+            listViewObiad.setAdapter(adapterObiad);
 
-        listItemKolacja.clear();
-        adapterKolacja = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, listItemKolacja);
-        listViewKolacja.setAdapter(adapterKolacja);
+            listItemPrzekąska.clear();
+            adapterPrzekąska = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, listItemPrzekąska);
+            listViewPrzekąska.setAdapter(adapterPrzekąska);
 
-        BazaDanychStruktura bazaDanychStruktura = new BazaDanychStruktura();
-        SQLiteDatabase baza = getActivity().openOrCreateDatabase(bazaDanychStruktura.BazaPlik, Context.MODE_PRIVATE, null);
-        baza.execSQL("CREATE TABLE IF NOT EXISTS 'Hash'( Data NUMERIC NOT NULL, idPosilek INTEGER NOT NULL,idPoraDnia INTEGER NOT NULL,  CONSTRAINT fk_Data FOREIGN KEY(Data) REFERENCES Dzien(Data),CONSTRAINT fk_idPosilek FOREIGN KEY(idPosilek) REFERENCES Posilek(idPosilek),CONSTRAINT fk_idPoraDnia FOREIGN KEY(idPoraDnia) REFERENCES PoraDnia(idPoraDnia))");
+            listItemKolacja.clear();
+            adapterKolacja = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, listItemKolacja);
+            listViewKolacja.setAdapter(adapterKolacja);
 
+            BazaDanychStruktura bazaDanychStruktura = new BazaDanychStruktura();
+            SQLiteDatabase baza = getActivity().openOrCreateDatabase(bazaDanychStruktura.BazaPlik, Context.MODE_PRIVATE, null);
 
         for (int i = 1; i <= 5; i++) {
 
-            Cursor k = baza.rawQuery("SELECT Posilek.Nazwa , Posilek.Kalorie, Posilek.Bialko,Posilek.Weglowodany,Posilek.Tluszcze,Posilek.Błonnik,Posilek.Ilość " +
+            Cursor k = baza.rawQuery("SELECT Posilek.Nazwa , Posilek.Kalorie, Posilek.Bialko,Posilek.Weglowodany," +
+                    "Posilek.Tluszcze,Posilek.Błonnik,Posilek.Ilość " +
                     "FROM  Hash, PoraDnia,Posilek " +
-                    "WHERE Hash.idPosilek=Posilek.idPosilek AND Hash.idPoraDnia = PoraDnia.idPoraDnia AND Hash.idPoraDnia= '" + i + "' AND Hash.Data = '" + textViewData.getText().toString() + "'", null);
-         //   Toast.makeText(getContext(), k.getString(0), Toast.LENGTH_SHORT).show();
+                    "WHERE Hash.idPosilek=Posilek.idPosilek AND Hash.idPoraDnia = PoraDnia.idPoraDnia AND Hash.idPoraDnia= '" + i + "' AND Hash.Data = '"
+                    + textViewData.getText().toString() + "'", null);
             if (k.getCount() == 0) {
-                  //Toast.makeText(getContext(), "Brak danycyh", Toast.LENGTH_SHORT).show();
             } else {
                 if (i == 1) {
-
                     int a = 0;
-                    pickDinner(k, listItemSniadanie, adapterSniadanie, listViewSniadanie, cardViewSniadanie, textViewSniadanie, a, a);
-
+                    pickDinner(k, listItemSniadanie,  listViewSniadanie, cardViewSniadanie, textViewSniadanie, a);
                 }
                 if (i == 2) {
-
                     int a = 1;
-                    pickDinner(k, listItemLunch, adapterLunch, listViewLunch, cardViewLunch, textViewLunch, a, a);
-
+                    pickDinner(k, listItemLunch,  listViewLunch, cardViewLunch, textViewLunch, a);
                 }
                 if (i == 3) {
                     int a = 2;
-                    pickDinner(k, listItemObiad, adapterObiad, listViewObiad, cardViewObiad, textViewObiad, a, a);
-
+                    pickDinner(k, listItemObiad,  listViewObiad, cardViewObiad, textViewObiad, a);
                 }
                 if (i == 4) {
                     int a = 3;
-                    pickDinner(k, listItemPrzekąska, adapterPrzekąska, listViewPrzekąska, cardViewPrzekąska, textViewPrzekąska, a, a);
-
+                    pickDinner(k, listItemPrzekąska,  listViewPrzekąska, cardViewPrzekąska, textViewPrzekąska,a);
                 }
                 if (i == 5) {
                     int a = 4;
-                    pickDinner(k, listItemKolacja, adapterKolacja, listViewKolacja, cardViewKolacja, textViewKolacja, a, a);
-
+                    pickDinner(k, listItemKolacja,  listViewKolacja, cardViewKolacja, textViewKolacja, a);
                 }
             }
         }
         baza.close();
-
     }
 
-    public void pickDinner(Cursor k, ArrayList<String> listItem, ArrayAdapter adapter, ListView listView, CardView cardView, TextView textView, int a, int timeOfDay) {
+    public void pickDinner(Cursor k, ArrayList<String> listItem,  ListView listView, CardView cardView,
+                           TextView textView, int timeOfDay) {
 
-        listItem = new ArrayList<>();
-
+        ArrayAdapter adapter;
         while (k.moveToNext()) {
 
-            listItem.add(k.getString(0) + " | Kcal: " + k.getString(1) + " | B: " + k.getString(2) + " | W: " + k.getString(3) + " | T: " + k.getString(4) + " | Błonnik: " + k.getString(5) + " | Ilość: " + k.getString(6));
+            listItem.add(k.getString(0) + " | Kcal: " + k.getString(1) + " | B: " + k.getString(2) + " | W: " +
+                    k.getString(3) + " | T: " + k.getString(4) + " | Błonnik: " + k.getString(5) + " | Ilość: " + k.getString(6));
 
-            addValueCalories[a] = addValueCalories[a] + Math.round(Integer.valueOf(k.getString(1)));
-            addValueProtein[a] = addValueProtein[a] + Double.valueOf(k.getString(2));
-            addValueCarb[a] = addValueCarb[a] + Double.valueOf(k.getString(3));
-            addValueFat[a] = addValueFat[a] + Double.valueOf(k.getString(4));
-
+            addValueCalories[timeOfDay] = addValueCalories[timeOfDay] + Math.round(Integer.valueOf(k.getString(1)));
+            addValueProtein[timeOfDay] = addValueProtein[timeOfDay] + Double.valueOf(k.getString(2));
+            addValueCarb[timeOfDay] = addValueCarb[timeOfDay] + Double.valueOf(k.getString(3));
+            addValueFat[timeOfDay] = addValueFat[timeOfDay] + Double.valueOf(k.getString(4));
 
         }
-        adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, listItem) {
+
+        adapter=  new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, listItem) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
-                // Get the Item from ListView
                 View view = super.getView(position, convertView, parent);
                 TextView tv = (TextView) view.findViewById(android.R.id.text1);
-
                 tv.setTextColor(Color.rgb(72, 72, 72));
                 return view;
             }
         };
-
-        checkTimeOfDay(timeOfDay, addValueCalories[a], addValueProtein[a], addValueCarb[a], addValueFat[a]);
+        checkTimeOfDay(timeOfDay, addValueCalories[timeOfDay], addValueProtein[timeOfDay], addValueCarb[timeOfDay], addValueFat[timeOfDay]);
         checkAdapter(adapter, cardView, listView, textView);
     }
 
@@ -652,7 +634,6 @@ public class HouseFragment extends Fragment {
     public void checkTimeOfDay(int timeOfDay, int calories, Double protein, Double carb, Double Fat) {
 
         if (timeOfDay == 0) {
-
             textViewKcalS.setText(String.valueOf(calories));
             textViewWS.setText(String.valueOf(formaterDouble(carb)));
             textViewPS.setText(String.valueOf(formaterDouble(protein)));
@@ -952,32 +933,24 @@ public class HouseFragment extends Fragment {
 
     }
 
-    public void alert(final int poraDnia, final int position, final String ilosc, final String nazwa) {
-
+    public void alert(final int poraDnia, final String ilosc, final String nazwa) {
 
         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(getContext(), R.style.Dialog);
-
-
-        builder.setTitle("Edytuj ilość gram bądź usuń produkt");
+        builder.setTitle("Zmień ilość bądź usuń produkt");
         builder.setCancelable(true);
         final EditText input = new EditText(getActivity());
 
         builder.setNeutralButton("Edytuj", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-
                     int wartoscGram = Integer.valueOf(input.getText().toString());
-
                     if(wartoscGram==0)
                     {Toast.makeText(getContext(), "Wartość nie może wynosić 0!", Toast.LENGTH_SHORT).show(); }
-
                     else
-                    {editProductInDatabase(wartoscGram, poraDnia, position, ilosc, nazwa);}
-
+                    {editProductInDatabase(wartoscGram, poraDnia, ilosc, nazwa);}
 
             }
         });
-
         builder.setPositiveButton("Usuń", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -1009,18 +982,22 @@ public class HouseFragment extends Fragment {
         SQLiteDatabase baza = getActivity().openOrCreateDatabase(bazaDanychStruktura.BazaPlik, Context.MODE_PRIVATE, null);
         int iloscCON = Integer.valueOf(ilosc.replaceAll("\\s+", ""));
         String nazwaCON = nazwa.replaceAll("\\s+$", "");
-        Cursor idPosilek = baza.rawQuery(" SELECT " + bazaDanychStruktura.BazaTabelaidPosilek + " FROM " + bazaDanychStruktura.TabelaPosilek + " WHERE " + bazaDanychStruktura.BazaTabelaNazwa + " LIKE '" + nazwaCON + "%' AND " + bazaDanychStruktura.BazaTabelaIlość + " = " + iloscCON + " LIMIT 1 ", null);
+        Cursor idPosilek = baza.rawQuery(" SELECT " + bazaDanychStruktura.BazaTabelaidPosilek + " FROM " +
+                bazaDanychStruktura.TabelaPosilek + " WHERE " + bazaDanychStruktura.BazaTabelaNazwa + " LIKE '" + nazwaCON
+                + "%' AND " + bazaDanychStruktura.BazaTabelaIlość + " = " + iloscCON + " LIMIT 1 ", null);
         idPosilek.moveToFirst();
-        Toast.makeText(getContext(),String.valueOf(idPosilek) , Toast.LENGTH_SHORT).show();
-        Cursor idHashu = baza.rawQuery("SELECT Hash.idHash FROM  Hash WHERE Hash.idPoraDnia = '" + poraDnia + "' AND Hash.Data = '" + textViewData.getText().toString() + "' AND Hash.idPosilek ='" + idPosilek.getString(0) + "'", null);
+        Cursor idHashu = baza.rawQuery("SELECT Hash.idHash FROM  Hash WHERE Hash.idPoraDnia = '" + poraDnia +
+                "' AND Hash.Data = '" + textViewData.getText().toString() + "' AND Hash.idPosilek ='" + idPosilek.getString(0) + "'", null);
         idHashu.moveToFirst();
-        Cursor usun = baza.rawQuery("DELETE FROM Hash WHERE Hash.idHash='" + idHashu.getString(0) + "' ", null);
+        Cursor usun = baza.rawQuery("DELETE  FROM Hash WHERE Hash.idHash='" + idHashu.getString(0) + "' ", null);
+
         usun.moveToFirst();
         baza.close();
+        refreshApp();
         refreshAfterDbChanged();
     }
 
-    public void editProductInDatabase(int wartoscGram, int poraDnia, int position, String ilosc, String nazwa) {
+    public void editProductInDatabase(int wartoscGram, int poraDnia, String ilosc, String nazwa) {
 
         int kcal, il;
         double b, w, t, bl;
@@ -1029,13 +1006,23 @@ public class HouseFragment extends Fragment {
         SQLiteDatabase baza = getActivity().openOrCreateDatabase(bazaDanychStruktura.BazaPlik, Context.MODE_PRIVATE, null);
         int iloscCON = Integer.valueOf(ilosc.replaceAll("\\s+", ""));
         String nazwaCON = nazwa.replaceAll("\\s+$", "");
-        Cursor idPosilek = baza.rawQuery(" SELECT " + bazaDanychStruktura.BazaTabelaidPosilek + " FROM " + bazaDanychStruktura.TabelaPosilek + " WHERE " + bazaDanychStruktura.BazaTabelaNazwa + " LIKE '" + nazwaCON + "%' AND " + bazaDanychStruktura.BazaTabelaIlość + " = " + iloscCON + " LIMIT 1 ", null);
-        idPosilek.moveToFirst();
-        Cursor daneProduktu = baza.rawQuery("SELECT Posilek.Bialko, Posilek.Błonnik, Posilek.Kalorie ,Posilek.Tluszcze,Posilek.Weglowodany, Posilek.Ilość, Posilek.Nazwa FROM Posilek , Hash, PoraDnia WHERE Hash.Data = '" + textViewData.getText().toString() + "' AND Hash.idPoraDnia = PoraDnia.idPoraDnia AND Hash.idPosilek = Posilek.idPosilek  AND Posilek.idPosilek='" + idPosilek.getString(0) + "'", null);
-        Cursor idHashu = baza.rawQuery("SELECT Hash.idHash FROM  Hash WHERE Hash.idPoraDnia = '" + poraDnia + "' AND Hash.Data = '" + textViewData.getText().toString() + "' AND Hash.idPosilek ='" + idPosilek.getString(0) + "'", null);
 
-           {  idHashu.moveToFirst();
-            daneProduktu.moveToFirst();
+        Cursor idPosilek = baza.rawQuery(" SELECT " + bazaDanychStruktura.BazaTabelaidPosilek + " FROM "
+                + bazaDanychStruktura.TabelaPosilek + " WHERE " + bazaDanychStruktura.BazaTabelaNazwa + " LIKE '" + nazwaCON + "%' AND "
+                + bazaDanychStruktura.BazaTabelaIlość + " = " + iloscCON + " LIMIT 1 ", null);
+        idPosilek.moveToFirst();
+
+        Cursor daneProduktu = baza.rawQuery("SELECT Posilek.Bialko, Posilek.Błonnik, Posilek.Kalorie " +
+                ",Posilek.Tluszcze,Posilek.Weglowodany, Posilek.Ilość, Posilek.Nazwa FROM Posilek , Hash, PoraDnia WHERE Hash.Data = '"
+                + textViewData.getText().toString() + "' AND Hash.idPoraDnia = PoraDnia.idPoraDnia AND Hash.idPosilek = Posilek.idPosilek " +
+                " AND Posilek.idPosilek='" + idPosilek.getString(0) + "'", null);
+        daneProduktu.moveToFirst();
+
+        Cursor idHashu = baza.rawQuery("SELECT Hash.idHash FROM  Hash WHERE Hash.idPoraDnia = '" + poraDnia + "' AND Hash.Data = '"
+                + textViewData.getText().toString() + "' AND Hash.idPosilek ='" + idPosilek.getString(0) + "'", null);
+        idHashu.moveToFirst();
+
+           {
             {
                 b = Double.valueOf(daneProduktu.getString(0));
                 bl = Double.valueOf(daneProduktu.getString(1));
@@ -1044,20 +1031,18 @@ public class HouseFragment extends Fragment {
                 w = Double.valueOf(daneProduktu.getString(4));
                 il = Integer.valueOf(daneProduktu.getString(5));
             }
-
             {
-
                 b = formaterDouble((wartoscGram * b) / il);
                 bl = formaterDouble((wartoscGram * bl) / il);
                 kcal = doubleToInt((wartoscGram * kcal) / il);
                 t = formaterDouble((wartoscGram * t) / il);
                 w = formaterDouble((wartoscGram * w) / il);
                 il = wartoscGram;
-
             }
 
             try {
-                Cursor checkInDatabse = baza.rawQuery("SELECT Posilek.idPosilek  FROM  Posilek WHERE Posilek.Nazwa like '" + daneProduktu.getString(6) + "' AND Posilek.Ilość='" + wartoscGram + "' ", null);
+                Cursor checkInDatabse = baza.rawQuery("SELECT Posilek.idPosilek  FROM  Posilek WHERE Posilek.Nazwa like '"
+                        + daneProduktu.getString(6) + "' AND Posilek.Ilość='" + wartoscGram + "' ", null);
                 checkInDatabse.moveToFirst();
                 Cursor usun = baza.rawQuery("DELETE FROM Hash WHERE Hash.idHash='" + idHashu.getString(0) + "' ", null);
                 usun.moveToFirst();
@@ -1065,20 +1050,19 @@ public class HouseFragment extends Fragment {
                         "VALUES ('" + textViewData.getText().toString() + "','" + checkInDatabse.getString(0) + "','" + poraDnia + "')", null);
                 insertToDatabaseHash.moveToFirst();
 
-
             } catch (Exception ex) {
                 Cursor insertToDatabsePosilek = baza.rawQuery("INSERT INTO Posilek(Nazwa,Bialko,Weglowodany,Tluszcze,Błonnik,Kalorie,Ilość)" +
                         "VALUES('" + daneProduktu.getString(6) + "','" + b + "','" + w + "','" + t + "','" + bl + "','" + kcal + "','" + il + "')", null);
                 insertToDatabsePosilek.moveToFirst();
-                Cursor checkInDatabse = baza.rawQuery("SELECT Posilek.idPosilek  FROM  Posilek WHERE Posilek.Nazwa like '" + daneProduktu.getString(6) + "' AND Posilek.Ilość='" + wartoscGram + "' ", null);
+                Cursor checkInDatabse = baza.rawQuery("SELECT Posilek.idPosilek  FROM  Posilek WHERE Posilek.Nazwa like '" + daneProduktu.getString(6)
+                        + "' AND Posilek.Ilość='" + wartoscGram + "' ", null);
                 checkInDatabse.moveToFirst();
                 Cursor usun = baza.rawQuery("DELETE FROM Hash WHERE Hash.idHash='" + idHashu.getString(0) + "' ", null);
                 usun.moveToFirst();
-                Cursor insertToDatabaseHash = baza.rawQuery("INSERT INTO Hash(Data,idPosilek,idPoraDnia) VALUES ('" + textViewData.getText().toString() + "','" + checkInDatabse.getString(0) + "','" + poraDnia + "')", null);
+                Cursor insertToDatabaseHash = baza.rawQuery("INSERT INTO Hash(Data,idPosilek,idPoraDnia) VALUES ('" + textViewData.getText().toString()
+                        + "','" + checkInDatabse.getString(0) + "','" + poraDnia + "')", null);
                 insertToDatabaseHash.moveToFirst();
-
             }
-
             baza.close();
             refreshApp();
             refreshAfterDbChanged();

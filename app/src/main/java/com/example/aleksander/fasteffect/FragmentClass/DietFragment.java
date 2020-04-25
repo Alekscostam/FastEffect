@@ -28,6 +28,7 @@ public class DietFragment extends Fragment {
 
     private SharedPreferences sharedPreferences;
     public static final String SHARED_PREFS = "shaaredPrefs";
+
     public static final String SWITCHL = "switchLaktoza";
     public static final String SWITCHS = "switchSacharoza";
     public static final String SWITCHFOS = "switchFOS";
@@ -65,7 +66,7 @@ public class DietFragment extends Fragment {
 
         Button buttonSave = (Button) view.findViewById(R.id.buttonSave);
 
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        sharedPreferences = this.getActivity().getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
 
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,16 +74,13 @@ public class DietFragment extends Fragment {
                 saveData();
             }
         });
-
         loadData();
         updateViews();
 
         return view;
     }
 
-
     public void saveData() {
-        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(SWITCHGOS, switchGOS.isChecked());
         editor.putBoolean(SWITCHFOS, switchFOS.isChecked());
@@ -95,15 +93,12 @@ public class DietFragment extends Fragment {
     }
 
     public void loadData() {
-
-        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
         switchOnOfGOS = sharedPreferences.getBoolean(SWITCHGOS, false);
         switchOnOfFOS = sharedPreferences.getBoolean(SWITCHFOS, false);
         switchOnOfS = sharedPreferences.getBoolean(SWITCHS, false);
         switchOnOfL = sharedPreferences.getBoolean(SWITCHL, false);
         switchOnOfP = sharedPreferences.getBoolean(SWITCHP, false);
         switchOnOfF = sharedPreferences.getBoolean(SWITCHF, false);
-
     }
 
     public void updateViews() {
@@ -113,7 +108,6 @@ public class DietFragment extends Fragment {
         switchFOS.setChecked(switchOnOfFOS);
         switchPoliole.setChecked(switchOnOfP);
         switchFruktoza.setChecked(switchOnOfF);
-
     }
 
 }

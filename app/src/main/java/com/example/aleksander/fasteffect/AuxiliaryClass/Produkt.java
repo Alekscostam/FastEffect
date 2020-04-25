@@ -9,7 +9,8 @@ public class Produkt {
     public String Nietolerancje;
 
 
-    public Produkt(Double Kalorie, Double Białko, Double Tłuszcze, Double Węglowodany, Double Błonnik, String Nietolerancje) {
+    public Produkt(Double Kalorie, Double Białko, Double Tłuszcze, Double Węglowodany, Double Błonnik,
+                   String Nietolerancje) {
         this.Kalorie = Kalorie;
         this.Białko = Białko;
         this.Tłuszcze = Tłuszcze;
@@ -26,7 +27,8 @@ public class Produkt {
     public String toString() {
 
         String wynik = "";
-        wynik = "| " + this.Kalorie + " kcal \nB: " + Białko + " | T: " + Tłuszcze + " | W: " + Węglowodany + " | Błonnik: " + Błonnik + " | Zawiera:" + Nietolerancje;
+        wynik = "| " + this.Kalorie + " kcal \nB: " + Białko + " | T: " + Tłuszcze + " | W: " + Węglowodany +
+                " | Błonnik: " + Błonnik + " | Zawiera:" + Nietolerancje;
 
         return wynik;
 

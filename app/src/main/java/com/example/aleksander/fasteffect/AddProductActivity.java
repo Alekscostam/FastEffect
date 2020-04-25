@@ -68,9 +68,6 @@ public class AddProductActivity extends AppCompatActivity {
     public Double tłuszcze;
     public Double węglowodany;
     public Double błonnik;
-    public String nietolerancje;
-    public String nazwaProdukt;
-    String cciagNazwa;
 
     String dateOpen;
     String poraDnia;
@@ -99,29 +96,13 @@ public class AddProductActivity extends AppCompatActivity {
         dateOpen = DataHolder.getInstance().getData();
         SharedPreferences prefsPoraDnia = PreferenceManager.getDefaultSharedPreferences(this);
         poraDnia = prefsPoraDnia.getString("PoraDnia", "no id"); //no id: default value
-
         listViewProdukty = (ListView) findViewById(R.id.listViewProdukty);
-
         listViewProdukty.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                 final EditText input = new EditText(AddProductActivity.this);
-
                 final String selectedItem = (String) adapterView.getItemAtPosition(i);
-
-
-                databaseReference.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(AddProductActivity.this, R.style.Dialog);
                 builder.setTitle("Ile gram produktu chcesz wybrać?");
@@ -178,7 +159,6 @@ public class AddProductActivity extends AppCompatActivity {
 
         listViewProdukty.setAdapter(arrayAdapter);
 
-
         editTextFilter.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -203,16 +183,10 @@ public class AddProductActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 String value = dataSnapshot.getValue(Produkt.class).toString();
-                //   Toast.makeText(AddProductActivity.this, value, Toast.LENGTH_SHORT).show();
-                String valueReduce = value.replace("Nietolerancje:", " ");
-                int indexNietolerancje = valueReduce.indexOf("Błonnik:") + 16;
-                String ciagNietolerancje = valueReduce.substring(indexNietolerancje);
-
                 String strNew = value;
-
                 ArrayList<String> arrayListReduce = new ArrayList<>();
-                arrayListReduce.add(dataSnapshot.getKey() + " " + strNew);
 
+                arrayListReduce.add(dataSnapshot.getKey() + " " + strNew);
 
                 for (int a = 0; a < arrayListReduce.size(); a++) {
                     valueToReplace = (arrayListReduce.get(a)).toString();
@@ -268,6 +242,7 @@ public class AddProductActivity extends AppCompatActivity {
                         arrayList.add(a, valueToReplace);
                     }
                 }
+
                 arrayAdapter.notifyDataSetChanged();
                 ResizeListView resizeListView = new ResizeListView();
                 resizeListView.resize(listViewProdukty);
@@ -307,59 +282,48 @@ public class AddProductActivity extends AppCompatActivity {
 
     }
 
-    public void addToList(String addClickItem) {
-
-        String putValue = addClickItem;
-        Intent intent = new Intent(AddProductActivity.this, MainActivity.class);
-        intent.putExtra("value", putValue);
-        startActivity(intent);
-
-
-    }
-
 
     public void addProductToDatabase(String selectedItem, String ilosc) {
 
-        double converterValue = (Double.valueOf(ilosc) / 100);
+            double converterValue = (Double.valueOf(ilosc) / 100);
+            DecimalFormat df = new DecimalFormat("#.#");
 
+            int indexWęglowodany = selectedItem.indexOf("W:") + 2;
+            int indexBiałko = selectedItem.indexOf("B:") + 2;
+            int indexTłuszcze = selectedItem.indexOf("T:") + 2;
+            int indexBłonnik = selectedItem.indexOf("Błonnik:") + 8;
+            int indexKcal = selectedItem.indexOf("kcal");
 
-        DecimalFormat df = new DecimalFormat("#.#");
+            int znakWęglowodany = selectedItem.indexOf("|", indexWęglowodany);
+            int znakBiałko = selectedItem.indexOf("|", indexBiałko);
+            int znakTłszcze = selectedItem.indexOf("|", indexTłuszcze);
+            int znakBłonnik = selectedItem.indexOf("|", indexBłonnik);
+            int znakNazwaKalorie = selectedItem.indexOf("|");
 
-        int indexWęglowodany = selectedItem.indexOf("W:") + 2;
-        int indexBiałko = selectedItem.indexOf("B:") + 2;
-        int indexTłuszcze = selectedItem.indexOf("T:") + 2;
-        int indexBłonnik = selectedItem.indexOf("Błonnik:") + 8;
-        int indexKcal = selectedItem.indexOf("kcal");
+            String ciagWęglowodany = selectedItem.substring(indexWęglowodany, znakWęglowodany);
+            String ciagBiałko = selectedItem.substring(indexBiałko, znakBiałko);
+            String ciagTłszcze = selectedItem.substring(indexTłuszcze, znakTłszcze);
+            String ciagBłonnik = selectedItem.substring(indexBłonnik, znakBłonnik);
 
-        int znakWęglowodany = selectedItem.indexOf("|", indexWęglowodany);
-        int znakBiałko = selectedItem.indexOf("|", indexBiałko);
-        int znakTłszcze = selectedItem.indexOf("|", indexTłuszcze);
-        int znakBłonnik = selectedItem.indexOf("|", indexBłonnik);
-        int znakNazwaKalorie = selectedItem.indexOf("|");
+            String ciagNazwa = selectedItem.substring(0, znakNazwaKalorie);
+            String ciagKalorie = selectedItem.substring(znakNazwaKalorie + 1, indexKcal);
 
-        String ciagWęglowodany = selectedItem.substring(indexWęglowodany, znakWęglowodany);
-        String ciagBiałko = selectedItem.substring(indexBiałko, znakBiałko);
-        String ciagTłszcze = selectedItem.substring(indexTłuszcze, znakTłszcze);
-        String ciagBłonnik = selectedItem.substring(indexBłonnik, znakBłonnik);
+            kalorie = (Double.valueOf(ciagKalorie) * converterValue);
+            białko = Double.valueOf(ciagBiałko) * converterValue;
+            tłuszcze = Double.valueOf(ciagTłszcze) * converterValue;
+            węglowodany = Double.valueOf(ciagWęglowodany) * converterValue;
+            błonnik = Double.valueOf(ciagBłonnik) * converterValue;
 
-        String ciagNazwa = selectedItem.substring(0, znakNazwaKalorie);
-        String ciagKalorie = selectedItem.substring(znakNazwaKalorie + 1, indexKcal);
-
-        kalorie = (Double.valueOf(ciagKalorie) * converterValue);
-        białko = Double.valueOf(ciagBiałko) * converterValue;
-        tłuszcze = Double.valueOf(ciagTłszcze) * converterValue;
-        węglowodany = Double.valueOf(ciagWęglowodany) * converterValue;
-        błonnik = Double.valueOf(ciagBłonnik) * converterValue;
-
-        String kalorieS = (df.format(Math.round(kalorie))).replace(",", ".");
-        String białkoS = (df.format(białko)).replace(",", ".");
-        String tłuszczeS = (df.format(tłuszcze)).replace(",", ".");
-        String węglowodanyS = (df.format(węglowodany)).replace(",", ".");
-        String błonnikS = (df.format(błonnik)).replace(",", ".");
+            String kalorieS = (df.format(Math.round(kalorie))).replace(",", ".");
+            String białkoS = (df.format(białko)).replace(",", ".");
+            String tłuszczeS = (df.format(tłuszcze)).replace(",", ".");
+            String węglowodanyS = (df.format(węglowodany)).replace(",", ".");
+            String błonnikS = (df.format(błonnik)).replace(",", ".");
 
         BazaDanychStruktura bazaDanychStruktura = new BazaDanychStruktura();
 
-        SQLiteDatabase baza = openOrCreateDatabase(bazaDanychStruktura.BazaPlik, android.content.Context.MODE_PRIVATE, null);
+        SQLiteDatabase baza = openOrCreateDatabase(bazaDanychStruktura.BazaPlik,
+                android.content.Context.MODE_PRIVATE, null);
         ContentValues rekordProdukt = new ContentValues();
         ContentValues rekordHash = new ContentValues();
         rekordProdukt.put(bazaDanychStruktura.BazaTabelaNazwa, ciagNazwa.toString());
@@ -373,7 +337,8 @@ public class AddProductActivity extends AppCompatActivity {
         rekordHash.put(bazaDanychStruktura.Hash_idPoradnia, Integer.valueOf(poraDnia));
         rekordHash.put(bazaDanychStruktura.Hash_Data, dateOpen);
 
-        String kolumny[] = {bazaDanychStruktura.BazaTabelaidPosilek, bazaDanychStruktura.BazaTabelaNazwa, bazaDanychStruktura.BazaTabelaIlość};
+        String kolumny[] = {bazaDanychStruktura.BazaTabelaidPosilek, bazaDanychStruktura.BazaTabelaNazwa,
+                bazaDanychStruktura.BazaTabelaIlość};
 
         try {
             String where = "Nazwa=? AND Ilość=?";
