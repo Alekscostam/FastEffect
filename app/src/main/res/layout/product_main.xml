@@ -14,18 +14,34 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <TextView
-                android:id="@+id/textViewOpis"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="64dp"
-                android:background="#41AECF"
-                android:drawableStart="@drawable/ic_left"
-                android:gravity="center"
-                android:text="Znajdź produkt badz danie"
-                android:textColor="#FFFFFF"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-                android:textSize="18dp"
-                tools:ignore="MissingConstraints" />
+
+                <TextView
+                    android:id="@+id/textViewOpis"
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp"
+                    android:layout_weight="1"
+                    android:background="#41AECF"
+                    android:drawableLeft="@drawable/ic_left"
+                    android:gravity="center"
+                    android:text="Znajdź produkt badz danie"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18dp"
+                    tools:ignore="MissingConstraints" />
+
+                <ImageButton
+                android:src="@drawable/ic_add"
+                android:background="#41AECF"
+                android:id="@+id/buttonAdd"
+                android:layout_width="60dp"
+                android:layout_height="60dp">
+            </ImageButton>
+
+            </LinearLayout>
             <EditText
                 android:id="@+id/editTextSearch"
                 android:layout_width="match_parent"

@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.example.aleksander.fasteffect.LoginActivity;
 import com.example.aleksander.fasteffect.R;
@@ -89,6 +90,7 @@ public class DietFragment extends Fragment {
         editor.putBoolean(SWITCHP, switchPoliole.isChecked());
         editor.putBoolean(SWITCHF, switchFruktoza.isChecked());
         editor.apply();
+        Toast.makeText(getActivity(), "Zapisano", Toast.LENGTH_SHORT).show();
 
     }
 

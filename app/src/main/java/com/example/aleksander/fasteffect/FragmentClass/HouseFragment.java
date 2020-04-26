@@ -130,7 +130,6 @@ public class HouseFragment extends Fragment {
     ArrayList<String> listItemPrzekąska;
     ArrayList<String> listItemKolacja;
 
-    DatePicker myDatePicker;
     Calendar calendarDate;
 
     TextView textViewSniadanie;
@@ -207,7 +206,6 @@ public class HouseFragment extends Fragment {
         listItemPrzekąska = new ArrayList<>();
         listItemKolacja = new ArrayList<>();
 
-        myDatePicker = (DatePicker) view.findViewById(R.id.datePicker);
 
         textViewSniadanie = (TextView) view.findViewById(R.id.textViewSniadanie);
         textViewLunch = (TextView) view.findViewById(R.id.textViewLunch);
@@ -413,7 +411,7 @@ public class HouseFragment extends Fragment {
         mDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                datePicker = myDatePicker;
+
 
                 month = month + 1;
                 String monthString = String.valueOf(month);

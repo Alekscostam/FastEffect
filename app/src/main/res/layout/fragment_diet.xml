@@ -13,6 +13,7 @@
 
 
             <LinearLayout
+                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -25,8 +26,23 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:text="Zaznacz swoje alergie bądź nietoleracnje na dane produkty."
+                    android:textSize="15sp" />
+                <TextView
+                    android:layout_marginTop="20dp"
+                    android:lines="6"
+                    android:id="@+id/textViewOpisSzczegółowy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="
+F - Fermentujące,\n
+O - Oligosacharydy - które dzielą się na FOS i GOS,\n
+D - Disacharydy - chodzi tutaj głównie o laktozę\n
+M - Monosacharydy - Fruktoza zawarta w owocach,\n
+A - oznacza i,\n
+P - Poliole - sorbitol, mannitol oraz alkohole cukrowe"
                     android:textSize="13sp" />
-
                 <Switch
                     android:id="@+id/switchLaktoza"
                     android:layout_width="300dp"
@@ -69,31 +85,18 @@
                     android:layout_gravity="center"
                     android:text="@string/fruktoza" />
 
-                <TextView
-                    android:lines="6"
-                    android:id="@+id/textViewOpisSzczegółowy"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text="
-F - Fermentujące,\n
-O - Oligosacharydy - które dzielą się na FOS i GOS,\n
-D - Disacharydy - chodzi tutaj głównie o laktozę\n
-M - Monosacharydy - Fruktoza zawarta w owocach,\n
-A - oznacza i,\n
-P - Poliole - sorbitol, mannitol oraz alkohole cukrowe"
-                    android:textSize="13sp" />
+
 
                 <Button
                     android:id="@+id/buttonSave"
                     android:layout_width="240dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="25dp"
                     android:background="@drawable/button_rounded_aqua"
                     android:text="@string/save"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:textAllCaps="false"/>
             </LinearLayout>
 
 
