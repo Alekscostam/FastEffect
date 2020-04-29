@@ -1,6 +1,5 @@
 package com.example.aleksander.fasteffect;
 
-import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -22,24 +21,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.aleksander.fasteffect.AuxiliaryClass.BazaDanychStruktura;
 import com.example.aleksander.fasteffect.AuxiliaryClass.DataHolder;
-import com.example.aleksander.fasteffect.AuxiliaryClass.Produkt;
+import com.example.aleksander.fasteffect.AuxiliaryClass.Produkty;
 import com.example.aleksander.fasteffect.AuxiliaryClass.ResizeListView;
-import com.example.aleksander.fasteffect.FragmentClass.HouseFragment;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -77,6 +73,7 @@ public class AddProductActivity extends AppCompatActivity {
     ArrayList<String> arrayList = new ArrayList<>();
     ArrayAdapter<String> arrayAdapter;
 
+    ImageButton imageButtoAdd;
 
     int wartoscGram = 0;
 
@@ -90,13 +87,16 @@ public class AddProductActivity extends AppCompatActivity {
 
         sharedPreferencesFromDietFragment();
 
-        TextView textViewBack = (TextView) findViewById(R.id.textViewOpis);
-        EditText editTextFilter = (EditText) findViewById(R.id.editTextSearch);
+        TextView textViewBack = findViewById(R.id.textViewOpis);
+        EditText editTextFilter = findViewById(R.id.editTextSearch);
+
+        imageButtoAdd = findViewById(R.id.buttonAdd);
+
 
         dateOpen = DataHolder.getInstance().getData();
         SharedPreferences prefsPoraDnia = PreferenceManager.getDefaultSharedPreferences(this);
         poraDnia = prefsPoraDnia.getString("PoraDnia", "no id"); //no id: default value
-        listViewProdukty = (ListView) findViewById(R.id.listViewProdukty);
+        listViewProdukty = findViewById(R.id.listViewProdukty);
         listViewProdukty.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -149,7 +149,7 @@ public class AddProductActivity extends AppCompatActivity {
             public View getView(int position, View convertView, ViewGroup parent) {
                 // Get the Item from ListView
                 View view = super.getView(position, convertView, parent);
-                TextView tv = (TextView) view.findViewById(android.R.id.text1);
+                TextView tv = view.findViewById(android.R.id.text1);
                 tv.setTextColor(Color.rgb(72, 72, 72));
                 return view;
             }
@@ -182,14 +182,14 @@ public class AddProductActivity extends AppCompatActivity {
         databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                String value = dataSnapshot.getValue(Produkt.class).toString();
+                String value = dataSnapshot.getValue(Produkty.class).toString();
                 String strNew = value;
                 ArrayList<String> arrayListReduce = new ArrayList<>();
 
                 arrayListReduce.add(dataSnapshot.getKey() + " " + strNew);
 
                 for (int a = 0; a < arrayListReduce.size(); a++) {
-                    valueToReplace = (arrayListReduce.get(a)).toString();
+                    valueToReplace = (arrayListReduce.get(a));
                     boolean findValue = arrayListReduce.get(a).contains("null");
 
                     if (findValue) {
@@ -279,84 +279,91 @@ public class AddProductActivity extends AppCompatActivity {
             }
         });
 
+        imageButtoAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent cofnij = new Intent(getApplicationContext(), AddNewProductActivity.class);
+                startActivity(cofnij);
+            }
+        });
+
 
     }
 
 
     public void addProductToDatabase(String selectedItem, String ilosc) {
 
-            double converterValue = (Double.valueOf(ilosc) / 100);
-            DecimalFormat df = new DecimalFormat("#.#");
+        double converterValue = (Double.valueOf(ilosc) / 100);
+        DecimalFormat df = new DecimalFormat("#.#");
 
-            int indexWęglowodany = selectedItem.indexOf("W:") + 2;
-            int indexBiałko = selectedItem.indexOf("B:") + 2;
-            int indexTłuszcze = selectedItem.indexOf("T:") + 2;
-            int indexBłonnik = selectedItem.indexOf("Błonnik:") + 8;
-            int indexKcal = selectedItem.indexOf("kcal");
+        int indexWęglowodany = selectedItem.indexOf("W:") + 2;
+        int indexBiałko = selectedItem.indexOf("B:") + 2;
+        int indexTłuszcze = selectedItem.indexOf("T:") + 2;
+        int indexBłonnik = selectedItem.indexOf("Błonnik:") + 8;
+        int indexKcal = selectedItem.indexOf("kcal");
 
-            int znakWęglowodany = selectedItem.indexOf("|", indexWęglowodany);
-            int znakBiałko = selectedItem.indexOf("|", indexBiałko);
-            int znakTłszcze = selectedItem.indexOf("|", indexTłuszcze);
-            int znakBłonnik = selectedItem.indexOf("|", indexBłonnik);
-            int znakNazwaKalorie = selectedItem.indexOf("|");
+        int znakWęglowodany = selectedItem.indexOf("|", indexWęglowodany);
+        int znakBiałko = selectedItem.indexOf("|", indexBiałko);
+        int znakTłszcze = selectedItem.indexOf("|", indexTłuszcze);
+        int znakBłonnik = selectedItem.indexOf("|", indexBłonnik);
+        int znakNazwaKalorie = selectedItem.indexOf("|");
 
-            String ciagWęglowodany = selectedItem.substring(indexWęglowodany, znakWęglowodany);
-            String ciagBiałko = selectedItem.substring(indexBiałko, znakBiałko);
-            String ciagTłszcze = selectedItem.substring(indexTłuszcze, znakTłszcze);
-            String ciagBłonnik = selectedItem.substring(indexBłonnik, znakBłonnik);
+        String ciagWęglowodany = selectedItem.substring(indexWęglowodany, znakWęglowodany);
+        String ciagBiałko = selectedItem.substring(indexBiałko, znakBiałko);
+        String ciagTłszcze = selectedItem.substring(indexTłuszcze, znakTłszcze);
+        String ciagBłonnik = selectedItem.substring(indexBłonnik, znakBłonnik);
 
-            String ciagNazwa = selectedItem.substring(0, znakNazwaKalorie);
-            String ciagKalorie = selectedItem.substring(znakNazwaKalorie + 1, indexKcal);
+        String ciagNazwa = selectedItem.substring(0, znakNazwaKalorie);
+        String ciagKalorie = selectedItem.substring(znakNazwaKalorie + 1, indexKcal);
 
-            kalorie = (Double.valueOf(ciagKalorie) * converterValue);
-            białko = Double.valueOf(ciagBiałko) * converterValue;
-            tłuszcze = Double.valueOf(ciagTłszcze) * converterValue;
-            węglowodany = Double.valueOf(ciagWęglowodany) * converterValue;
-            błonnik = Double.valueOf(ciagBłonnik) * converterValue;
+        kalorie = (Double.valueOf(ciagKalorie) * converterValue);
+        białko = Double.valueOf(ciagBiałko) * converterValue;
+        tłuszcze = Double.valueOf(ciagTłszcze) * converterValue;
+        węglowodany = Double.valueOf(ciagWęglowodany) * converterValue;
+        błonnik = Double.valueOf(ciagBłonnik) * converterValue;
 
-            String kalorieS = (df.format(Math.round(kalorie))).replace(",", ".");
-            String białkoS = (df.format(białko)).replace(",", ".");
-            String tłuszczeS = (df.format(tłuszcze)).replace(",", ".");
-            String węglowodanyS = (df.format(węglowodany)).replace(",", ".");
-            String błonnikS = (df.format(błonnik)).replace(",", ".");
+        String kalorieS = (df.format(Math.round(kalorie))).replace(",", ".");
+        String białkoS = (df.format(białko)).replace(",", ".");
+        String tłuszczeS = (df.format(tłuszcze)).replace(",", ".");
+        String węglowodanyS = (df.format(węglowodany)).replace(",", ".");
+        String błonnikS = (df.format(błonnik)).replace(",", ".");
 
         BazaDanychStruktura bazaDanychStruktura = new BazaDanychStruktura();
 
-        SQLiteDatabase baza = openOrCreateDatabase(bazaDanychStruktura.BazaPlik,
+        SQLiteDatabase baza = openOrCreateDatabase(BazaDanychStruktura.BazaPlik,
                 android.content.Context.MODE_PRIVATE, null);
         ContentValues rekordProdukt = new ContentValues();
         ContentValues rekordHash = new ContentValues();
-        rekordProdukt.put(bazaDanychStruktura.BazaTabelaNazwa, ciagNazwa.toString());
-        rekordProdukt.put(bazaDanychStruktura.BazaTabelaBialko, białkoS);
-        rekordProdukt.put(bazaDanychStruktura.BazaTabelaWeglowodany, węglowodanyS);
-        rekordProdukt.put(bazaDanychStruktura.BazaTabelaTluszcze, tłuszczeS);
-        rekordProdukt.put(bazaDanychStruktura.BazaTabelaBłonnik, błonnikS);
-        rekordProdukt.put(bazaDanychStruktura.BazaTabelaKalorie, kalorieS);
-        rekordProdukt.put(bazaDanychStruktura.BazaTabelaIlość, Integer.valueOf(ilosc));
+        rekordProdukt.put(BazaDanychStruktura.BazaTabelaNazwa, ciagNazwa);
+        rekordProdukt.put(BazaDanychStruktura.BazaTabelaBialko, białkoS);
+        rekordProdukt.put(BazaDanychStruktura.BazaTabelaWeglowodany, węglowodanyS);
+        rekordProdukt.put(BazaDanychStruktura.BazaTabelaTluszcze, tłuszczeS);
+        rekordProdukt.put(BazaDanychStruktura.BazaTabelaBłonnik, błonnikS);
+        rekordProdukt.put(BazaDanychStruktura.BazaTabelaKalorie, kalorieS);
+        rekordProdukt.put(BazaDanychStruktura.BazaTabelaIlość, Integer.valueOf(ilosc));
 
-        rekordHash.put(bazaDanychStruktura.Hash_idPoradnia, Integer.valueOf(poraDnia));
-        rekordHash.put(bazaDanychStruktura.Hash_Data, dateOpen);
+        rekordHash.put(BazaDanychStruktura.Hash_idPoradnia, Integer.valueOf(poraDnia));
+        rekordHash.put(BazaDanychStruktura.Hash_Data, dateOpen);
 
-        String kolumny[] = {bazaDanychStruktura.BazaTabelaidPosilek, bazaDanychStruktura.BazaTabelaNazwa,
-                bazaDanychStruktura.BazaTabelaIlość};
+        String[] kolumny = {BazaDanychStruktura.BazaTabelaidPosilek, BazaDanychStruktura.BazaTabelaNazwa,
+                BazaDanychStruktura.BazaTabelaIlość};
 
         try {
             String where = "Nazwa=? AND Ilość=?";
             String[] args = {ciagNazwa, ilosc};
-            Cursor k = baza.query(bazaDanychStruktura.TabelaPosilek, kolumny, where, args, null, null, null);
+            Cursor k = baza.query(BazaDanychStruktura.TabelaPosilek, kolumny, where, args, null, null, null);
             k.moveToFirst();
-            rekordHash.put(bazaDanychStruktura.Hash_idPosilek, Integer.valueOf(k.getString(0)));
-            baza.insert(bazaDanychStruktura.TabelaHash, null, rekordHash);
+            rekordHash.put(BazaDanychStruktura.Hash_idPosilek, Integer.valueOf(k.getString(0)));
+            baza.insert(BazaDanychStruktura.TabelaHash, null, rekordHash);
             k.close();
-        }
-        catch (Exception ex) {
-            baza.insert(bazaDanychStruktura.TabelaPosilek, null, rekordProdukt);
+        } catch (Exception ex) {
+            baza.insert(BazaDanychStruktura.TabelaPosilek, null, rekordProdukt);
             String where = "Nazwa=? AND Ilość=?";
             String[] args = {ciagNazwa, ilosc};
-            Cursor k = baza.query(bazaDanychStruktura.TabelaPosilek, kolumny, where, args, null, null, null);
+            Cursor k = baza.query(BazaDanychStruktura.TabelaPosilek, kolumny, where, args, null, null, null);
             k.moveToFirst();
-            rekordHash.put(bazaDanychStruktura.Hash_idPosilek, Integer.valueOf(k.getString(0)));
-            baza.insert(bazaDanychStruktura.TabelaHash, null, rekordHash);
+            rekordHash.put(BazaDanychStruktura.Hash_idPosilek, Integer.valueOf(k.getString(0)));
+            baza.insert(BazaDanychStruktura.TabelaHash, null, rekordHash);
             k.close();
             baza.close();
         }

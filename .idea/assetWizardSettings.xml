@@ -33,9 +33,10 @@
                         </option>
                         <option name="values">
                           <map>
+                            <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="41aecf" />
-                            <entry key="outputName" value="ic_add_circle_24dp" />
-                            <entry key="sourceFile" value="C:\Users\Aleksander" />
+                            <entry key="outputName" value="ic_tools_and_utensils" />
+                            <entry key="sourceFile" value="C:\Users\Aleksander\Desktop\tools-and-utensils.svg" />
                           </map>
                         </option>
                       </PersistentState>

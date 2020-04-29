@@ -26,7 +26,7 @@ public class InformationProduct {
 
         int indexIlosc = ilosc.indexOf("Ilość:") + 6;
         String ciagIlosc = ilosc.substring(indexIlosc);
-        ciagIlosc.replaceAll("\\s+","");
+        ciagIlosc.replaceAll("\\s+", "");
         InformationProduct.ilosc = ciagIlosc;
     }
 }

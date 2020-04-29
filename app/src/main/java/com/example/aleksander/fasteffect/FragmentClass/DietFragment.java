@@ -1,10 +1,8 @@
 package com.example.aleksander.fasteffect.FragmentClass;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,11 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import com.example.aleksander.fasteffect.LoginActivity;
 import com.example.aleksander.fasteffect.R;
 
 public class DietFragment extends Fragment {
@@ -58,14 +54,14 @@ public class DietFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_diet, container, false);
 
-        switchLaktoza = (Switch) view.findViewById(R.id.switchLaktoza);
-        switchSacharoza = (Switch) view.findViewById(R.id.switchSacharoza);
-        switchFOS = (Switch) view.findViewById(R.id.switchFOS);
-        switchGOS = (Switch) view.findViewById(R.id.switchGOS);
-        switchPoliole = (Switch) view.findViewById(R.id.switchPoliole);
-        switchFruktoza = (Switch) view.findViewById(R.id.switchFruktoza);
+        switchLaktoza = view.findViewById(R.id.switchLaktoza);
+        switchSacharoza =  view.findViewById(R.id.switchSacharoza);
+        switchFOS = view.findViewById(R.id.switchFOS);
+        switchGOS =  view.findViewById(R.id.switchGOS);
+        switchPoliole = view.findViewById(R.id.switchPoliole);
+        switchFruktoza =  view.findViewById(R.id.switchFruktoza);
 
-        Button buttonSave = (Button) view.findViewById(R.id.buttonSave);
+        Button buttonSave = view.findViewById(R.id.buttonSave);
 
         sharedPreferences = this.getActivity().getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
 

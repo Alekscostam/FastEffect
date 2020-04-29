@@ -1,14 +1,9 @@
 package com.example.aleksander.fasteffect.FragmentClass;
 
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
@@ -16,13 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.aleksander.fasteffect.MainActivity;
 import com.example.aleksander.fasteffect.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,18 +23,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.io.DataInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.text.DecimalFormat;
-import java.util.concurrent.atomic.AtomicMarkableReference;
-
-import static android.content.Context.MODE_APPEND;
-import static android.content.Context.MODE_PRIVATE;
-import static android.database.sqlite.SQLiteDatabase.openOrCreateDatabase;
 
 
 /**
@@ -62,25 +42,21 @@ public class ProfileFragment extends Fragment {
     private TextInputEditText TextInputEditTextWaga;
     private TextInputEditText TextInputEditTextWzrost;
 
-    private Button buttonZapisz;
-    private Button buttonWczytaj;
-    private RadioGroup radioButtonPlec;
     private RadioButton radioButtonM;
     private RadioButton radioButtonW;
 
     FirebaseUser user;
     String uid;
     DatabaseReference databaseReference;
-    FirebaseAuth firebaseAuth;
-
     String referenceName = "Users";
-    String user_plec;
+
     String childWaga = "waga";
     String childWiek = "wiek";
     String childWzrost = "wzrost";
     String childEmial = "email";
     String childPlec = "plec";
 
+    String user_plec;
     String user_email;
     String user_wiek;
     String user_waga;
@@ -93,20 +69,19 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        TextInputEditTextWiek = (TextInputEditText) view.findViewById(R.id.TextInputEditTextWiek);
-        TextInputEditTextWzrost = (TextInputEditText) view.findViewById(R.id.TextInputEditTextWzrost);
-        TextInputEditTextWaga = (TextInputEditText) view.findViewById(R.id.TextInputEditTextWaga);
-        radioButtonPlec = (RadioGroup) view.findViewById(R.id.RadioPlec);
-        radioButtonM = (RadioButton) view.findViewById(R.id.radioButtonM);
-        radioButtonW = (RadioButton) view.findViewById(R.id.radioButtonW);
-        final TextView textViewEmail = (TextView) view.findViewById(R.id.textViewEmail);
-        Button buttonSave = (Button) view.findViewById(R.id.buttonSave);
+        TextInputEditTextWiek = view.findViewById(R.id.TextInputEditTextWiek);
+        TextInputEditTextWzrost = view.findViewById(R.id.TextInputEditTextWzrost);
+        TextInputEditTextWaga = view.findViewById(R.id.TextInputEditTextWaga);
+
+        radioButtonM = view.findViewById(R.id.radioButtonM);
+        radioButtonW = view.findViewById(R.id.radioButtonW);
+        final TextView textViewEmail = view.findViewById(R.id.textViewEmail);
+        Button buttonSave = view.findViewById(R.id.buttonSave);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         uid = user.getUid();
 
         databaseReference = FirebaseDatabase.getInstance().getReference(referenceName);
-
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override

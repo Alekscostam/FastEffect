@@ -3,11 +3,8 @@ package com.example.aleksander.fasteffect.FragmentClass;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.TextInputEditText;
-import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +14,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.aleksander.fasteffect.R;
@@ -57,11 +53,11 @@ public class SportFragment extends Fragment {
 
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
 
-        Button buttonAutomatycznie = (Button) view.findViewById(R.id.buttonAutomatycznie);
-        Button buttonRecznie = (Button) view.findViewById(R.id.buttonRęczne);
+        Button buttonAutomatycznie = view.findViewById(R.id.buttonAutomatycznie);
+        Button buttonRecznie = view.findViewById(R.id.buttonRęczne);
 
-        linearLayoutAutomatyczne = (LinearLayout) view.findViewById(R.id.linearLayoutAutomatyczne);
-        linearLayoutReczne = (LinearLayout) view.findViewById(R.id.linearLayoutRęczne);
+        linearLayoutAutomatyczne = view.findViewById(R.id.linearLayoutAutomatyczne);
+        linearLayoutReczne = view.findViewById(R.id.linearLayoutRęczne);
 
         String optionSelected = sharedPreferences.getString("optionSelected", "0");
         final String[] currentValue = {optionSelected};
@@ -69,10 +65,10 @@ public class SportFragment extends Fragment {
         option = Integer.valueOf(currentValue[0]);
         setPref(option);
 
-        textInputEditTextCalories = (TextInputEditText) view.findViewById(R.id.textInputEditTextKalorie);
-        textInputEditTextProtein = (TextInputEditText) view.findViewById(R.id.textInputEditTextProtein);
-        textInputEditTextCarb = (TextInputEditText) view.findViewById(R.id.textInputEditTextCarb);
-        textInputEditTextFat = (TextInputEditText) view.findViewById(R.id.textInputEditTextFat);
+        textInputEditTextCalories = view.findViewById(R.id.textInputEditTextKalorie);
+        textInputEditTextProtein = view.findViewById(R.id.textInputEditTextProtein);
+        textInputEditTextCarb = view.findViewById(R.id.textInputEditTextCarb);
+        textInputEditTextFat = view.findViewById(R.id.textInputEditTextFat);
 
         String dataCalories = sharedPreferences.getString("textCalories", "0"); //no id: default value
         textInputEditTextCalories.setText(dataCalories);
@@ -120,9 +116,9 @@ public class SportFragment extends Fragment {
         });
 
 
-        buttonSave = (Button) view.findViewById(R.id.buttonSave);
+        buttonSave = view.findViewById(R.id.buttonSave);
 
-        final Spinner spinnerAktywnosc = (Spinner) view.findViewById(R.id.spinnerAktywnosc);
+        final Spinner spinnerAktywnosc = view.findViewById(R.id.spinnerAktywnosc);
         ArrayAdapter<CharSequence> adapterAktywnosc = ArrayAdapter.createFromResource(getActivity(), R.array.spinnerActivities, R.layout.spinner_item_my);
         adapterAktywnosc.setDropDownViewResource(R.layout.spinner_item_my);
         spinnerAktywnosc.setAdapter(adapterAktywnosc);
@@ -135,7 +131,7 @@ public class SportFragment extends Fragment {
         spinnerAktywnosc.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String text = adapterView.getItemAtPosition(i).toString();
+
                 String position = String.valueOf(spinnerAktywnosc.getSelectedItemPosition());
 
                 wartoscAktywnosc = Integer.valueOf(position);
@@ -148,7 +144,7 @@ public class SportFragment extends Fragment {
             }
         });
 
-        final Spinner spinnerRodzajSportu = (Spinner) view.findViewById(R.id.spinnerRodzajSportu);
+        final Spinner spinnerRodzajSportu = view.findViewById(R.id.spinnerRodzajSportu);
         ArrayAdapter<CharSequence> adapterRodzajSportu = ArrayAdapter.createFromResource(getActivity(), R.array.spinnerTypeOfActivities, R.layout.spinner_item_my);
         adapterRodzajSportu.setDropDownViewResource(R.layout.spinner_item_my);
         spinnerRodzajSportu.setAdapter(adapterRodzajSportu);
@@ -159,8 +155,6 @@ public class SportFragment extends Fragment {
         spinnerRodzajSportu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-                String text = adapterView.getItemAtPosition(i).toString();
 
                 String position = String.valueOf(spinnerRodzajSportu.getSelectedItemPosition());
 
@@ -173,7 +167,7 @@ public class SportFragment extends Fragment {
             }
         });
 
-        final Spinner spinnerCel = (Spinner) view.findViewById(R.id.spinnerCel);
+        final Spinner spinnerCel = view.findViewById(R.id.spinnerCel);
         ArrayAdapter<CharSequence> adapterCel = ArrayAdapter.createFromResource(getActivity(), R.array.spinnerGoals, R.layout.spinner_item_my);
         adapterCel.setDropDownViewResource(R.layout.spinner_item_my);
         spinnerCel.setAdapter(adapterCel);

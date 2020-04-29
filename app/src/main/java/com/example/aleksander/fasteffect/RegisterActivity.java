@@ -5,13 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,18 +39,18 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.register_main);
 
         firebaseAuth = FirebaseAuth.getInstance();
-        TextView textViewBack = (TextView) findViewById(R.id.textViewBack);
+        TextView textViewBack = findViewById(R.id.textViewBack);
 
-        textInputEditTextPassword = (TextInputEditText) findViewById(R.id.textInputEditTextPassword);
-        textInputEditTextPasswordAgain = (TextInputEditText) findViewById(R.id.textInputEditTextPasswordAgain);
-        textInputEditTextEmail = (TextInputEditText) findViewById(R.id.textInputEditTextEmail);
+        textInputEditTextPassword = findViewById(R.id.textInputEditTextPassword);
+        textInputEditTextPasswordAgain = findViewById(R.id.textInputEditTextPasswordAgain);
+        textInputEditTextEmail = findViewById(R.id.textInputEditTextEmail);
 
-        textInputEditTextWaga = (TextInputEditText) findViewById(R.id.textInputEditTextWaga);
-        textInputEditTextWiek = (TextInputEditText) findViewById(R.id.textInputEditTextWiek);
-        textInputEditTextWzrost = (TextInputEditText) findViewById(R.id.textInputEditTextWzrost);
+        textInputEditTextWaga = findViewById(R.id.textInputEditTextWaga);
+        textInputEditTextWiek = findViewById(R.id.textInputEditTextWiek);
+        textInputEditTextWzrost = findViewById(R.id.textInputEditTextWzrost);
 
-        radioButtonM = (RadioButton) findViewById(R.id.radioButtonM);
-        radioButtonW = (RadioButton) findViewById(R.id.radioButtonW);
+        radioButtonM = findViewById(R.id.radioButtonM);
+        radioButtonW = findViewById(R.id.radioButtonW);
 
         radioButtonM.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,8 +70,6 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        Button buttonRegister = (Button) findViewById(R.id.buttonRegister);
-
         textViewBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,9 +85,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onStart();
 
         if (firebaseAuth.getCurrentUser() != null) {
-
         }
-
     }
 
     public void buttonRegister_Click(View v) {

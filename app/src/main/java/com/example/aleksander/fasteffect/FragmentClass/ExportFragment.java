@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.example.aleksander.fasteffect.AuxiliaryClass.BazaDanychStruktura;
 import com.example.aleksander.fasteffect.R;
@@ -26,7 +24,6 @@ import java.io.FileOutputStream;
 public class ExportFragment extends Fragment {
 
     Button buttonExport;
-    Button buttonImport;
 
 
     public ExportFragment() {
@@ -41,9 +38,9 @@ public class ExportFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_export, container, false);
 
-        buttonExport = (Button) view.findViewById(R.id.d_export);
+        buttonExport =  view.findViewById(R.id.d_export);
         final BazaDanychStruktura bazaDanychStruktura = new BazaDanychStruktura();
-        final SQLiteDatabase baza = getActivity().openOrCreateDatabase(bazaDanychStruktura.BazaPlik, Context.MODE_PRIVATE, null);
+        final SQLiteDatabase baza = getActivity().openOrCreateDatabase(BazaDanychStruktura.BazaPlik, Context.MODE_PRIVATE, null);
 
         buttonExport.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,9 +68,7 @@ public class ExportFragment extends Fragment {
                     Context context = getActivity().getApplicationContext();
                     File filelocation = new File(getActivity().getFilesDir(), "data");
 
-                    // File filelocation = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "Dziennik.csv");
-                  //  Uri path=Uri.fromFile(filelocation);
-                   Uri path = FileProvider.getUriForFile(context, "com.example.aleksander.fasteffect.fileprovider", filelocation);
+                    Uri path = FileProvider.getUriForFile(context, "com.example.aleksander.fasteffect.fileprovider", filelocation);
                     Intent fileIntent = new Intent(Intent.ACTION_SEND);
                     fileIntent.setType("text/*");
                     fileIntent.putExtra(Intent.EXTRA_SUBJECT, "Dziennik");
@@ -93,9 +88,7 @@ public class ExportFragment extends Fragment {
 
     }
 
-    public void export(View view) {
 
-    }
 
 
 }

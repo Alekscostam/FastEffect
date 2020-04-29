@@ -13,8 +13,8 @@ public class BazaDanychStruktura {
     public static String BazaTabelaWeglowodany = "Weglowodany";
     public static String BazaTabelaTluszcze = "Tluszcze";
     public static String BazaTabelaBłonnik = "Błonnik";
-    public static String BazaTabelaKalorie= "Kalorie";
-    public static String BazaTabelaIlość= "Ilość";
+    public static String BazaTabelaKalorie = "Kalorie";
+    public static String BazaTabelaIlość = "Ilość";
 
     /////// Tabela Pora dnia
     public static String TabelaPoraDnia = "PoraDnia";

@@ -4,26 +4,21 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.aleksander.fasteffect.FragmentClass.HouseFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -52,16 +47,16 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
 
         final int[] password_show = {0};
 
-        autoCompleteTextViewEmail = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextViewEmail);
-        Button buttonLogin = (Button) findViewById(R.id.buttonLogin);
-        autoCompleteTextViewPassword = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextViewPassword);
-        ImageButton imageButtonShowPassword = (ImageButton) findViewById(R.id.imageButtonPassword);
-        TextView textViewRegister = (TextView) findViewById(R.id.textViewRegister);
+        firebaseAuth = FirebaseAuth.getInstance();
+        autoCompleteTextViewEmail = findViewById(R.id.autoCompleteTextViewEmail);
+        autoCompleteTextViewPassword = findViewById(R.id.autoCompleteTextViewPassword);
+        ImageButton imageButtonShowPassword = findViewById(R.id.imageButtonPassword);
+        TextView textViewRegister = findViewById(R.id.textViewRegister);
 
 
         sharedPreferencesRemember = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         editorRemember = sharedPreferencesRemember.edit();
-        checkBoxRememberMe = (CheckBox) findViewById(R.id.checkBoxRememberMe);
+        checkBoxRememberMe = findViewById(R.id.checkBoxRememberMe);
 
 
         if (sharedPreferencesRemember.getBoolean(KEY_REMEMBER, false)) {
@@ -85,8 +80,6 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
         });
 
 
-        firebaseAuth = FirebaseAuth.getInstance();
-
         textViewRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,21 +88,17 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
             }
         });
 
-        //  final Typeface tfArial = Typeface.createFromAsset(getAssets(), "arial.ttf");
         autoCompleteTextViewPassword.setTransformationMethod(new PasswordTransformationMethod());
-        // editTextPassword.setTypeface(tfArial);
 
         imageButtonShowPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
 
                 if (password_show[0] == 0) {
 
                     autoCompleteTextViewPassword.setTransformationMethod(null);
                     password_show[0] = 1;
                     autoCompleteTextViewPassword.setSelection(autoCompleteTextViewPassword.length());
-
 
                 } else if (password_show[0] == 1) {
 
@@ -118,14 +107,9 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
                     autoCompleteTextViewPassword.setSelection(autoCompleteTextViewPassword.length());
 
                 }
-
-
             }
         });
-
-
     }
-
 
     public void buttonLogin_Click(View v) {
         String sEmail = autoCompleteTextViewEmail.getText().toString();

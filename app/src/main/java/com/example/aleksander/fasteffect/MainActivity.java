@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,8 +25,6 @@ import com.google.firebase.auth.FirebaseAuth;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawer;
-    ActionBar actionBar;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // ctrl +alt + l
         BazaDanychStruktura bazaDanychStruktura = new BazaDanychStruktura();
 
-        SQLiteDatabase baza = openOrCreateDatabase(bazaDanychStruktura.BazaPlik, Context.MODE_PRIVATE, null);
+        SQLiteDatabase baza = openOrCreateDatabase(BazaDanychStruktura.BazaPlik, Context.MODE_PRIVATE, null);
 
         baza.execSQL("DROP TABLE IF EXISTS PoraDnia");
         baza.execSQL("CREATE TABLE IF NOT EXISTS 'PoraDnia'( idPoraDnia INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,Pora TEXT)");
@@ -54,17 +51,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ContentValues contentValuesPrzekąska = new ContentValues();
         ContentValues contentValuesKolacja = new ContentValues();
 
-        contentValuesŚniadanie.put(bazaDanychStruktura.BazaTabelaPora, "Śniadanie");
-        contentValuesLunch.put(bazaDanychStruktura.BazaTabelaPora, "Lunch");
-        contentValuesObiad.put(bazaDanychStruktura.BazaTabelaPora, "Obiad");
-        contentValuesPrzekąska.put(bazaDanychStruktura.BazaTabelaPora, "Przekąska");
-        contentValuesKolacja.put(bazaDanychStruktura.BazaTabelaPora, "Kolacja");
+        contentValuesŚniadanie.put(BazaDanychStruktura.BazaTabelaPora, "Śniadanie");
+        contentValuesLunch.put(BazaDanychStruktura.BazaTabelaPora, "Lunch");
+        contentValuesObiad.put(BazaDanychStruktura.BazaTabelaPora, "Obiad");
+        contentValuesPrzekąska.put(BazaDanychStruktura.BazaTabelaPora, "Przekąska");
+        contentValuesKolacja.put(BazaDanychStruktura.BazaTabelaPora, "Kolacja");
 
-        baza.insert(bazaDanychStruktura.TabelaPoraDnia, null, contentValuesŚniadanie);
-        baza.insert(bazaDanychStruktura.TabelaPoraDnia, null, contentValuesLunch);
-        baza.insert(bazaDanychStruktura.TabelaPoraDnia, null, contentValuesObiad);
-        baza.insert(bazaDanychStruktura.TabelaPoraDnia, null, contentValuesPrzekąska);
-        baza.insert(bazaDanychStruktura.TabelaPoraDnia, null, contentValuesKolacja);
+        baza.insert(BazaDanychStruktura.TabelaPoraDnia, null, contentValuesŚniadanie);
+        baza.insert(BazaDanychStruktura.TabelaPoraDnia, null, contentValuesLunch);
+        baza.insert(BazaDanychStruktura.TabelaPoraDnia, null, contentValuesObiad);
+        baza.insert(BazaDanychStruktura.TabelaPoraDnia, null, contentValuesPrzekąska);
+        baza.insert(BazaDanychStruktura.TabelaPoraDnia, null, contentValuesKolacja);
 
         baza.close();
 
@@ -120,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_logOut:
                 logout();
+
                 break;
 
         }

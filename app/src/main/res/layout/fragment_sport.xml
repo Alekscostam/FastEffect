@@ -10,73 +10,68 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <LinearLayout
 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView8"
+                android:id="@+id/textViewDesription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="18dp"
                 android:text="Ustal rozkład makroskładników i kalorii"
+                android:textColor="#000"
                 android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="MissingConstraints" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/buttonAutomatycznie"
-                android:layout_width="150dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/button_circle"
-                android:text="Automatycznie"
-                android:textAlignment="center"
-                android:textAllCaps="false"
-                android:textSize="14sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView8"
-                tools:ignore="MissingConstraints" />
+                <Button
+                    android:id="@+id/buttonAutomatycznie"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_rounded_aqua"
+                    android:text="Automatycznie"
+                    android:textAlignment="center"
+                    android:textAllCaps="false"
+                    android:textSize="14sp"
+                    tools:ignore="MissingConstraints" />
 
 
-            <Button
-                android:id="@+id/buttonRęczne"
-                android:layout_width="150dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/button_circle"
-                android:text="Ręcznie"
-                android:textAlignment="center"
-                android:textAllCaps="false"
-                android:textColor="#FFFFFF"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView8"
-                tools:ignore="MissingConstraints" />
+                <Button
+                    android:id="@+id/buttonRęczne"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_rounded_aqua"
+                    android:text="Ręcznie"
+                    android:textAlignment="center"
+                    android:textAllCaps="false"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    tools:ignore="MissingConstraints" />
+            </LinearLayout>
+
 
             <LinearLayout
                 android:id="@+id/linearLayoutAutomatyczne"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="40dp"
                 android:orientation="vertical"
                 app:layout_constraintTop_toBottomOf="@+id/buttonAutomatycznie"
                 tools:ignore="MissingConstraints">
-
-
                 <View
-                    android:id="@+id/view4"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:foreground="#BEBEBE" />
-
                 <TextView
                     android:id="@+id/textViewRodzaj"
                     android:layout_width="wrap_content"
@@ -84,7 +79,7 @@
                     android:layout_gravity="center"
                     android:text="Określ rodzaj sportu który uprawiasz"
                     android:textSize="14sp"
-                    app:layout_constraintTop_toBottomOf="@+id/view" />
+                  />
 
                 <Spinner
                     android:id="@+id/spinnerRodzajSportu"
@@ -94,26 +89,18 @@
                     android:gravity="center"
                     android:textColor="#000000"
                     android:textSize="5sp" />
-
                 <View
-                    android:id="@+id/view"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:foreground="#BEBEBE"
-                    app:layout_constraintBottom_toBottomOf="@+id/spinnerAktywnosc"
-                    tools:layout_editor_absoluteX="0dp" />
-
+                    android:foreground="#BEBEBE" />
                 <TextView
                     android:id="@+id/textViewAktywnosc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
                     android:layout_gravity="center"
                     android:text="Aktywnośc fizyczna"
                     android:textSize="14sp"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewOpis" />
-
-
+                     />
                 <Spinner
                     android:id="@+id/spinnerAktywnosc"
                     android:layout_width="wrap_content"
@@ -123,24 +110,17 @@
                     android:textColor="#000000"
 
                     android:textSize="5sp" />
-
                 <View
-                    android:id="@+id/view2"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:foreground="#BEBEBE"
-                    app:layout_constraintBottom_toBottomOf="@+id/spinnerRodzajSportu"
-                    tools:layout_editor_absoluteX="0dp" />
-
+                    android:foreground="#BEBEBE" />
                 <TextView
                     android:id="@+id/textViewCel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
                     android:layout_gravity="center"
                     android:text="Co planuje "
                     android:textSize="14sp" />
-
                 <Spinner
                     android:id="@+id/spinnerCel"
                     android:layout_width="wrap_content"
@@ -151,12 +131,11 @@
                     android:textColor="#000000"
                     android:textSize="5sp" />
 
-
                 <View
-                    android:id="@+id/view3"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:foreground="#BEBEBE" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -180,7 +159,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:hint="@string/calories"
+                        android:hint="@string/caloriesE"
                         android:inputType="number"
                         android:maxLength="4"
                         android:singleLine="true"
@@ -260,26 +239,25 @@
 
             </LinearLayout>
 
+
+
+
             <Button
                 android:id="@+id/buttonSave"
                 android:layout_width="220dp"
                 android:layout_height="40dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginEnd="8dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="50dp"
                 android:background="@drawable/button_rounded_aqua"
                 android:text="@string/save"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.571"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayoutRęczne"
                 tools:ignore="MissingConstraints" />
 
 
-        </android.support.constraint.ConstraintLayout>
+        </LinearLayout>
     </ScrollView>
 
 

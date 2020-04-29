@@ -1,6 +1,8 @@
 package com.example.aleksander.fasteffect.AuxiliaryClass;
 
-public class Produkt {
+public class Produkty {
+
+    public Double Nazwa;
     public Double Kalorie;
     public Double Białko;
     public Double Tłuszcze;
@@ -9,8 +11,8 @@ public class Produkt {
     public String Nietolerancje;
 
 
-    public Produkt(Double Kalorie, Double Białko, Double Tłuszcze, Double Węglowodany, Double Błonnik,
-                   String Nietolerancje) {
+    public Produkty(Double Kalorie, Double Białko, Double Tłuszcze, Double Węglowodany, Double Błonnik,
+                    String Nietolerancje) {
         this.Kalorie = Kalorie;
         this.Białko = Białko;
         this.Tłuszcze = Tłuszcze;
@@ -20,7 +22,17 @@ public class Produkt {
 
     }
 
-    public Produkt() {
+    public Produkty() {
+
+    }
+
+    public Produkty(Double Kalorie, Double Białko, Double Tłuszcze, Double Węglowodany, Double Błonnik) {
+        this.Kalorie = Kalorie;
+        this.Białko = Białko;
+        this.Tłuszcze = Tłuszcze;
+        this.Węglowodany = Węglowodany;
+        this.Błonnik = Błonnik;
+
 
     }
 
