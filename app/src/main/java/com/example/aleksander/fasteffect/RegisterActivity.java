@@ -121,7 +121,18 @@ public class RegisterActivity extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
-                                            Toast.makeText(RegisterActivity.this, "Zarejestrowano", Toast.LENGTH_SHORT).show();
+                                            firebaseAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if(task.isSuccessful()){
+
+                                                        Toast.makeText(RegisterActivity.this, "Zarejestrowano, sprawdź swój email w celu weryfikacji weryfikacji", Toast.LENGTH_SHORT).show();
+
+                                                    }else
+                                                        Toast.makeText(RegisterActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+
                                         } else {
                                             Toast.makeText(RegisterActivity.this, "fail", Toast.LENGTH_SHORT).show();
 
@@ -129,8 +140,8 @@ public class RegisterActivity extends AppCompatActivity {
                                     }
                                 });
 
-                                Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
-                                startActivity(i);
+                              //  Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
+                             //   startActivity(i);
 
                             } else {
                                 Log.e("Error", task.getException().toString());

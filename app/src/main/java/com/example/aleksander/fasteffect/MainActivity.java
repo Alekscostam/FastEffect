@@ -20,6 +20,7 @@ import com.example.aleksander.fasteffect.FragmentClass.HouseFragment;
 import com.example.aleksander.fasteffect.FragmentClass.ProfileFragment;
 import com.example.aleksander.fasteffect.FragmentClass.SportFragment;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -31,7 +32,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // ctrl +alt + l
-        BazaDanychStruktura bazaDanychStruktura = new BazaDanychStruktura();
+/*
+
+*/
 
         SQLiteDatabase baza = openOrCreateDatabase(BazaDanychStruktura.BazaPlik, Context.MODE_PRIVATE, null);
 
@@ -131,6 +134,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FirebaseAuth.getInstance().signOut();
         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 }

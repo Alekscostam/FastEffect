@@ -128,11 +128,17 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
                             progressDialog.dismiss();
 
                             if (task.isSuccessful()) {
-                                Toast.makeText(LoginActivity.this, "Zalogowano", Toast.LENGTH_SHORT).show();
-                                Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                                if(firebaseAuth.getCurrentUser().isEmailVerified()){
+                                    Toast.makeText(LoginActivity.this, "Zalogowano", Toast.LENGTH_SHORT).show();
+                                    Intent i = new Intent(LoginActivity.this, MainActivity.class);
 
-                                i.putExtra("Email", firebaseAuth.getCurrentUser().getEmail());
-                                startActivity(i);
+                                    i.putExtra("Email", firebaseAuth.getCurrentUser().getEmail());
+                                    startActivity(i);
+                                }
+                                else{
+                                    Toast.makeText(LoginActivity.this, "Zweryfikuj swój adres email!", Toast.LENGTH_SHORT).show();
+                                }
+
                             } else {
                                 Log.e("Error", task.getException().toString());
                                 Toast.makeText(LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
