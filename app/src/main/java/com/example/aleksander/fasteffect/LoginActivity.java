@@ -35,6 +35,9 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
     private static final String KEY_REMEMBER = "remember";
     private static final String KEY_USERNAME = "username";
     private static final String KEY_PASS = "password";
+    private static final String remeberMe = "No";
+    String Login = "RememberMe";
+
     SharedPreferences sharedPreferencesRemember;
     SharedPreferences.Editor editorRemember;
     CheckBox checkBoxRememberMe;
@@ -45,72 +48,92 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_main);
 
-        final int[] password_show = {0};
-
-        firebaseAuth = FirebaseAuth.getInstance();
-        autoCompleteTextViewEmail = findViewById(R.id.autoCompleteTextViewEmail);
-        autoCompleteTextViewPassword = findViewById(R.id.autoCompleteTextViewPassword);
-        ImageButton imageButtonShowPassword = findViewById(R.id.imageButtonPassword);
-        TextView textViewRegister = findViewById(R.id.textViewRegister);
-
+        Intent intent = new Intent();
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
         sharedPreferencesRemember = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         editorRemember = sharedPreferencesRemember.edit();
-        checkBoxRememberMe = findViewById(R.id.checkBoxRememberMe);
+        boolean check = sharedPreferencesRemember.getBoolean(Login, false);
+
+       // Toast.makeText(this, String.valueOf(check), Toast.LENGTH_SHORT).show();
+
+        if (check == true) {
 
 
-        if (sharedPreferencesRemember.getBoolean(KEY_REMEMBER, false)) {
-            checkBoxRememberMe.setChecked(true);
-        } else
-            checkBoxRememberMe.setChecked(false);
+            Intent intentLogin = new Intent(LoginActivity.this, MainActivity.class);
+            intentLogin.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intentLogin.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intentLogin);
+
+        } else {
 
 
-        autoCompleteTextViewEmail.setText(sharedPreferencesRemember.getString(KEY_USERNAME, ""));
-        autoCompleteTextViewPassword.setText(sharedPreferencesRemember.getString(KEY_PASS, ""));
+            final int[] password_show = {0};
 
-        autoCompleteTextViewEmail.addTextChangedListener(this);
-        autoCompleteTextViewPassword.addTextChangedListener(this);
-
-
-        checkBoxRememberMe.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                managePrefs();
-            }
-        });
+            firebaseAuth = FirebaseAuth.getInstance();
+            autoCompleteTextViewEmail = findViewById(R.id.autoCompleteTextViewEmail);
+            autoCompleteTextViewPassword = findViewById(R.id.autoCompleteTextViewPassword);
+            ImageButton imageButtonShowPassword = findViewById(R.id.imageButtonPassword);
+            TextView textViewRegister = findViewById(R.id.textViewRegister);
 
 
-        textViewRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent register = new Intent(getApplicationContext(), RegisterActivity.class);
-                startActivity(register);
-            }
-        });
+            sharedPreferencesRemember = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+            editorRemember = sharedPreferencesRemember.edit();
+            checkBoxRememberMe = findViewById(R.id.checkBoxRememberMe);
 
-        autoCompleteTextViewPassword.setTransformationMethod(new PasswordTransformationMethod());
 
-        imageButtonShowPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            if (sharedPreferencesRemember.getBoolean(KEY_REMEMBER, false)) {
+                checkBoxRememberMe.setChecked(true);
+            } else
+                checkBoxRememberMe.setChecked(false);
 
-                if (password_show[0] == 0) {
 
-                    autoCompleteTextViewPassword.setTransformationMethod(null);
-                    password_show[0] = 1;
-                    autoCompleteTextViewPassword.setSelection(autoCompleteTextViewPassword.length());
+            autoCompleteTextViewEmail.setText(sharedPreferencesRemember.getString(KEY_USERNAME, ""));
+            autoCompleteTextViewPassword.setText(sharedPreferencesRemember.getString(KEY_PASS, ""));
 
-                } else if (password_show[0] == 1) {
+            autoCompleteTextViewEmail.addTextChangedListener(this);
+            autoCompleteTextViewPassword.addTextChangedListener(this);
 
-                    autoCompleteTextViewPassword.setTransformationMethod(new PasswordTransformationMethod());
-                    password_show[0] = 0;
-                    autoCompleteTextViewPassword.setSelection(autoCompleteTextViewPassword.length());
 
+            checkBoxRememberMe.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    managePrefs();
                 }
-            }
-        });
-    }
+            });
 
+
+            textViewRegister.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent register = new Intent(getApplicationContext(), RegisterActivity.class);
+                    startActivity(register);
+                }
+            });
+
+            autoCompleteTextViewPassword.setTransformationMethod(new PasswordTransformationMethod());
+
+            imageButtonShowPassword.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (password_show[0] == 0) {
+
+                        autoCompleteTextViewPassword.setTransformationMethod(null);
+                        password_show[0] = 1;
+                        autoCompleteTextViewPassword.setSelection(autoCompleteTextViewPassword.length());
+
+                    } else if (password_show[0] == 1) {
+
+                        autoCompleteTextViewPassword.setTransformationMethod(new PasswordTransformationMethod());
+                        password_show[0] = 0;
+                        autoCompleteTextViewPassword.setSelection(autoCompleteTextViewPassword.length());
+
+                    }
+                }
+            });
+        }
+    }
     public void buttonLogin_Click(View v) {
         String sEmail = autoCompleteTextViewEmail.getText().toString();
         String sPassword = autoCompleteTextViewPassword.getText().toString();
@@ -131,7 +154,8 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
                                 if(firebaseAuth.getCurrentUser().isEmailVerified()){
                                     Toast.makeText(LoginActivity.this, "Zalogowano", Toast.LENGTH_SHORT).show();
                                     Intent i = new Intent(LoginActivity.this, MainActivity.class);
-
+                                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     i.putExtra("Email", firebaseAuth.getCurrentUser().getEmail());
                                     startActivity(i);
                                 }
@@ -174,12 +198,14 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
             editorRemember.putString(KEY_USERNAME, autoCompleteTextViewEmail.getText().toString().trim());
             editorRemember.putString(KEY_PASS, autoCompleteTextViewPassword.getText().toString().trim());
             editorRemember.putBoolean(KEY_REMEMBER, true);
+            editorRemember.putString(remeberMe,"Yes");
             editorRemember.apply();
 
         } else {
             editorRemember.putBoolean(KEY_REMEMBER, false);
             editorRemember.remove(KEY_PASS);
             editorRemember.remove(KEY_USERNAME);
+            editorRemember.putString(remeberMe,"No");
             editorRemember.apply();
         }
     }

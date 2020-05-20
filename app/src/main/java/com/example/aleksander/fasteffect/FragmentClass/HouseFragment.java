@@ -16,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.text.InputType;
@@ -53,6 +54,7 @@ public class HouseFragment extends Fragment {
 
     public static final String SHARED_PREFS = "shaaredPrefs";
 
+
     int kcalSum = 0;
     int wybor = 0;
     int[] hide = {0, 0, 0, 0, 0};
@@ -61,6 +63,8 @@ public class HouseFragment extends Fragment {
     double[] addValueFat = new double[5];
     double[] addValueCarb = new double[5];
     double[] maxValue = new double[5];
+    String Login = "";
+
 
     double aktywnosc;
     int rodzajSportu;
@@ -147,10 +151,16 @@ public class HouseFragment extends Fragment {
     }
 
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
+
+
+
         final View view = inflater.inflate(R.layout.fragment_house, container, false);
         hideSoftKeyboard(getActivity());
 
@@ -469,6 +479,7 @@ public class HouseFragment extends Fragment {
         return view;
     }
 
+
     public void setDate() {
         Date today = Calendar.getInstance().getTime();//getting date
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
@@ -488,6 +499,7 @@ public class HouseFragment extends Fragment {
         baza.insert(BazaDanychStruktura.TabelaHash, null, rekord);
         baza.close();
     }
+
 
     public void viewDatabase() {
 

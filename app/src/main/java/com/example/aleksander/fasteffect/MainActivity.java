@@ -3,7 +3,9 @@ package com.example.aleksander.fasteffect;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -25,7 +27,12 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+
+    private static final String PREF_NAME = "prefs";
+    String Login = "RememberMe";
     private DrawerLayout drawer;
+    SharedPreferences sharedPreferencesLog;
+    SharedPreferences.Editor editorRemember;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +40,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         // ctrl +alt + l
 /*
-
+  sharedPreferencesRemember = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        editorRemember = sharedPreferencesRemember.edit();
 */
+        Intent intent = new Intent();
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        sharedPreferencesLog= getSharedPreferences(PREF_NAME,Context.MODE_PRIVATE);
+        editorRemember = sharedPreferencesLog.edit();
+        SharedPreferences.Editor editorRemember = sharedPreferencesLog.edit();
+        editorRemember.putBoolean(Login, true);
+        editorRemember.commit();
+
 
         SQLiteDatabase baza = openOrCreateDatabase(BazaDanychStruktura.BazaPlik, Context.MODE_PRIVATE, null);
 
@@ -136,6 +152,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+        editorRemember = sharedPreferencesLog.edit();
+        SharedPreferences.Editor editorRemember = sharedPreferencesLog.edit();
+        editorRemember.putBoolean(Login, false);
+        editorRemember.commit();
+        finish();
     }
 }
 

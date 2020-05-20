@@ -15,7 +15,12 @@ public class VerifyClass extends Application {
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
         if (firebaseUser != null && firebaseUser.isEmailVerified()) {
-            startActivity(new Intent(VerifyClass.this, MainActivity.class));
+
+
+            Intent intent = new Intent(VerifyClass.this,MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+            startActivity(intent);
         }
     }
 }

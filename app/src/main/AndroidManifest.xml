@@ -13,29 +13,34 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/ic_tools_and_utensils"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+
+
+        >
+
+        <activity
+            android:name=".LoginActivity"
+            android:noHistory = "true"
+
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.DELETE"/>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
 
 
         <activity
             android:name=".MainActivity"
             android:noHistory = "true"
-            android:screenOrientation="portrait"
+
             >
 
         </activity>
 
-        <activity
-            android:name=".LoginActivity"
-            android:noHistory = "true"
-            android:screenOrientation="portrait"
-            >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-        </activity>
 
         <activity
             android:name=".RegisterActivity"
