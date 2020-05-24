@@ -182,11 +182,12 @@ public class AddProductActivity extends AppCompatActivity {
         databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                String value = dataSnapshot.getValue(Produkty.class).toString();
-                String strNew = value;
+                String value =String.valueOf(dataSnapshot.getValue(Produkty.class)) ;
+
                 ArrayList<String> arrayListReduce = new ArrayList<>();
 
-                arrayListReduce.add(dataSnapshot.getKey() + " " + strNew);
+              //  Toast.makeText(AddProductActivity.this,String.valueOf(dataSnapshot.getValue(Produkty.class)) , Toast.LENGTH_SHORT).show();
+                arrayListReduce.add(dataSnapshot.getKey() + " " + value);
 
                 for (int a = 0; a < arrayListReduce.size(); a++) {
                     valueToReplace = (arrayListReduce.get(a));

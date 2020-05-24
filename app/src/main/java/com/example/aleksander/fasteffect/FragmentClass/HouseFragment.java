@@ -50,9 +50,11 @@ import java.util.Date;
 /**
  * A simple {@link Fragment} subclass.
  */
+
 public class HouseFragment extends Fragment {
 
     public static final String SHARED_PREFS = "shaaredPrefs";
+
 
 
     int kcalSum = 0;
@@ -143,6 +145,7 @@ public class HouseFragment extends Fragment {
     ArrayAdapter adapterKolacja;
 
 
+
     private DatePickerDialog.OnDateSetListener mDateSetListener;
 
     public HouseFragment() {
@@ -159,8 +162,6 @@ public class HouseFragment extends Fragment {
         // Inflate the layout for this fragment
 
 
-
-
         final View view = inflater.inflate(R.layout.fragment_house, container, false);
         hideSoftKeyboard(getActivity());
 
@@ -169,10 +170,11 @@ public class HouseFragment extends Fragment {
         progressBarCarb = view.findViewById(R.id.progressBarCarb);
         progressBarFat = view.findViewById(R.id.progressBarFat);
 
-        setProgressBarColor(progressBarCalories, 1);
-        setProgressBarColor(progressBarProtein, 2);
-        setProgressBarColor(progressBarCarb, 3);
-        setProgressBarColor(progressBarFat, 4);
+
+
+  /*      ProgressBar[] progressBars = new ProgressBar[]{progressBarCarb,progressBarFat,progressBarProtein,progressBarCalories};
+        setProgressBarColor2(progressBars);
+*/
 
         textViewAllCalories = view.findViewById(R.id.textViewAllCalories);
         textViewAllProtein = view.findViewById(R.id.textViewAllProtein);
@@ -235,6 +237,7 @@ public class HouseFragment extends Fragment {
         ImageButton buttonAddProduct4 = view.findViewById(R.id.buttonAddProduct4);
         ImageButton buttonAddProduct5 = view.findViewById(R.id.buttonAddProduct5);
         textViewData = view.findViewById(R.id.textViewData);
+
 
         final InformationProduct informationProduct = new InformationProduct();
 
@@ -304,6 +307,9 @@ public class HouseFragment extends Fragment {
             });
         }
         //cardviewlistener
+
+
+
         {
             cardViewSniadanie.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -501,7 +507,7 @@ public class HouseFragment extends Fragment {
     }
 
 
-    public void viewDatabase() {
+    public  void viewDatabase() {
 
         listItemSniadanie.clear();
         adapterSniadanie = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, listItemSniadanie);
@@ -810,7 +816,7 @@ public class HouseFragment extends Fragment {
         textViewAllCarb.setText("Węglowodany:\n " + maxValue[1] + "/" + węglowodanyS);
         textViewAllFat.setText("Tłuszcze:\n " + maxValue[2] + "/" + tłuszczeS);
 
-        setProgressBar(Integer.valueOf(kcalSum), sumKcal, progressBarCalories);
+       setProgressBar(Integer.valueOf(kcalSum), sumKcal, progressBarCalories);
         setProgressBar(doubleToInt(maxValue[0]), doubleToInt(sumP), progressBarProtein);
         setProgressBar(doubleToInt(maxValue[1]), doubleToInt(sumW), progressBarCarb);
         setProgressBar(doubleToInt(maxValue[2]), doubleToInt(sumT), progressBarFat);
@@ -838,27 +844,7 @@ public class HouseFragment extends Fragment {
 
     }
 
-    public void setProgressBarColor(ProgressBar progressBar, int i) {
 
-
-        if (i == 1) {
-            progressBar.getProgressDrawable().setColorFilter(
-                    Color.parseColor("#551A8B"), android.graphics.PorterDuff.Mode.SRC_IN);
-        }
-        if (i == 2) {
-            progressBar.getProgressDrawable().setColorFilter(
-                    Color.parseColor("#41AECF"), android.graphics.PorterDuff.Mode.SRC_IN);
-        }
-        if (i == 3) {
-            progressBar.getProgressDrawable().setColorFilter(
-                    Color.parseColor("#00C853"), android.graphics.PorterDuff.Mode.SRC_IN);
-        }
-        if (i == 4) {
-            progressBar.getProgressDrawable().setColorFilter(
-                    Color.parseColor("#FFA500"), android.graphics.PorterDuff.Mode.SRC_IN);
-        }
-
-    }
 
     public int doubleToInt(double doubleVariables) {
 
