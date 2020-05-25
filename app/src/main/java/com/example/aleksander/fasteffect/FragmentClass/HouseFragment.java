@@ -56,7 +56,6 @@ public class HouseFragment extends Fragment {
     public static final String SHARED_PREFS = "shaaredPrefs";
 
 
-
     int kcalSum = 0;
     int wybor = 0;
     int[] hide = {0, 0, 0, 0, 0};
@@ -145,15 +144,12 @@ public class HouseFragment extends Fragment {
     ArrayAdapter adapterKolacja;
 
 
-
     private DatePickerDialog.OnDateSetListener mDateSetListener;
 
     public HouseFragment() {
         // Required empty public constructor
 
     }
-
-
 
 
     @Override
@@ -170,11 +166,6 @@ public class HouseFragment extends Fragment {
         progressBarCarb = view.findViewById(R.id.progressBarCarb);
         progressBarFat = view.findViewById(R.id.progressBarFat);
 
-
-
-  /*      ProgressBar[] progressBars = new ProgressBar[]{progressBarCarb,progressBarFat,progressBarProtein,progressBarCalories};
-        setProgressBarColor2(progressBars);
-*/
 
         textViewAllCalories = view.findViewById(R.id.textViewAllCalories);
         textViewAllProtein = view.findViewById(R.id.textViewAllProtein);
@@ -239,43 +230,40 @@ public class HouseFragment extends Fragment {
         textViewData = view.findViewById(R.id.textViewData);
 
 
-        final InformationProduct informationProduct = new InformationProduct();
-
         //listviewitemlistener
         {
             listViewSniadanie.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                    int poraDnia = 1;
-                    InformationProduct.setNazwa((String) adapterView.getItemAtPosition(i));
-                    String nazwa = InformationProduct.getNazwa();
 
-                    InformationProduct.setIlosc((String) adapterView.getItemAtPosition(i));
+                    new InformationProduct((String) adapterView.getItemAtPosition(i), (String) adapterView.getItemAtPosition(i));
+                    String nazwa = InformationProduct.getNazwa();
                     String ilosc = InformationProduct.getIlosc();
+                    int poraDnia = 1;
 
                     alert(poraDnia, ilosc, nazwa);
+
                 }
             });
             listViewLunch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    InformationProduct.setNazwa((String) adapterView.getItemAtPosition(i));
-                    String nazwa = InformationProduct.getNazwa();
 
-                    InformationProduct.setIlosc((String) adapterView.getItemAtPosition(i));
+                    new InformationProduct((String) adapterView.getItemAtPosition(i), (String) adapterView.getItemAtPosition(i));
+                    String nazwa = InformationProduct.getNazwa();
                     String ilosc = InformationProduct.getIlosc();
                     int poraDnia = 2;
+
                     alert(poraDnia, ilosc, nazwa);
                 }
             });
             listViewObiad.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    InformationProduct.setNazwa((String) adapterView.getItemAtPosition(i));
-                    String nazwa = InformationProduct.getNazwa();
 
-                    InformationProduct.setIlosc((String) adapterView.getItemAtPosition(i));
+                    new InformationProduct((String) adapterView.getItemAtPosition(i), (String) adapterView.getItemAtPosition(i));
+                    String nazwa = InformationProduct.getNazwa();
                     String ilosc = InformationProduct.getIlosc();
                     int poraDnia = 3;
                     alert(poraDnia, ilosc, nazwa);
@@ -284,10 +272,9 @@ public class HouseFragment extends Fragment {
             listViewPrzekąska.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    InformationProduct.setNazwa((String) adapterView.getItemAtPosition(i));
-                    String nazwa = InformationProduct.getNazwa();
 
-                    InformationProduct.setIlosc((String) adapterView.getItemAtPosition(i));
+                    new InformationProduct((String) adapterView.getItemAtPosition(i), (String) adapterView.getItemAtPosition(i));
+                    String nazwa = InformationProduct.getNazwa();
                     String ilosc = InformationProduct.getIlosc();
                     int poraDnia = 4;
                     alert(poraDnia, ilosc, nazwa);
@@ -296,10 +283,9 @@ public class HouseFragment extends Fragment {
             listViewKolacja.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    InformationProduct.setNazwa((String) adapterView.getItemAtPosition(i));
-                    String nazwa = InformationProduct.getNazwa();
 
-                    InformationProduct.setIlosc((String) adapterView.getItemAtPosition(i));
+                    new InformationProduct((String) adapterView.getItemAtPosition(i), (String) adapterView.getItemAtPosition(i));
+                    String nazwa = InformationProduct.getNazwa();
                     String ilosc = InformationProduct.getIlosc();
                     int poraDnia = 5;
                     alert(poraDnia, ilosc, nazwa);
@@ -307,7 +293,6 @@ public class HouseFragment extends Fragment {
             });
         }
         //cardviewlistener
-
 
 
         {
@@ -491,15 +476,16 @@ public class HouseFragment extends Fragment {
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         String date = formatter.format(today);
         textViewData.setText(date);
-        String dateSend = date;
-        addToDatabse(dateSend);
-        DataHolder.getInstance().setData(dateSend);
+        addToDatabse(date);
+        DataHolder.getInstance().setData(date);
     }
 
     public void addToDatabse(String dateSend) {
-        BazaDanychStruktura bazaDanychStruktura = new BazaDanychStruktura();
-        SQLiteDatabase baza = getActivity().openOrCreateDatabase(BazaDanychStruktura.BazaPlik,
-                android.content.Context.MODE_PRIVATE, null);
+        SQLiteDatabase baza = getActivity().openOrCreateDatabase(
+                BazaDanychStruktura.BazaPlik,
+                android.content.Context.MODE_PRIVATE,
+                null
+        );
         ContentValues rekord = new ContentValues();
         rekord.put(BazaDanychStruktura.TabelaHash, dateSend);
         baza.insert(BazaDanychStruktura.TabelaHash, null, rekord);
@@ -507,7 +493,7 @@ public class HouseFragment extends Fragment {
     }
 
 
-    public  void viewDatabase() {
+    public void viewDatabase() {
 
         listItemSniadanie.clear();
         adapterSniadanie = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, listItemSniadanie);
@@ -529,16 +515,20 @@ public class HouseFragment extends Fragment {
         adapterKolacja = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, listItemKolacja);
         listViewKolacja.setAdapter(adapterKolacja);
 
-        BazaDanychStruktura bazaDanychStruktura = new BazaDanychStruktura();
+
         SQLiteDatabase baza = getActivity().openOrCreateDatabase(BazaDanychStruktura.BazaPlik, Context.MODE_PRIVATE, null);
 
         for (int i = 1; i <= 5; i++) {
 
-            Cursor k = baza.rawQuery("SELECT Posilek.Nazwa , Posilek.Kalorie, Posilek.Bialko,Posilek.Weglowodany," +
-                    "Posilek.Tluszcze,Posilek.Błonnik,Posilek.Ilość " +
-                    "FROM  Hash, PoraDnia,Posilek " +
-                    "WHERE Hash.idPosilek=Posilek.idPosilek AND Hash.idPoraDnia = PoraDnia.idPoraDnia AND Hash.idPoraDnia= '" + i + "' AND Hash.Data = '"
-                    + textViewData.getText().toString() + "'", null);
+            Cursor k = baza.rawQuery("SELECT Posilek.Nazwa, Posilek.Kalorie, Posilek.Bialko, Posilek.Weglowodany, Posilek.Tluszcze, Posilek.Błonnik, Posilek.Ilość " +
+                            "FROM  Hash, PoraDnia,Posilek " +
+                            "WHERE Hash.idPosilek=Posilek.idPosilek " +
+                            "AND Hash.idPoraDnia = PoraDnia.idPoraDnia " +
+                            "AND Hash.idPoraDnia= '" + i + "'" +
+                            "AND Hash.Data = '" +
+                            textViewData.getText().toString() + "'",
+                    null);
+
             if (k.getCount() == 0) {
             } else {
                 if (i == 1) {
@@ -572,8 +562,15 @@ public class HouseFragment extends Fragment {
         ArrayAdapter adapter;
         while (k.moveToNext()) {
 
-            listItem.add(k.getString(0) + " | Kcal: " + k.getString(1) + " | B: " + k.getString(2) + " | W: " +
-                    k.getString(3) + " | T: " + k.getString(4) + " | Błonnik: " + k.getString(5) + " | Ilość: " + k.getString(6));
+            listItem.add(
+                    k.getString(0) + " | Kcal: " +
+                            k.getString(1) + " | B: " +
+                            k.getString(2) + " | W: " +
+                            k.getString(3) + " | T: " +
+                            k.getString(4) + " | Błonnik: " +
+                            k.getString(5) + " | Ilość: " +
+                            k.getString(6)
+            );
 
             addValueCalories[timeOfDay] = addValueCalories[timeOfDay] + Math.round(Integer.valueOf(k.getString(1)));
             addValueProtein[timeOfDay] = addValueProtein[timeOfDay] + Double.valueOf(k.getString(2));
@@ -586,7 +583,7 @@ public class HouseFragment extends Fragment {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
-                TextView tv =  view.findViewById(android.R.id.text1);
+                TextView tv = view.findViewById(android.R.id.text1);
                 tv.setTextColor(Color.rgb(72, 72, 72));
                 return view;
             }
@@ -707,35 +704,36 @@ public class HouseFragment extends Fragment {
             addValueCarb[i] = 0;
         }
 
-        textViewKcalS.setText("0");
-        textViewWS.setText("0");
-        textViewPS.setText("0");
-        textViewTS.setText("0");
+        String resetText = "0";
+        textViewKcalS.setText(resetText);
+        textViewWS.setText(resetText);
+        textViewPS.setText(resetText);
+        textViewTS.setText(resetText);
 
-        textViewKcalL.setText("0");
-        textViewWL.setText("0");
-        textViewPL.setText("0");
-        textViewTL.setText("0");
+        textViewKcalL.setText(resetText);
+        textViewWL.setText(resetText);
+        textViewPL.setText(resetText);
+        textViewTL.setText(resetText);
 
-        textViewKcalO.setText("0");
-        textViewWO.setText("0");
-        textViewPO.setText("0");
-        textViewTO.setText("0");
+        textViewKcalO.setText(resetText);
+        textViewWO.setText(resetText);
+        textViewPO.setText(resetText);
+        textViewTO.setText(resetText);
 
-        textViewKcalP.setText("0");
-        textViewWP.setText("0");
-        textViewPP.setText("0");
-        textViewTP.setText("0");
+        textViewKcalP.setText(resetText);
+        textViewWP.setText(resetText);
+        textViewPP.setText(resetText);
+        textViewTP.setText(resetText);
 
-        textViewKcalK.setText("0");
-        textViewWK.setText("0");
-        textViewPK.setText("0");
-        textViewTK.setText("0");
+        textViewKcalK.setText(resetText);
+        textViewWK.setText(resetText);
+        textViewPK.setText(resetText);
+        textViewTK.setText(resetText);
 
-        textViewAllCalories.setText("0");
-        textViewAllProtein.setText("0");
-        textViewAllCarb.setText("0");
-        textViewAllFat.setText("0");
+        textViewAllCalories.setText(resetText);
+        textViewAllProtein.setText(resetText);
+        textViewAllCarb.setText(resetText);
+        textViewAllFat.setText(resetText);
 
     }
 
@@ -816,7 +814,7 @@ public class HouseFragment extends Fragment {
         textViewAllCarb.setText("Węglowodany:\n " + maxValue[1] + "/" + węglowodanyS);
         textViewAllFat.setText("Tłuszcze:\n " + maxValue[2] + "/" + tłuszczeS);
 
-       setProgressBar(Integer.valueOf(kcalSum), sumKcal, progressBarCalories);
+        setProgressBar(Integer.valueOf(kcalSum), sumKcal, progressBarCalories);
         setProgressBar(doubleToInt(maxValue[0]), doubleToInt(sumP), progressBarProtein);
         setProgressBar(doubleToInt(maxValue[1]), doubleToInt(sumW), progressBarCarb);
         setProgressBar(doubleToInt(maxValue[2]), doubleToInt(sumT), progressBarFat);
@@ -843,7 +841,6 @@ public class HouseFragment extends Fragment {
         }
 
     }
-
 
 
     public int doubleToInt(double doubleVariables) {
@@ -971,9 +968,14 @@ public class HouseFragment extends Fragment {
         SQLiteDatabase baza = getActivity().openOrCreateDatabase(BazaDanychStruktura.BazaPlik, Context.MODE_PRIVATE, null);
         int iloscCON = Integer.valueOf(ilosc.replaceAll("\\s+", ""));
         String nazwaCON = nazwa.replaceAll("\\s+$", "");
-        Cursor idPosilek = baza.rawQuery(" SELECT " + BazaDanychStruktura.BazaTabelaidPosilek + " FROM " +
-                BazaDanychStruktura.TabelaPosilek + " WHERE " + BazaDanychStruktura.BazaTabelaNazwa + " LIKE '" + nazwaCON
-                + "%' AND " + BazaDanychStruktura.BazaTabelaIlość + " = " + iloscCON + " LIMIT 1 ", null);
+        Cursor idPosilek = baza.rawQuery(
+                " SELECT " + BazaDanychStruktura.BazaTabelaidPosilek +
+                        " FROM " + BazaDanychStruktura.TabelaPosilek +
+                        " WHERE " + BazaDanychStruktura.BazaTabelaNazwa +
+                        " LIKE '" + nazwaCON + "%' " +
+                        " AND " + BazaDanychStruktura.BazaTabelaIlość + " = " + iloscCON + " LIMIT 1 ",
+                null);
+
         idPosilek.moveToFirst();
         Cursor idHashu = baza.rawQuery("SELECT Hash.idHash FROM  Hash WHERE Hash.idPoraDnia = '" + poraDnia +
                 "' AND Hash.Data = '" + textViewData.getText().toString() + "' AND Hash.idPosilek ='" + idPosilek.getString(0) + "'", null);
@@ -996,9 +998,14 @@ public class HouseFragment extends Fragment {
         int iloscCON = Integer.valueOf(ilosc.replaceAll("\\s+", ""));
         String nazwaCON = nazwa.replaceAll("\\s+$", "");
 
-        Cursor idPosilek = baza.rawQuery(" SELECT " + BazaDanychStruktura.BazaTabelaidPosilek + " FROM "
-                + BazaDanychStruktura.TabelaPosilek + " WHERE " + BazaDanychStruktura.BazaTabelaNazwa + " LIKE '" + nazwaCON + "%' AND "
-                + BazaDanychStruktura.BazaTabelaIlość + " = " + iloscCON + " LIMIT 1 ", null);
+        Cursor idPosilek = baza.rawQuery(
+                " SELECT " + BazaDanychStruktura.BazaTabelaidPosilek +
+                        " FROM " + BazaDanychStruktura.TabelaPosilek +
+                        " WHERE " + BazaDanychStruktura.BazaTabelaNazwa +
+                        " LIKE '" + nazwaCON + "%' " +
+                        " AND " + BazaDanychStruktura.BazaTabelaIlość + " = " + iloscCON + " LIMIT 1 ",
+                null);
+
         idPosilek.moveToFirst();
 
         Cursor daneProduktu = baza.rawQuery("SELECT Posilek.Bialko, Posilek.Błonnik, Posilek.Kalorie " +

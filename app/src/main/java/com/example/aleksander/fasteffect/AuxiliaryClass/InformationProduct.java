@@ -11,21 +11,26 @@ public class InformationProduct {
         return nazwa;
     }
 
-    public static void setNazwa(String nazwa) {
-        int znakNazwaKalorie = nazwa.indexOf("|");
-        String ciagNazwa = nazwa.substring(0, znakNazwaKalorie);
-        InformationProduct.nazwa = ciagNazwa;
+    public InformationProduct(String nazwa, String ilosc) {
+
+        setNazwa(nazwa);
+        setIlosc(ilosc);
+
     }
 
-    public static String getIlosc() {
+    public static void setNazwa(String nazwa) {
+
+        InformationProduct.nazwa = nazwa.substring(0, nazwa.indexOf("|"));
+    }
+
+    public  static String getIlosc() {
 
         return ilosc;
     }
 
-    public static void setIlosc(String ilosc) {
+    public  static void setIlosc(String ilosc) {
 
-        int indexIlosc = ilosc.indexOf("Ilość:") + 6;
-        String ciagIlosc = ilosc.substring(indexIlosc);
+        String ciagIlosc = ilosc.substring(ilosc.indexOf("Ilość:") + 6);
         ciagIlosc.replaceAll("\\s+", "");
         InformationProduct.ilosc = ciagIlosc;
     }
