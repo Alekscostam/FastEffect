@@ -1,4 +1,4 @@
-package com.example.aleksander.fasteffect;
+package com.example.aleksander.fasteffect.ProductClass;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.aleksander.fasteffect.AuxiliaryClass.Produkty;
+import com.example.aleksander.fasteffect.R;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 

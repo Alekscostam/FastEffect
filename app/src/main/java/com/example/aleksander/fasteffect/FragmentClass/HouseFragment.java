@@ -16,7 +16,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.text.InputType;
@@ -34,7 +33,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.aleksander.fasteffect.AddProductActivity;
+import com.example.aleksander.fasteffect.ProductClass.AddProductActivity;
 import com.example.aleksander.fasteffect.AuxiliaryClass.BazaDanychStruktura;
 import com.example.aleksander.fasteffect.AuxiliaryClass.DataHolder;
 import com.example.aleksander.fasteffect.AuxiliaryClass.InformationProduct;

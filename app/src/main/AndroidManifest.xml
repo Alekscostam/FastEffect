@@ -39,13 +39,13 @@
            />
 
         <activity
-            android:name=".AddProductActivity"
+            android:name=".ProductClass.AddProductActivity"
             android:noHistory = "true"
 
             />
 
         <activity
-            android:name=".AddNewProductActivity"
+            android:name=".ProductClass.AddNewProductActivity"
             android:noHistory = "true"
 
             />

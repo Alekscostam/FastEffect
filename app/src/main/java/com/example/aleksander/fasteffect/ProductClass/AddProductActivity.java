@@ -1,4 +1,4 @@
-package com.example.aleksander.fasteffect;
+package com.example.aleksander.fasteffect.ProductClass;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -31,6 +31,8 @@ import com.example.aleksander.fasteffect.AuxiliaryClass.BazaDanychStruktura;
 import com.example.aleksander.fasteffect.AuxiliaryClass.DataHolder;
 import com.example.aleksander.fasteffect.AuxiliaryClass.Produkty;
 import com.example.aleksander.fasteffect.AuxiliaryClass.ResizeListView;
+import com.example.aleksander.fasteffect.MainActivity;
+import com.example.aleksander.fasteffect.R;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
