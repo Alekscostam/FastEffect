@@ -101,10 +101,7 @@ public class ExportFragment extends Fragment {
 
         return view;
 
-
     }
-
-
 
 
 }

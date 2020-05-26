@@ -80,30 +80,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         String[] timeOfDay = new String[]{"Śniadanie","Lunch","Obiad","Przekąska","Kolacja"};
 
 
-        for (int i = 0; i <5 ; i++) {
+        for (int i = 0; i <timeOfDay.length ; i++) {
             contentValues[i].put(BazaDanychStruktura.BazaTabelaPora,timeOfDay[i]);
             baza.insert(BazaDanychStruktura.TabelaPoraDnia,null, contentValues[i]);
         }
 
-
-      /*  contentValuesŚniadanie.put(BazaDanychStruktura.BazaTabelaPora, "Śniadanie");
-        contentValuesLunch.put(BazaDanychStruktura.BazaTabelaPora, "Lunch");
-        contentValuesObiad.put(BazaDanychStruktura.BazaTabelaPora, "Obiad");
-        contentValuesPrzekąska.put(BazaDanychStruktura.BazaTabelaPora, "Przekąska");
-        contentValuesKolacja.put(BazaDanychStruktura.BazaTabelaPora, "Kolacja");
-
-        baza.insert(BazaDanychStruktura.TabelaPoraDnia, null, contentValuesŚniadanie);
-        baza.insert(BazaDanychStruktura.TabelaPoraDnia, null, contentValuesLunch);
-        baza.insert(BazaDanychStruktura.TabelaPoraDnia, null, contentValuesObiad);
-        baza.insert(BazaDanychStruktura.TabelaPoraDnia, null, contentValuesPrzekąska);
-        baza.insert(BazaDanychStruktura.TabelaPoraDnia, null, contentValuesKolacja);*/
-
         baza.close();
-
 
         android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
         drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -112,14 +97,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
         toggle.syncState();
 
-
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HouseFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_house);
         }
 
     }
-
 
     @Override
     public void onBackPressed() {
@@ -130,7 +113,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    //update
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {

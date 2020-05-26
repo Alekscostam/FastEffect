@@ -18,9 +18,7 @@ import com.example.aleksander.fasteffect.R;
 public class DietFragment extends Fragment {
 
 
-    public DietFragment() {
-        // Required empty public constructor
-    }
+    public DietFragment() {}
 
 
     private SharedPreferences sharedPreferences;

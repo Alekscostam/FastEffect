@@ -14,14 +14,11 @@
         android:roundIcon="@drawable/ic_tools_and_utensils"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-
-
         >
 
         <activity
             android:name=".LoginActivity"
             android:noHistory = "true"
-
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,26 +28,15 @@
 
         </activity>
 
-
         <activity
             android:name=".MainActivity"
             android:noHistory = "true"
-
-            >
-
-        </activity>
-
-
+           />
 
         <activity
             android:name=".RegisterActivity"
             android:noHistory = "true"
-            >
-
-
-
-        </activity>
-
+           />
 
         <activity
             android:name=".AddProductActivity"
