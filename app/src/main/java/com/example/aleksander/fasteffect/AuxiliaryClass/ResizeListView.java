@@ -10,7 +10,7 @@ public class ResizeListView {
     public void resize(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter();
         if (listAdapter == null) {
-            // pre-condition
+
             return;
         }
         int totalHeight = 0;

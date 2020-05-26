@@ -30,7 +30,6 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
     private AutoCompleteTextView autoCompleteTextViewPassword;
     private FirebaseAuth firebaseAuth;
 
-    //Zapamietaj
     private static final String PREF_NAME = "prefs";
     private static final String KEY_REMEMBER = "remember";
     private static final String KEY_USERNAME = "username";
@@ -141,8 +140,7 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
         if (!sEmail.matches("") && !sPassword.matches("")) {
 
 
-            final ProgressDialog progressDialog = ProgressDialog.show(LoginActivity.this, "Proszę czekać...",
-                    "Uwierzytelnianie", true);
+            final ProgressDialog progressDialog = ProgressDialog.show(LoginActivity.this, "Proszę czekać...", "Uwierzytelnianie", true);
             (firebaseAuth.signInWithEmailAndPassword(autoCompleteTextViewEmail.getText().toString(),
                     autoCompleteTextViewPassword.getText().toString()))
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {

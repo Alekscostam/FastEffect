@@ -57,13 +57,16 @@ public class AddNewProductActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try{
+
                 produkty_białko = Double.valueOf(textInputEditTextBiałko.getText().toString()) ;
                 produkty_błonnik = Double.valueOf(textInputEditTextBłonnik.getText().toString());
                 produkty_kcal = Double.valueOf(textInputEditTextKalorie.getText().toString());
                 produkty_tłuszcze = Double.valueOf(textInputEditTextTłuszcze.getText().toString());
                 produkty_węglowodany = Double.valueOf(textInputEditTextWęglowodany.getText().toString());
                 produkty_nazwa = textInputEditTextNazwa.getText().toString();
+
                ref.child(produkty_nazwa).setValue(new Produkty(produkty_kcal,produkty_białko,produkty_tłuszcze,produkty_węglowodany,produkty_błonnik));
+
                 Toast.makeText(AddNewProductActivity.this, "Dodano produkt!", Toast.LENGTH_SHORT).show();
             }catch (Exception e){
                     Toast.makeText(AddNewProductActivity.this, "Nie podano wszystkich wartości!", Toast.LENGTH_SHORT).show();

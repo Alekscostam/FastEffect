@@ -16,7 +16,6 @@ public class VerifyClass extends Application {
 
         if (firebaseUser != null && firebaseUser.isEmailVerified()) {
 
-
             Intent intent = new Intent(VerifyClass.this,MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 

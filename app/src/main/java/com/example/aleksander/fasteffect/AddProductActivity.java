@@ -36,10 +36,10 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import static com.example.aleksander.fasteffect.FragmentClass.DietFragment.SHARED_PREFS;
 import static com.example.aleksander.fasteffect.FragmentClass.DietFragment.SWITCHFOS;
 import static com.example.aleksander.fasteffect.FragmentClass.DietFragment.SWITCHGOS;
@@ -92,7 +92,6 @@ public class AddProductActivity extends AppCompatActivity {
 
         imageButtoAdd = findViewById(R.id.buttonAdd);
 
-
         dateOpen = DataHolder.getInstance().getData();
         SharedPreferences prefsPoraDnia = PreferenceManager.getDefaultSharedPreferences(this);
         poraDnia = prefsPoraDnia.getString("PoraDnia", "no id"); //no id: default value
@@ -107,7 +106,6 @@ public class AddProductActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(AddProductActivity.this, R.style.Dialog);
                 builder.setTitle("Ile gram produktu chcesz wybrać?");
                 builder.setCancelable(true);
-
                 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -147,7 +145,6 @@ public class AddProductActivity extends AppCompatActivity {
         arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrayList) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
-                // Get the Item from ListView
                 View view = super.getView(position, convertView, parent);
                 TextView tv = view.findViewById(android.R.id.text1);
                 tv.setTextColor(Color.rgb(72, 72, 72));
@@ -155,7 +152,6 @@ public class AddProductActivity extends AppCompatActivity {
             }
 
         };
-
 
         listViewProdukty.setAdapter(arrayAdapter);
 
@@ -178,99 +174,93 @@ public class AddProductActivity extends AppCompatActivity {
             }
         });
 
-
-        databaseReference.addChildEventListener(new ChildEventListener() {
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
+        executorService.submit(new Runnable() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                String value =String.valueOf(dataSnapshot.getValue(Produkty.class)) ;
+            public void run() {
+                databaseReference.addChildEventListener(new ChildEventListener() {
 
-                ArrayList<String> arrayListReduce = new ArrayList<>();
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-              //  Toast.makeText(AddProductActivity.this,String.valueOf(dataSnapshot.getValue(Produkty.class)) , Toast.LENGTH_SHORT).show();
-                arrayListReduce.add(dataSnapshot.getKey() + " " + value);
+                        String value = String.valueOf(dataSnapshot.getValue(Produkty.class));
+                        ArrayList<String> arrayListReduce = new ArrayList<>();
+                        arrayListReduce.add(dataSnapshot.getKey() + " " + value);
 
-                for (int a = 0; a < arrayListReduce.size(); a++) {
-                    valueToReplace = (arrayListReduce.get(a));
-                    boolean findValue = arrayListReduce.get(a).contains("null");
+                        for (int a = 0; a < arrayListReduce.size(); a++) {
+                            valueToReplace = (arrayListReduce.get(a));
+                            boolean findValue = arrayListReduce.get(a).contains("null");
 
-                    if (findValue) {
+                            if (findValue) {
 
-                        valueToReplace = valueToReplace.replace("Zawiera:null", "");
+                                valueToReplace = valueToReplace.replace("Zawiera:null", "");
+                                arrayList.add(a, valueToReplace);
+                            } else {
 
-                        arrayList.add(a, valueToReplace);
-                    } else {
+                                if (switchOnOfF) {
 
-                        if (switchOnOfF) {
+                                } else {
+                                    valueToReplace = valueToReplace.replace("Zawiera:Fruktoza", " ");
+                                    valueToReplace = valueToReplace.replace("Fruktoza i", " ");
 
-                        } else {
-                            valueToReplace = valueToReplace.replace("Zawiera:Fruktoza", " ");
-                            valueToReplace = valueToReplace.replace("Fruktoza i", " ");
+                                }
 
+                                if (switchOnOfFOS) {
+
+                                } else {
+                                    valueToReplace = valueToReplace.replace("Zawiera:FOS", " ");
+                                    valueToReplace = valueToReplace.replace("FOS i", " ");
+
+                                }
+                                if (switchOnOfL) {
+
+                                } else {
+                                    valueToReplace = valueToReplace.replace("Zawiera:Laktoza", " ");
+                                }
+
+                                if (switchOnOfGOS) {
+                                } else {
+                                    valueToReplace = valueToReplace.replace("Zawiera:GOS", " ");
+                                    valueToReplace = valueToReplace.replace("i GOS", " ");
+                                }
+
+                                if (switchOnOfS) {
+                                } else {
+                                    valueToReplace = valueToReplace.replace("Zawiera:Sacharoza", " ");
+                                    valueToReplace = valueToReplace.replace("i sacharoza", " ");
+                                }
+
+                                if (switchOnOfP) {
+
+                                } else {
+                                    valueToReplace = valueToReplace.replace("Zawiera:Poliole", "");
+                                    valueToReplace = valueToReplace.replace("i poliole", "");
+                                }
+
+                                arrayList.add(a, valueToReplace);
+                            }
                         }
+                        arrayAdapter.notifyDataSetChanged();
+                        ResizeListView resizeListView = new ResizeListView();
+                        resizeListView.resize(listViewProdukty);
 
-                        if (switchOnOfFOS) {
-
-                        } else {
-                            valueToReplace = valueToReplace.replace("Zawiera:FOS", " ");
-                            valueToReplace = valueToReplace.replace("FOS i", " ");
-
-                        }
-                        if (switchOnOfL) {
-
-                        } else {
-                            valueToReplace = valueToReplace.replace("Zawiera:Laktoza", " ");
-                        }
-
-                        if (switchOnOfGOS) {
-                        } else {
-                            valueToReplace = valueToReplace.replace("Zawiera:GOS", " ");
-                            valueToReplace = valueToReplace.replace("i GOS", " ");
-                        }
-
-                        if (switchOnOfS) {
-                        } else {
-                            valueToReplace = valueToReplace.replace("Zawiera:Sacharoza", " ");
-                            valueToReplace = valueToReplace.replace("i sacharoza", " ");
-                        }
-
-                        if (switchOnOfP) {
-
-                        } else {
-                            valueToReplace = valueToReplace.replace("Zawiera:Poliole", "");
-                            valueToReplace = valueToReplace.replace("i poliole", "");
-                        }
-
-                        arrayList.add(a, valueToReplace);
                     }
-                }
 
-                arrayAdapter.notifyDataSetChanged();
-                ResizeListView resizeListView = new ResizeListView();
-                resizeListView.resize(listViewProdukty);
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {}
 
-            }
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {}
 
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {}
 
-            }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {}
 
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                });
             }
         });
-
 
         textViewBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -288,9 +278,7 @@ public class AddProductActivity extends AppCompatActivity {
             }
         });
 
-
     }
-
 
     public void addProductToDatabase(String selectedItem, String ilosc) {
 
@@ -372,7 +360,6 @@ public class AddProductActivity extends AppCompatActivity {
 
     }
 
-
     public void sharedPreferencesFromDietFragment() {
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
         switchOnOfS = sharedPreferences.getBoolean(SWITCHS, false);
@@ -382,10 +369,6 @@ public class AddProductActivity extends AppCompatActivity {
         switchOnOfP = sharedPreferences.getBoolean(SWITCHP, false);
         switchOnOfF = sharedPreferences.getBoolean(SWITCHF, false);
     }
-
-    public void item(AdapterView<?> adapterView, int i) {
-    }
-
 
 }
 

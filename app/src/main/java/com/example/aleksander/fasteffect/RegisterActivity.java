@@ -140,9 +140,6 @@ public class RegisterActivity extends AppCompatActivity {
                                     }
                                 });
 
-                              //  Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
-                             //   startActivity(i);
-
                             } else {
                                 Log.e("Error", task.getException().toString());
                                 Toast.makeText(RegisterActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();

@@ -31,10 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 public class ProfileFragment extends Fragment {
 //
 
-    public ProfileFragment() {
-        // Required empty public constructor
-//
-    }
+    public ProfileFragment() {}
 
     public static final String SHARED_PREFS = "shaaredPrefs";
 

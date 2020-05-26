@@ -146,16 +146,12 @@ public class HouseFragment extends Fragment {
 
     private DatePickerDialog.OnDateSetListener mDateSetListener;
 
-    public HouseFragment() {
-        // Required empty public constructor
-
-    }
+    public HouseFragment() {}
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
 
         final View view = inflater.inflate(R.layout.fragment_house, container, false);
@@ -230,7 +226,6 @@ public class HouseFragment extends Fragment {
         textViewData = view.findViewById(R.id.textViewData);
 
 
-        //listviewitemlistener
         {
             listViewSniadanie.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -368,8 +363,6 @@ public class HouseFragment extends Fragment {
         } else
             textViewData.setText(DataHolder.getInstance().getData());
 
-        Intent i = getActivity().getIntent();
-
         textViewData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -422,7 +415,7 @@ public class HouseFragment extends Fragment {
                 addToDatabse(dateSend);
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
                 SharedPreferences.Editor editor = prefs.edit();
-                editor.putString("DataSend", dateSend); //InputString: from the EditText
+                editor.putString("DataSend", dateSend);
                 editor.commit();
                 DataHolder.getInstance().setData(dateSend);
                 refreshApp();
@@ -472,7 +465,7 @@ public class HouseFragment extends Fragment {
 
 
     public void setDate() {
-        Date today = Calendar.getInstance().getTime();//getting date
+        Date today = Calendar.getInstance().getTime();
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         String date = formatter.format(today);
         textViewData.setText(date);
@@ -520,7 +513,8 @@ public class HouseFragment extends Fragment {
 
         for (int i = 1; i <= 5; i++) {
 
-            Cursor k = baza.rawQuery("SELECT Posilek.Nazwa, Posilek.Kalorie, Posilek.Bialko, Posilek.Weglowodany, Posilek.Tluszcze, Posilek.Błonnik, Posilek.Ilość " +
+            Cursor k = baza.rawQuery(
+                    "SELECT Posilek.Nazwa, Posilek.Kalorie, Posilek.Bialko, Posilek.Weglowodany, Posilek.Tluszcze, Posilek.Błonnik, Posilek.Ilość " +
                             "FROM  Hash, PoraDnia,Posilek " +
                             "WHERE Hash.idPosilek=Posilek.idPosilek " +
                             "AND Hash.idPoraDnia = PoraDnia.idPoraDnia " +
@@ -964,7 +958,7 @@ public class HouseFragment extends Fragment {
     }
 
     public void deleteFromDatabase(int poraDnia, String ilosc, String nazwa) {
-        BazaDanychStruktura bazaDanychStruktura = new BazaDanychStruktura();
+
         SQLiteDatabase baza = getActivity().openOrCreateDatabase(BazaDanychStruktura.BazaPlik, Context.MODE_PRIVATE, null);
         int iloscCON = Integer.valueOf(ilosc.replaceAll("\\s+", ""));
         String nazwaCON = nazwa.replaceAll("\\s+$", "");
@@ -973,14 +967,25 @@ public class HouseFragment extends Fragment {
                         " FROM " + BazaDanychStruktura.TabelaPosilek +
                         " WHERE " + BazaDanychStruktura.BazaTabelaNazwa +
                         " LIKE '" + nazwaCON + "%' " +
-                        " AND " + BazaDanychStruktura.BazaTabelaIlość + " = " + iloscCON + " LIMIT 1 ",
+                        " AND " + BazaDanychStruktura.BazaTabelaIlość + " = " + iloscCON +
+                        " LIMIT 1 ",
                 null);
 
         idPosilek.moveToFirst();
-        Cursor idHashu = baza.rawQuery("SELECT Hash.idHash FROM  Hash WHERE Hash.idPoraDnia = '" + poraDnia +
-                "' AND Hash.Data = '" + textViewData.getText().toString() + "' AND Hash.idPosilek ='" + idPosilek.getString(0) + "'", null);
+        Cursor idHashu = baza.rawQuery(
+                "SELECT Hash.idHash " +
+                        "FROM  Hash " +
+                        "WHERE Hash.idPoraDnia = '" + poraDnia + "' " +
+                        "AND Hash.Data = '" + textViewData.getText().toString() + "' " +
+                        "AND Hash.idPosilek ='" + idPosilek.getString(0) + "'",
+                null);
+
         idHashu.moveToFirst();
-        Cursor usun = baza.rawQuery("DELETE  FROM Hash WHERE Hash.idHash='" + idHashu.getString(0) + "' ", null);
+        Cursor usun = baza.rawQuery(
+                "DELETE  " +
+                        "FROM Hash " +
+                        "WHERE Hash.idHash='" + idHashu.getString(0) + "' ",
+                null);
 
         usun.moveToFirst();
         baza.close();
@@ -993,7 +998,6 @@ public class HouseFragment extends Fragment {
         int kcal, il;
         double b, w, t, bl;
 
-        BazaDanychStruktura bazaDanychStruktura = new BazaDanychStruktura();
         SQLiteDatabase baza = getActivity().openOrCreateDatabase(BazaDanychStruktura.BazaPlik, Context.MODE_PRIVATE, null);
         int iloscCON = Integer.valueOf(ilosc.replaceAll("\\s+", ""));
         String nazwaCON = nazwa.replaceAll("\\s+$", "");
@@ -1003,19 +1007,31 @@ public class HouseFragment extends Fragment {
                         " FROM " + BazaDanychStruktura.TabelaPosilek +
                         " WHERE " + BazaDanychStruktura.BazaTabelaNazwa +
                         " LIKE '" + nazwaCON + "%' " +
-                        " AND " + BazaDanychStruktura.BazaTabelaIlość + " = " + iloscCON + " LIMIT 1 ",
+                        " AND " + BazaDanychStruktura.BazaTabelaIlość + " = " + iloscCON +
+                        " LIMIT 1 ",
                 null);
 
         idPosilek.moveToFirst();
 
-        Cursor daneProduktu = baza.rawQuery("SELECT Posilek.Bialko, Posilek.Błonnik, Posilek.Kalorie " +
-                ",Posilek.Tluszcze,Posilek.Weglowodany, Posilek.Ilość, Posilek.Nazwa FROM Posilek , Hash, PoraDnia WHERE Hash.Data = '"
-                + textViewData.getText().toString() + "' AND Hash.idPoraDnia = PoraDnia.idPoraDnia AND Hash.idPosilek = Posilek.idPosilek " +
-                " AND Posilek.idPosilek='" + idPosilek.getString(0) + "'", null);
+        Cursor daneProduktu = baza.rawQuery(
+                "SELECT Posilek.Bialko, Posilek.Błonnik, Posilek.Kalorie " + ",Posilek.Tluszcze,Posilek.Weglowodany, Posilek.Ilość, Posilek.Nazwa " +
+                        "FROM Posilek , Hash, PoraDnia " +
+                        "WHERE Hash.Data = '" + textViewData.getText().toString() + "' " +
+                        "AND Hash.idPoraDnia = PoraDnia.idPoraDnia " +
+                        "AND Hash.idPosilek = Posilek.idPosilek " + " " +
+                        "AND Posilek.idPosilek='" + idPosilek.getString(0) + "'",
+                null);
+
         daneProduktu.moveToFirst();
 
-        Cursor idHashu = baza.rawQuery("SELECT Hash.idHash FROM  Hash WHERE Hash.idPoraDnia = '" + poraDnia + "' AND Hash.Data = '"
-                + textViewData.getText().toString() + "' AND Hash.idPosilek ='" + idPosilek.getString(0) + "'", null);
+        Cursor idHashu = baza.rawQuery(
+                "SELECT Hash.idHash " +
+                        "FROM  Hash " +
+                        "WHERE Hash.idPoraDnia = '" + poraDnia + "' " +
+                        "AND Hash.Data = '"   + textViewData.getText().toString() + "' " +
+                        "AND Hash.idPosilek ='" + idPosilek.getString(0) + "'",
+                null);
+
         idHashu.moveToFirst();
 
         {
@@ -1037,26 +1053,57 @@ public class HouseFragment extends Fragment {
             }
 
             try {
-                Cursor checkInDatabse = baza.rawQuery("SELECT Posilek.idPosilek  FROM  Posilek WHERE Posilek.Nazwa like '"
-                        + daneProduktu.getString(6) + "' AND Posilek.Ilość='" + wartoscGram + "' ", null);
+                Cursor checkInDatabse = baza.rawQuery(
+                        "SELECT Posilek.idPosilek  " +
+                                "FROM  Posilek " +
+                                "WHERE Posilek.Nazwa " +
+                                "like '" + daneProduktu.getString(6) + "' " +
+                                "AND Posilek.Ilość='" + wartoscGram + "' ",
+                        null);
+
                 checkInDatabse.moveToFirst();
-                Cursor usun = baza.rawQuery("DELETE FROM Hash WHERE Hash.idHash='" + idHashu.getString(0) + "' ", null);
+                Cursor usun = baza.rawQuery(
+                        "DELETE " +
+                                "FROM Hash " +
+                                "WHERE Hash.idHash='" + idHashu.getString(0) + "' ",
+                        null);
                 usun.moveToFirst();
-                Cursor insertToDatabaseHash = baza.rawQuery("INSERT INTO Hash(Data,idPosilek,idPoraDnia) " +
-                        "VALUES ('" + textViewData.getText().toString() + "','" + checkInDatabse.getString(0) + "','" + poraDnia + "')", null);
+                Cursor insertToDatabaseHash = baza.rawQuery(
+
+                        "INSERT INTO Hash(Data,idPosilek,idPoraDnia) " +
+                                "VALUES ('" + textViewData.getText().toString() + "','" + checkInDatabse.getString(0) + "','" + poraDnia + "')",
+                        null);
+
                 insertToDatabaseHash.moveToFirst();
 
             } catch (Exception ex) {
-                Cursor insertToDatabsePosilek = baza.rawQuery("INSERT INTO Posilek(Nazwa,Bialko,Weglowodany,Tluszcze,Błonnik,Kalorie,Ilość)" +
-                        "VALUES('" + daneProduktu.getString(6) + "','" + b + "','" + w + "','" + t + "','" + bl + "','" + kcal + "','" + il + "')", null);
+                Cursor insertToDatabsePosilek = baza.rawQuery(
+                        "INSERT INTO Posilek(Nazwa,Bialko,Weglowodany,Tluszcze,Błonnik,Kalorie,Ilość)" +
+                                "VALUES('" + daneProduktu.getString(6) + "','" + b + "','" + w + "','" + t + "','" + bl + "','" + kcal + "','" + il + "')",
+                        null);
+
                 insertToDatabsePosilek.moveToFirst();
-                Cursor checkInDatabse = baza.rawQuery("SELECT Posilek.idPosilek  FROM  Posilek WHERE Posilek.Nazwa like '" + daneProduktu.getString(6)
-                        + "' AND Posilek.Ilość='" + wartoscGram + "' ", null);
+                Cursor checkInDatabse = baza.rawQuery(
+                        "SELECT Posilek.idPosilek  " +
+                                "FROM  Posilek " +
+                                "WHERE Posilek.Nazwa " +
+                                "like '" + daneProduktu.getString(6)+ "' " +
+                                "AND Posilek.Ilość='" + wartoscGram + "' ",
+                        null);
+
                 checkInDatabse.moveToFirst();
-                Cursor usun = baza.rawQuery("DELETE FROM Hash WHERE Hash.idHash='" + idHashu.getString(0) + "' ", null);
+                Cursor usun = baza.rawQuery(
+
+                        "DELETE " +
+                                "FROM Hash " +
+                                "WHERE Hash.idHash='" + idHashu.getString(0) + "' ",
+                        null);
                 usun.moveToFirst();
-                Cursor insertToDatabaseHash = baza.rawQuery("INSERT INTO Hash(Data,idPosilek,idPoraDnia) VALUES ('" + textViewData.getText().toString()
-                        + "','" + checkInDatabse.getString(0) + "','" + poraDnia + "')", null);
+                Cursor insertToDatabaseHash = baza.rawQuery(
+                        "INSERT INTO Hash(Data,idPosilek,idPoraDnia) " +
+                                "VALUES ('" + textViewData.getText().toString() + "','" + checkInDatabse.getString(0) + "','" + poraDnia + "')",
+                        null);
+
                 insertToDatabaseHash.moveToFirst();
             }
             baza.close();

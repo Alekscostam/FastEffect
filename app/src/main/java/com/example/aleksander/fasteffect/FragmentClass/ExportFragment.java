@@ -34,19 +34,25 @@ public class ExportFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
 
         View view = inflater.inflate(R.layout.fragment_export, container, false);
 
         buttonExport =  view.findViewById(R.id.d_export);
-        final BazaDanychStruktura bazaDanychStruktura = new BazaDanychStruktura();
+
         final SQLiteDatabase baza = getActivity().openOrCreateDatabase(BazaDanychStruktura.BazaPlik, Context.MODE_PRIVATE, null);
 
         buttonExport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                Cursor pp = baza.rawQuery("SELECT Hash.Data,PoraDnia.Pora ,Posilek.Nazwa, Posilek.Kalorie, Posilek.Ilość, Posilek.Bialko, Posilek.Weglowodany, Posilek.Tluszcze, Posilek.Błonnik FROM Hash, Posilek,PoraDnia WHERE Hash.idPosilek=Posilek.idPosilek AND Hash.idPoraDnia=PoraDnia.idPoraDnia;", null);
+                Cursor pp = baza.rawQuery(
+                        "SELECT Hash.Data,PoraDnia.Pora ,Posilek.Nazwa, Posilek.Kalorie, Posilek.Ilość, Posilek.Bialko, Posilek.Weglowodany, Posilek.Tluszcze, Posilek.Błonnik " +
+                        "FROM Hash, Posilek,PoraDnia " +
+                        "WHERE Hash.idPosilek=Posilek.idPosilek " +
+                        "AND Hash.idPoraDnia=PoraDnia.idPoraDnia;",
+                        null);
+
                 pp.moveToFirst();
 
                 StringBuilder data = new StringBuilder();
@@ -54,7 +60,17 @@ public class ExportFragment extends Fragment {
                 data.append("Data, Pora dnia, Nazwa, Kalorie, Ilość, Białko, Weglowodany, Tłuszcze, Błonnik");
                 for (int i = 0; i < pp.getCount(); i++) {
 
-                    String message = (pp.getString(0) + ", " + pp.getString(1) + ", " + pp.getString(2) + ", " + pp.getString(3) + ", " + pp.getString(4) + ", " + pp.getString(5) + ", " + pp.getString(6) + ", " + pp.getString(7) + ", " + pp.getString(8));
+                    String message = (
+                            pp.getString(0) + ", " +
+                                    pp.getString(1) + ", " +
+                                    pp.getString(2) + ", " +
+                                    pp.getString(3) + ", " +
+                                    pp.getString(4) + ", " +
+                                    pp.getString(5) + ", " +
+                                    pp.getString(6) + ", " +
+                                    pp.getString(7) + ", " +
+                                    pp.getString(8));
+
                     data.append("\n" + message);
                     pp.moveToNext();
 

@@ -24,6 +24,8 @@ import com.example.aleksander.fasteffect.FragmentClass.SportFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
+
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -38,11 +40,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // ctrl +alt + l
-/*
-  sharedPreferencesRemember = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        editorRemember = sharedPreferencesRemember.edit();
-*/
+
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         sharedPreferencesLog= getSharedPreferences(PREF_NAME,Context.MODE_PRIVATE);
@@ -55,12 +53,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         SQLiteDatabase baza = openOrCreateDatabase(BazaDanychStruktura.BazaPlik, Context.MODE_PRIVATE, null);
 
         baza.execSQL("DROP TABLE IF EXISTS PoraDnia");
-        baza.execSQL("CREATE TABLE IF NOT EXISTS 'PoraDnia'( idPoraDnia INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,Pora TEXT)");
-        baza.execSQL("CREATE TABLE IF NOT EXISTS 'Posilek'( idPosilek INTEGER PRIMARY KEY AUTOINCREMENT," +
+        baza.execSQL("CREATE TABLE IF NOT EXISTS 'PoraDnia'" +
+                "( idPoraDnia INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,Pora TEXT)");
+
+
+        baza.execSQL("CREATE TABLE IF NOT EXISTS 'Posilek'" +
+                "( idPosilek INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "Nazwa TEXT,Bialko REAL,Weglowodany REAL,Tluszcze REAL, Błonnik REAL, Kalorie REAL, Ilość INTEGER NOT NULL)");
-        baza.execSQL("CREATE TABLE IF NOT EXISTS 'Hash'(idHash INTEGER PRIMARY KEY AUTOINCREMENT, Data NUMERIC NOT NULL," +
+
+
+        baza.execSQL("CREATE TABLE IF NOT EXISTS 'Hash'" +
+                "(idHash INTEGER PRIMARY KEY AUTOINCREMENT, Data NUMERIC NOT NULL," +
                 " idPosilek INTEGER NOT NULL,idPoraDnia INTEGER NOT NULL," +
-                "  CONSTRAINT fk_idPosilek FOREIGN KEY(idPosilek) REFERENCES Posilek(idPosilek)," +
+                "CONSTRAINT fk_idPosilek FOREIGN KEY(idPosilek) REFERENCES Posilek(idPosilek)," +
                 "CONSTRAINT fk_idPoraDnia FOREIGN KEY(idPoraDnia) REFERENCES PoraDnia(idPoraDnia))");
 
 
@@ -70,7 +75,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ContentValues contentValuesPrzekąska = new ContentValues();
         ContentValues contentValuesKolacja = new ContentValues();
 
-        contentValuesŚniadanie.put(BazaDanychStruktura.BazaTabelaPora, "Śniadanie");
+        ContentValues[] contentValues = new ContentValues[]{contentValuesŚniadanie,contentValuesLunch,contentValuesObiad,contentValuesPrzekąska,contentValuesKolacja};
+
+        String[] timeOfDay = new String[]{"Śniadanie","Lunch","Obiad","Przekąska","Kolacja"};
+
+
+        for (int i = 0; i <5 ; i++) {
+            contentValues[i].put(BazaDanychStruktura.BazaTabelaPora,timeOfDay[i]);
+            baza.insert(BazaDanychStruktura.TabelaPoraDnia,null, contentValues[i]);
+        }
+
+
+      /*  contentValuesŚniadanie.put(BazaDanychStruktura.BazaTabelaPora, "Śniadanie");
         contentValuesLunch.put(BazaDanychStruktura.BazaTabelaPora, "Lunch");
         contentValuesObiad.put(BazaDanychStruktura.BazaTabelaPora, "Obiad");
         contentValuesPrzekąska.put(BazaDanychStruktura.BazaTabelaPora, "Przekąska");
@@ -80,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         baza.insert(BazaDanychStruktura.TabelaPoraDnia, null, contentValuesLunch);
         baza.insert(BazaDanychStruktura.TabelaPoraDnia, null, contentValuesObiad);
         baza.insert(BazaDanychStruktura.TabelaPoraDnia, null, contentValuesPrzekąska);
-        baza.insert(BazaDanychStruktura.TabelaPoraDnia, null, contentValuesKolacja);
+        baza.insert(BazaDanychStruktura.TabelaPoraDnia, null, contentValuesKolacja);*/
 
         baza.close();
 
@@ -96,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
         toggle.syncState();
 
-        //First class open
+
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HouseFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_house);

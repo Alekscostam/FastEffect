@@ -26,9 +26,7 @@ public class SportFragment extends Fragment {
 
     int option = 1;
 
-    public SportFragment() {
-        // Required empty public constructor
-    }
+    public SportFragment() {}
 
     public static final String SHARED_PREFS = "shaaredPrefs";
 
@@ -70,7 +68,19 @@ public class SportFragment extends Fragment {
         textInputEditTextCarb = view.findViewById(R.id.textInputEditTextCarb);
         textInputEditTextFat = view.findViewById(R.id.textInputEditTextFat);
 
-        String dataCalories = sharedPreferences.getString("textCalories", "0"); //no id: default value
+        String dataMacro = sharedPreferences.getString("textCalories", "0"); //no id: default value
+        textInputEditTextCalories.setText(dataMacro);
+
+        dataMacro = sharedPreferences.getString("textProtein", "0"); //no id: default value
+        textInputEditTextProtein.setText(dataMacro);
+
+        dataMacro = sharedPreferences.getString("textCarb", "0"); //no id: default value
+        textInputEditTextCarb.setText(dataMacro);
+
+        dataMacro = sharedPreferences.getString("textFat", "0"); //no id: default value
+        textInputEditTextFat.setText(dataMacro);
+
+  /*      String dataCalories = sharedPreferences.getString("textCalories", "0"); //no id: default value
         textInputEditTextCalories.setText(dataCalories);
 
         String dataProtein = sharedPreferences.getString("textProtein", "0"); //no id: default value
@@ -80,8 +90,7 @@ public class SportFragment extends Fragment {
         textInputEditTextCarb.setText(dataCarb);
 
         String dataFat = sharedPreferences.getString("textFat", "0"); //no id: default value
-        textInputEditTextFat.setText(dataFat);
-
+        textInputEditTextFat.setText(dataFat);*/
 
         buttonAutomatycznie.setOnClickListener(new View.OnClickListener() {
             @Override
