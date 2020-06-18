@@ -8,15 +8,18 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -38,17 +41,18 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import static com.example.aleksander.fasteffect.FragmentClass.DietFragment.SHARED_PREFS;
-import static com.example.aleksander.fasteffect.FragmentClass.DietFragment.SWITCHFOS;
-import static com.example.aleksander.fasteffect.FragmentClass.DietFragment.SWITCHGOS;
-import static com.example.aleksander.fasteffect.FragmentClass.DietFragment.SWITCHL;
-import static com.example.aleksander.fasteffect.FragmentClass.DietFragment.SWITCHF;
-import static com.example.aleksander.fasteffect.FragmentClass.DietFragment.SWITCHS;
-import static com.example.aleksander.fasteffect.FragmentClass.DietFragment.SWITCHP;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+
 
 public class AddProductActivity extends AppCompatActivity {
 
@@ -60,6 +64,7 @@ public class AddProductActivity extends AppCompatActivity {
     public boolean switchOnOfP;
     public boolean switchOnOfF;
     public String valueToReplace;
+    public StringBuilder valueToReplaceBuilder;
 
     public Double kalorie;
     public Double białko;
@@ -72,7 +77,7 @@ public class AddProductActivity extends AppCompatActivity {
 
     DatabaseReference databaseReference;
     ListView listViewProdukty;
-    ArrayList<String> arrayList = new ArrayList<>();
+    List<String> linkedList = new LinkedList<>();
     ArrayAdapter<String> arrayAdapter;
 
     ImageButton imageButtoAdd;
@@ -87,7 +92,7 @@ public class AddProductActivity extends AppCompatActivity {
 
         databaseReference = FirebaseDatabase.getInstance().getReference("Produkty");
 
-        sharedPreferencesFromDietFragment();
+
 
         TextView textViewBack = findViewById(R.id.textViewOpis);
         EditText editTextFilter = findViewById(R.id.editTextSearch);
@@ -144,7 +149,7 @@ public class AddProductActivity extends AppCompatActivity {
 
         });
 
-        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrayList) {
+        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, linkedList) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
@@ -166,7 +171,7 @@ public class AddProductActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                (AddProductActivity.this).arrayAdapter.getFilter().filter(charSequence);
+                (AddProductActivity.this).arrayAdapter.getFilter().filter(charSequence.toString());
 
             }
 
@@ -176,93 +181,20 @@ public class AddProductActivity extends AppCompatActivity {
             }
         });
 
-        ExecutorService executorService = Executors.newFixedThreadPool(10);
+        ExecutorService executorService = Executors.newFixedThreadPool(1);
         executorService.submit(new Runnable() {
+
             @Override
             public void run() {
-                databaseReference.addChildEventListener(new ChildEventListener() {
 
-                    @Override
-                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                TestMethod();
 
-                        String value = String.valueOf(dataSnapshot.getValue(Produkty.class));
-                        ArrayList<String> arrayListReduce = new ArrayList<>();
-                        arrayListReduce.add(dataSnapshot.getKey() + " " + value);
-
-                        for (int a = 0; a < arrayListReduce.size(); a++) {
-                            valueToReplace = (arrayListReduce.get(a));
-                            boolean findValue = arrayListReduce.get(a).contains("null");
-
-                            if (findValue) {
-
-                                valueToReplace = valueToReplace.replace("Zawiera:null", "");
-                                arrayList.add(a, valueToReplace);
-                            } else {
-
-                                if (switchOnOfF) {
-
-                                } else {
-                                    valueToReplace = valueToReplace.replace("Zawiera:Fruktoza", " ");
-                                    valueToReplace = valueToReplace.replace("Fruktoza i", " ");
-
-                                }
-
-                                if (switchOnOfFOS) {
-
-                                } else {
-                                    valueToReplace = valueToReplace.replace("Zawiera:FOS", " ");
-                                    valueToReplace = valueToReplace.replace("FOS i", " ");
-
-                                }
-                                if (switchOnOfL) {
-
-                                } else {
-                                    valueToReplace = valueToReplace.replace("Zawiera:Laktoza", " ");
-                                }
-
-                                if (switchOnOfGOS) {
-                                } else {
-                                    valueToReplace = valueToReplace.replace("Zawiera:GOS", " ");
-                                    valueToReplace = valueToReplace.replace("i GOS", " ");
-                                }
-
-                                if (switchOnOfS) {
-                                } else {
-                                    valueToReplace = valueToReplace.replace("Zawiera:Sacharoza", " ");
-                                    valueToReplace = valueToReplace.replace("i sacharoza", " ");
-                                }
-
-                                if (switchOnOfP) {
-
-                                } else {
-                                    valueToReplace = valueToReplace.replace("Zawiera:Poliole", "");
-                                    valueToReplace = valueToReplace.replace("i poliole", "");
-                                }
-
-                                arrayList.add(a, valueToReplace);
-                            }
-                        }
-                        arrayAdapter.notifyDataSetChanged();
-                        ResizeListView resizeListView = new ResizeListView();
-                        resizeListView.resize(listViewProdukty);
-
-                    }
-
-                    @Override
-                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {}
-
-                    @Override
-                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {}
-
-                    @Override
-                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {}
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {}
-
-                });
             }
+
+
         });
+        executorService.shutdown();
+
 
         textViewBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -282,6 +214,59 @@ public class AddProductActivity extends AppCompatActivity {
 
     }
 
+    public void TestMethod() {
+        databaseReference.addChildEventListener(new ChildEventListener() {
+
+
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Long Start = System.currentTimeMillis();
+                StringBuilder stringBuilderValue = new StringBuilder();
+
+                stringBuilderValue.setLength(0);
+                //   stringBuilderValue.append(dataSnapshot.getKey() + " " + dataSnapshot.getValue(Produkty.class));
+
+                Toast.makeText(AddProductActivity.this, stringBuilderValue, Toast.LENGTH_SHORT).show();
+                final List<StringBuilder> listModify = new ArrayList<>();
+
+                stringBuilderValue.append(" "+dataSnapshot.getKey() + " ] " + dataSnapshot.getValue(Produkty.class));
+                listModify.add( stringBuilderValue);
+
+
+                linkedList.add(String.valueOf(listModify));
+
+
+                arrayAdapter.notifyDataSetChanged();
+                ResizeListView resizeListView = new ResizeListView();
+                resizeListView.resize(listViewProdukty);
+
+
+                Log.d("myTag", String.valueOf(System.currentTimeMillis() - Start));
+                //System.out.printf("czas: ",);
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+
+
+        });
+
+    }
+
     public void addProductToDatabase(String selectedItem, String ilosc) {
 
         double converterValue = (Double.valueOf(ilosc) / 100);
@@ -291,21 +276,21 @@ public class AddProductActivity extends AppCompatActivity {
         int indexBiałko = selectedItem.indexOf("B:") + 2;
         int indexTłuszcze = selectedItem.indexOf("T:") + 2;
         int indexBłonnik = selectedItem.indexOf("Błonnik:") + 8;
-        int indexKcal = selectedItem.indexOf("kcal");
+        int indexKcal = selectedItem.indexOf("Kalorie:")+ 8;
 
-        int znakWęglowodany = selectedItem.indexOf("|", indexWęglowodany);
-        int znakBiałko = selectedItem.indexOf("|", indexBiałko);
-        int znakTłszcze = selectedItem.indexOf("|", indexTłuszcze);
-        int znakBłonnik = selectedItem.indexOf("|", indexBłonnik);
-        int znakNazwaKalorie = selectedItem.indexOf("|");
+        int znakWęglowodany = selectedItem.indexOf(".", indexWęglowodany);
+        int znakBiałko = selectedItem.indexOf(".", indexBiałko);
+        int znakTłszcze = selectedItem.indexOf(".", indexTłuszcze);
+        int znakBłonnik = selectedItem.indexOf(".", indexBłonnik);
+        int znakNazwaKalorie = selectedItem.indexOf(".");
 
         String ciagWęglowodany = selectedItem.substring(indexWęglowodany, znakWęglowodany);
         String ciagBiałko = selectedItem.substring(indexBiałko, znakBiałko);
         String ciagTłszcze = selectedItem.substring(indexTłuszcze, znakTłszcze);
         String ciagBłonnik = selectedItem.substring(indexBłonnik, znakBłonnik);
 
-        String ciagNazwa = selectedItem.substring(0, znakNazwaKalorie);
-        String ciagKalorie = selectedItem.substring(znakNazwaKalorie + 1, indexKcal);
+        String ciagNazwa = selectedItem.substring(0, indexKcal);
+        String ciagKalorie = selectedItem.substring(indexKcal, znakNazwaKalorie);
 
         kalorie = (Double.valueOf(ciagKalorie) * converterValue);
         białko = Double.valueOf(ciagBiałko) * converterValue;
@@ -357,20 +342,14 @@ public class AddProductActivity extends AppCompatActivity {
             baza.insert(BazaDanychStruktura.TabelaHash, null, rekordHash);
             k.close();
             baza.close();
+        }finally {
+            baza.close();
         }
-        baza.close();
+
 
     }
 
-    public void sharedPreferencesFromDietFragment() {
-        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
-        switchOnOfS = sharedPreferences.getBoolean(SWITCHS, false);
-        switchOnOfL = sharedPreferences.getBoolean(SWITCHL, false);
-        switchOnOfGOS = sharedPreferences.getBoolean(SWITCHGOS, false);
-        switchOnOfFOS = sharedPreferences.getBoolean(SWITCHFOS, false);
-        switchOnOfP = sharedPreferences.getBoolean(SWITCHP, false);
-        switchOnOfF = sharedPreferences.getBoolean(SWITCHF, false);
-    }
+
 
 }
 

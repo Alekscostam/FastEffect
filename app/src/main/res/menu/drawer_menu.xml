@@ -29,10 +29,7 @@
                 android:icon="@drawable/ic_sport"
                 android:title="Aktywność" />
 
-            <item
-                android:id="@+id/nav_diet"
-                android:icon="@drawable/ic_restaurant"
-                android:title="Dieta" />
+
         </group>
 
         <group

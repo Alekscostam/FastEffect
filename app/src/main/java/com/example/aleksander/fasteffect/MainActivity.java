@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,15 +15,11 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.example.aleksander.fasteffect.AuxiliaryClass.BazaDanychStruktura;
-import com.example.aleksander.fasteffect.FragmentClass.DietFragment;
 import com.example.aleksander.fasteffect.FragmentClass.ExportFragment;
 import com.example.aleksander.fasteffect.FragmentClass.HouseFragment;
 import com.example.aleksander.fasteffect.FragmentClass.ProfileFragment;
 import com.example.aleksander.fasteffect.FragmentClass.SportFragment;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
-import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -125,9 +120,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_activity:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SportFragment()).commit();
-                break;
-            case R.id.nav_diet:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DietFragment()).commit();
                 break;
             case R.id.nav_importExport:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ExportFragment()).commit();

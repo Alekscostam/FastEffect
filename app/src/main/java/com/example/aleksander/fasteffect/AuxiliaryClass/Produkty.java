@@ -8,7 +8,7 @@ public class Produkty {
     public Double Tłuszcze;
     public Double Węglowodany;
     public Double Błonnik;
-    public String Nietolerancje;
+
 
 
     public Produkty() {
@@ -26,15 +26,11 @@ public class Produkty {
 
     @Override
     public String toString() {
-
-        return  "| " +
-                this.Kalorie + " kcal \n" +
-                "B: " + Białko +
-                " | T: " + Tłuszcze +
-                " | W: " + Węglowodany +
-                " | Błonnik: " + Błonnik +
-                " | Zawiera:" + Nietolerancje;
-
+        return
+                "  Kalorie: " + Kalorie +
+                ", B: " + Białko +
+                ", T: " + Tłuszcze +
+                ", W: " + Węglowodany +
+                ", Błonnik: " + Błonnik ;
     }
-
 }
