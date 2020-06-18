@@ -204,7 +204,7 @@ public class AddProductActivity extends AppCompatActivity {
             }
         });
 
-        imageButtoAdd.setOnClickListener(new View.OnClickListener() {
+        imageButtoAdd.setOnClickListener(view ->{
             @Override
             public void onClick(View view) {
                 Intent cofnij = new Intent(getApplicationContext(), AddNewProductActivity.class);
