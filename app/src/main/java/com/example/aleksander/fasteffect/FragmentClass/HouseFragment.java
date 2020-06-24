@@ -14,6 +14,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -508,6 +509,8 @@ public class HouseFragment extends Fragment {
         listViewKolacja.setAdapter(adapterKolacja);
 
 
+        long licznik= System.currentTimeMillis();
+
         SQLiteDatabase baza = getActivity().openOrCreateDatabase(BazaDanychStruktura.BazaPlik, Context.MODE_PRIVATE, null);
 
         for (int i = 1; i <= 5; i++) {
@@ -547,6 +550,9 @@ public class HouseFragment extends Fragment {
             }
         }
         baza.close();
+
+        Toast.makeText(getContext(), String.valueOf(System.currentTimeMillis()-licznik), Toast.LENGTH_SHORT).show();
+       // System.out.println( String.valueOf(System.currentTimeMillis()-licznik));
     }
 
     public void pickDinner(Cursor k, ArrayList<String> listItem, ListView listView, CardView cardView,
@@ -1110,6 +1116,7 @@ public class HouseFragment extends Fragment {
             refreshAfterDbChanged();
         }
     }
+
 
     public void refreshApp() {
 

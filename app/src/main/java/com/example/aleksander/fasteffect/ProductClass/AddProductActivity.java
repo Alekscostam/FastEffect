@@ -44,6 +44,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -51,7 +52,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
+import java.util.stream.Stream;
 
 
 public class AddProductActivity extends AppCompatActivity {
@@ -72,6 +73,7 @@ public class AddProductActivity extends AppCompatActivity {
     public Double węglowodany;
     public Double błonnik;
 
+    Long calyczas=0l;
     String dateOpen;
     String poraDnia;
 
@@ -107,6 +109,7 @@ public class AddProductActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
+                Toast.makeText(AddProductActivity.this, String.valueOf(calyczas), Toast.LENGTH_SHORT).show();
                 final EditText input = new EditText(AddProductActivity.this);
                 final String selectedItem = (String) adapterView.getItemAtPosition(i);
 
@@ -214,6 +217,9 @@ public class AddProductActivity extends AppCompatActivity {
 
     }
 
+
+
+
     public void TestMethod() {
         databaseReference.addChildEventListener(new ChildEventListener() {
 
@@ -221,29 +227,23 @@ public class AddProductActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
                 Long Start = System.currentTimeMillis();
                 StringBuilder stringBuilderValue = new StringBuilder();
 
                 stringBuilderValue.setLength(0);
-                //   stringBuilderValue.append(dataSnapshot.getKey() + " " + dataSnapshot.getValue(Produkty.class));
-
-                Toast.makeText(AddProductActivity.this, stringBuilderValue, Toast.LENGTH_SHORT).show();
                 final List<StringBuilder> listModify = new ArrayList<>();
 
                 stringBuilderValue.append(" "+dataSnapshot.getKey() + " ] " + dataSnapshot.getValue(Produkty.class));
                 listModify.add( stringBuilderValue);
 
-
                 linkedList.add(String.valueOf(listModify));
-
-
                 arrayAdapter.notifyDataSetChanged();
                 ResizeListView resizeListView = new ResizeListView();
                 resizeListView.resize(listViewProdukty);
-
-
-                Log.d("myTag", String.valueOf(System.currentTimeMillis() - Start));
-                //System.out.printf("czas: ",);
+                Long stop = System.currentTimeMillis();
+                calyczas+=stop-Start;
+                System.out.println(String.valueOf(calyczas));
             }
 
             @Override
@@ -266,6 +266,7 @@ public class AddProductActivity extends AppCompatActivity {
         });
 
     }
+
 
     public void addProductToDatabase(String selectedItem, String ilosc) {
 
