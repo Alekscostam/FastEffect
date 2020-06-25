@@ -11,6 +11,9 @@ public class InformationProduct {
         return nazwa;
     }
 
+    public InformationProduct() {
+    }
+
     public InformationProduct(String nazwa, String ilosc) {
 
         setNazwa(nazwa);
@@ -20,7 +23,7 @@ public class InformationProduct {
 
     public static void setNazwa(String nazwa) {
 
-        InformationProduct.nazwa = nazwa.substring(0, nazwa.indexOf("|"));
+        InformationProduct.nazwa = nazwa.substring(0, nazwa.indexOf('|'));
     }
 
     public  static String getIlosc() {
@@ -31,7 +34,7 @@ public class InformationProduct {
     public  static void setIlosc(String ilosc) {
 
         String ciagIlosc = ilosc.substring(ilosc.indexOf("Ilość:") + 6);
-        ciagIlosc.replaceAll("\\s+", "");
-        InformationProduct.ilosc = ciagIlosc;
+        InformationProduct.ilosc = ciagIlosc.replaceAll("\\s+", "");
+
     }
 }

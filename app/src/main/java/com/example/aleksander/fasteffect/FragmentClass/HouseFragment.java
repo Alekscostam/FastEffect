@@ -14,7 +14,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -46,6 +45,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Optional;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -146,7 +146,8 @@ public class HouseFragment extends Fragment {
 
     private DatePickerDialog.OnDateSetListener mDateSetListener;
 
-    public HouseFragment() {}
+    public HouseFragment() {
+    }
 
 
     @Override
@@ -227,6 +228,7 @@ public class HouseFragment extends Fragment {
 
 
         {
+            ;
             listViewSniadanie.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -509,7 +511,7 @@ public class HouseFragment extends Fragment {
         listViewKolacja.setAdapter(adapterKolacja);
 
 
-        long licznik= System.currentTimeMillis();
+        long licznik = System.currentTimeMillis();
 
         SQLiteDatabase baza = getActivity().openOrCreateDatabase(BazaDanychStruktura.BazaPlik, Context.MODE_PRIVATE, null);
 
@@ -525,34 +527,26 @@ public class HouseFragment extends Fragment {
                             textViewData.getText().toString() + "'",
                     null);
 
+
             if (k.getCount() == 0) {
             } else {
                 if (i == 1) {
-                    int a = 0;
-                    pickDinner(k, listItemSniadanie, listViewSniadanie, cardViewSniadanie, textViewSniadanie, a);
-                }
-                if (i == 2) {
-                    int a = 1;
-                    pickDinner(k, listItemLunch, listViewLunch, cardViewLunch, textViewLunch, a);
-                }
-                if (i == 3) {
-                    int a = 2;
-                    pickDinner(k, listItemObiad, listViewObiad, cardViewObiad, textViewObiad, a);
-                }
-                if (i == 4) {
-                    int a = 3;
-                    pickDinner(k, listItemPrzekąska, listViewPrzekąska, cardViewPrzekąska, textViewPrzekąska, a);
-                }
-                if (i == 5) {
-                    int a = 4;
-                    pickDinner(k, listItemKolacja, listViewKolacja, cardViewKolacja, textViewKolacja, a);
+                    pickDinner(k, listItemSniadanie, listViewSniadanie, cardViewSniadanie, textViewSniadanie, i - 1);
+                } else if (i == 2) {
+                    pickDinner(k, listItemLunch, listViewLunch, cardViewLunch, textViewLunch, i - 1);
+                } else if (i == 3) {
+                    pickDinner(k, listItemObiad, listViewObiad, cardViewObiad, textViewObiad, i - 1);
+                } else if (i == 4) {
+                    pickDinner(k, listItemPrzekąska, listViewPrzekąska, cardViewPrzekąska, textViewPrzekąska, i - 1);
+                } else if (i == 5) {
+                    pickDinner(k, listItemKolacja, listViewKolacja, cardViewKolacja, textViewKolacja, i - 1);
                 }
             }
         }
         baza.close();
 
-        Toast.makeText(getContext(), String.valueOf(System.currentTimeMillis()-licznik), Toast.LENGTH_SHORT).show();
-       // System.out.println( String.valueOf(System.currentTimeMillis()-licznik));
+        Toast.makeText(getContext(), String.valueOf(System.currentTimeMillis() - licznik), Toast.LENGTH_SHORT).show();
+        // System.out.println( String.valueOf(System.currentTimeMillis()-licznik));
     }
 
     public void pickDinner(Cursor k, ArrayList<String> listItem, ListView listView, CardView cardView,
@@ -782,30 +776,47 @@ public class HouseFragment extends Fragment {
             int wzrost = Integer.valueOf(dataWzrost);
             int wiek = Integer.valueOf(dataWiek);
 
-            {
-                if (dataAktywnosc.equals("0")) {
-                    aktywnosc = 1.2;
-                } else if (dataAktywnosc.equals("1")) {
-                    aktywnosc = 1.3;
-                } else if (dataAktywnosc.equals("2")) {
-                    aktywnosc = 1.5;
-                } else if (dataAktywnosc.equals("3")) {
-                    aktywnosc = 1.7;
-                } else if (dataAktywnosc.equals("4")) {
-                    aktywnosc = 1.9;
-                }
 
-            }
-            {
-                if (dataCel.equals("0")) {
-                    cel = 0;
-                } else if (dataCel.equals("1")) {
-                    cel = 300;
-                } else if (dataCel.equals("2")) {
-                    cel = -300;
+            if (dataAktywnosc != null) {
+                switch (dataAktywnosc) {
+                    case "0":
+                        aktywnosc = 1.2;
+                        break;
+                    case "1":
+                        aktywnosc = 1.3;
+                        break;
+                    case "2":
+                        aktywnosc = 1.5;
+                        break;
+                    case "3":
+                        aktywnosc = 1.7;
+                        break;
+                    case "4":
+                        aktywnosc = 1.9;
+                        break;
                 }
             }
-            kcalSum = mathematicalForSecondOption(waga, wzrost, wiek, dataPlec, cel, aktywnosc);
+
+            if (dataCel != null) {
+                switch (dataCel) {
+                    case "0":
+                        cel = 0;
+                        break;
+                    case "1":
+                        cel = 300;
+                        break;
+                    case "2":
+                        cel = -300;
+                        break;
+                }
+            }
+
+
+            if (dataPlec != null) {
+                kcalSum = mathematicalForSecondOption(waga, wzrost, wiek, dataPlec, cel, aktywnosc);
+            }
+
+
         }
 
         textViewAllCalories.setText("Kcal:\n " + kcalSum + "/" + Math.round(sumKcal));
@@ -813,7 +824,7 @@ public class HouseFragment extends Fragment {
         textViewAllCarb.setText("Węglowodany:\n " + maxValue[1] + "/" + węglowodanyS);
         textViewAllFat.setText("Tłuszcze:\n " + maxValue[2] + "/" + tłuszczeS);
 
-        setProgressBar(Integer.valueOf(kcalSum), sumKcal, progressBarCalories);
+        setProgressBar(kcalSum, sumKcal, progressBarCalories);
         setProgressBar(doubleToInt(maxValue[0]), doubleToInt(sumP), progressBarProtein);
         setProgressBar(doubleToInt(maxValue[1]), doubleToInt(sumW), progressBarCarb);
         setProgressBar(doubleToInt(maxValue[2]), doubleToInt(sumT), progressBarFat);
@@ -843,10 +854,8 @@ public class HouseFragment extends Fragment {
 
 
     public int doubleToInt(double doubleVariables) {
-
         Double D = doubleVariables;
-        int i = Integer.valueOf(D.intValue());
-        return i;
+        return D.intValue();
     }
 
     public int mathematicalForSecondOption(double waga, int wzrost, int wiek, String plec, int cel, double aktywnosc) {
@@ -1033,7 +1042,7 @@ public class HouseFragment extends Fragment {
                 "SELECT Hash.idHash " +
                         "FROM  Hash " +
                         "WHERE Hash.idPoraDnia = '" + poraDnia + "' " +
-                        "AND Hash.Data = '"   + textViewData.getText().toString() + "' " +
+                        "AND Hash.Data = '" + textViewData.getText().toString() + "' " +
                         "AND Hash.idPosilek ='" + idPosilek.getString(0) + "'",
                 null);
 
@@ -1051,7 +1060,7 @@ public class HouseFragment extends Fragment {
             {
                 b = formaterDouble((wartoscGram * b) / il);
                 bl = formaterDouble((wartoscGram * bl) / il);
-                kcal = doubleToInt((wartoscGram * kcal) / il);
+                kcal = (wartoscGram * kcal) / il;
                 t = formaterDouble((wartoscGram * t) / il);
                 w = formaterDouble((wartoscGram * w) / il);
                 il = wartoscGram;
@@ -1092,7 +1101,7 @@ public class HouseFragment extends Fragment {
                         "SELECT Posilek.idPosilek  " +
                                 "FROM  Posilek " +
                                 "WHERE Posilek.Nazwa " +
-                                "like '" + daneProduktu.getString(6)+ "' " +
+                                "like '" + daneProduktu.getString(6) + "' " +
                                 "AND Posilek.Ilość='" + wartoscGram + "' ",
                         null);
 

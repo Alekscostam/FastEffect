@@ -18,8 +18,12 @@ import android.widget.Button;
 import com.example.aleksander.fasteffect.AuxiliaryClass.BazaDanychStruktura;
 import com.example.aleksander.fasteffect.R;
 
+
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.logging.Logger;
 
 public class ExportFragment extends Fragment {
 
@@ -38,7 +42,7 @@ public class ExportFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_export, container, false);
 
-        buttonExport =  view.findViewById(R.id.d_export);
+        buttonExport = view.findViewById(R.id.d_export);
 
         final SQLiteDatabase baza = getActivity().openOrCreateDatabase(BazaDanychStruktura.BazaPlik, Context.MODE_PRIVATE, null);
 
@@ -48,9 +52,9 @@ public class ExportFragment extends Fragment {
 
                 Cursor pp = baza.rawQuery(
                         "SELECT Hash.Data,PoraDnia.Pora ,Posilek.Nazwa, Posilek.Kalorie, Posilek.Ilość, Posilek.Bialko, Posilek.Weglowodany, Posilek.Tluszcze, Posilek.Błonnik " +
-                        "FROM Hash, Posilek,PoraDnia " +
-                        "WHERE Hash.idPosilek=Posilek.idPosilek " +
-                        "AND Hash.idPoraDnia=PoraDnia.idPoraDnia;",
+                                "FROM Hash, Posilek,PoraDnia " +
+                                "WHERE Hash.idPosilek=Posilek.idPosilek " +
+                                "AND Hash.idPoraDnia=PoraDnia.idPoraDnia;",
                         null);
 
                 pp.moveToFirst();
@@ -76,14 +80,15 @@ public class ExportFragment extends Fragment {
 
                 }
 
+
+                FileOutputStream outputStream = null;
                 try {
 
-                    FileOutputStream outputStream = getActivity().openFileOutput("Dziennik", Context.MODE_PRIVATE);
+                    outputStream = getActivity().openFileOutput("Dziennik", Context.MODE_PRIVATE);
                     outputStream.write((data.toString()).getBytes());
                     outputStream.close();
                     Context context = getActivity().getApplicationContext();
                     File filelocation = new File(getActivity().getFilesDir(), "data");
-
                     Uri path = FileProvider.getUriForFile(context, "com.example.aleksander.fasteffect.fileprovider", filelocation);
                     Intent fileIntent = new Intent(Intent.ACTION_SEND);
                     fileIntent.setType("text/*");
@@ -92,10 +97,12 @@ public class ExportFragment extends Fragment {
                     fileIntent.putExtra(Intent.EXTRA_STREAM, path);
                     startActivity(Intent.createChooser(fileIntent, "send or save your food diary"));
 
-
-                } catch (Exception e) {
+                } catch (IOException e) {
                     e.printStackTrace();
+
                 }
+
+
             }
         });
 

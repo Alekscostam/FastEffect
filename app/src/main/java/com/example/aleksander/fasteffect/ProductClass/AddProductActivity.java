@@ -305,7 +305,7 @@ public class AddProductActivity extends AppCompatActivity {
         String węglowodanyS = (df.format(węglowodany)).replace(",", ".");
         String błonnikS = (df.format(błonnik)).replace(",", ".");
 
-        BazaDanychStruktura bazaDanychStruktura = new BazaDanychStruktura();
+
 
         SQLiteDatabase baza = openOrCreateDatabase(BazaDanychStruktura.BazaPlik,
                 android.content.Context.MODE_PRIVATE, null);
