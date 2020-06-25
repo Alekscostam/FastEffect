@@ -33,6 +33,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+
 import com.example.aleksander.fasteffect.ProductClass.AddProductActivity;
 import com.example.aleksander.fasteffect.AuxiliaryClass.BazaDanychStruktura;
 import com.example.aleksander.fasteffect.AuxiliaryClass.DataHolder;
