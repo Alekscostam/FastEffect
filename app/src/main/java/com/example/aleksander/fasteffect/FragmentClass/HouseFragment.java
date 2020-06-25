@@ -33,8 +33,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.fragment.app.Fragment;
-
 import com.example.aleksander.fasteffect.ProductClass.AddProductActivity;
 import com.example.aleksander.fasteffect.AuxiliaryClass.BazaDanychStruktura;
 import com.example.aleksander.fasteffect.AuxiliaryClass.DataHolder;
@@ -47,7 +45,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Optional;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -160,7 +157,7 @@ public class HouseFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_house, container, false);
         hideSoftKeyboard(getActivity());
 
-        progressBarCalories = view.findViewById(R.id.progressBarCalories);
+        progressBarCalories =  view.findViewById(R.id.progressBarCalories);
         progressBarProtein = view.findViewById(R.id.progressBarProtein);
         progressBarCarb = view.findViewById(R.id.progressBarCarb);
         progressBarFat = view.findViewById(R.id.progressBarFat);
@@ -488,6 +485,7 @@ public class HouseFragment extends Fragment {
         baza.insert(BazaDanychStruktura.TabelaHash, null, rekord);
         baza.close();
     }
+
 
 
     public void viewDatabase() {
@@ -1127,7 +1125,6 @@ public class HouseFragment extends Fragment {
             refreshAfterDbChanged();
         }
     }
-
 
     public void refreshApp() {
 
