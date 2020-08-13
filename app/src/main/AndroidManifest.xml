@@ -3,9 +3,9 @@
     package="com.example.aleksander.fasteffect">
 
 
-
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".VerifyClass"
         android:allowBackup="true"
@@ -13,16 +13,15 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/ic_tools_and_utensils"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        >
+        android:theme="@style/AppTheme">
 
         <activity
             android:name=".LoginActivity"
-            android:noHistory = "true"
-            >
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.DELETE"/>
+                <action android:name="android.intent.action.DELETE" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
@@ -30,34 +29,32 @@
 
         <activity
             android:name=".MainActivity"
-            android:noHistory = "true"
-           />
+            android:noHistory="true" />
 
         <activity
             android:name=".RegisterActivity"
-            android:noHistory = "true"
-           />
+            android:noHistory="true" />
 
         <activity
-            android:name=".ProductClass.AddProductActivity"
-            android:noHistory = "true"
+            android:name=".ProductClasses.AddProductActivity"
+            android:noHistory="true"
 
             />
 
         <activity
-            android:name=".ProductClass.AddNewProductActivity"
-            android:noHistory = "true"
+            android:name=".ProductClasses.AddNewProductActivity"
+            android:noHistory="true"
 
             />
+
         <provider
-            android:authorities="com.example.aleksander.fasteffect.fileprovider"
             android:name="android.support.v4.content.FileProvider"
-            android:grantUriPermissions="true"
-            android:exported="false">
+            android:authorities="com.example.aleksander.fasteffect.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"
-           />
+                android:resource="@xml/provider_paths" />
 
         </provider>
     </application>

@@ -1,10 +1,13 @@
-package com.example.aleksander.fasteffect.AuxiliaryClass;
+package com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses;
 
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+/**
+ * Klasa służaca do dynamicznej zmiany lisView
+ */
 public class ResizeListView {
 
     public void resize(ListView listView) {

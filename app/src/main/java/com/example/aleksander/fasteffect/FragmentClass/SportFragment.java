@@ -18,55 +18,50 @@ import android.widget.Toast;
 
 import com.example.aleksander.fasteffect.R;
 
+import static android.widget.LinearLayout.LayoutParams.MATCH_PARENT;
+import static android.widget.LinearLayout.LayoutParams.WRAP_CONTENT;
+import static java.util.Objects.requireNonNull;
+
 
 /**
- * A simple {@link Fragment} subclass.
+ * {@link Fragment}
+ * Klasa wykorzystywana do ustawien dotyczacych zapotrzebowania kalorycznego dla użytkownika
+ * Zakladka "Aktywność"
  */
 public class SportFragment extends Fragment {
 
-    int option = 1;
-
-    public SportFragment() {}
-
     public static final String SHARED_PREFS = "shaaredPrefs";
 
-    Button buttonSave;
-    int wartoscAktywnosc;
-    int wartoscRodzajSportu;
-    int wartoscCel;
+    private Button buttonSave;
+    private int valueActivity;
+    private int valueKindOfSport;
+    private int valueGoal;
 
-    TextInputEditText textInputEditTextCalories;
-    TextInputEditText textInputEditTextProtein;
-    TextInputEditText textInputEditTextCarb;
-    TextInputEditText textInputEditTextFat;
-    LinearLayout linearLayoutAutomatyczne;
-    LinearLayout linearLayoutReczne;
+    private LinearLayout linearLayoutAutomatically;
+    private LinearLayout linearLayoutManually;
 
+    protected String optionSelected;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_sport, container, false);
 
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        TextInputEditText textInputEditTextCalories = view.findViewById(R.id.textInputEditTextKalorie);
+        TextInputEditText textInputEditTextProtein = view.findViewById(R.id.textInputEditTextProtein);
+        TextInputEditText textInputEditTextCarb = view.findViewById(R.id.textInputEditTextCarb);
+        TextInputEditText textInputEditTextFat = view.findViewById(R.id.textInputEditTextFat);
 
-        Button buttonAutomatycznie = view.findViewById(R.id.buttonAutomatycznie);
-        Button buttonRecznie = view.findViewById(R.id.buttonRęczne);
+        SharedPreferences sharedPreferences = requireNonNull(getContext()).getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
 
-        linearLayoutAutomatyczne = view.findViewById(R.id.linearLayoutAutomatyczne);
-        linearLayoutReczne = view.findViewById(R.id.linearLayoutRęczne);
+        Button buttonAutomatically = view.findViewById(R.id.buttonAutomatycznie);
+        Button buttonManually = view.findViewById(R.id.buttonRęczne);
 
-        String optionSelected = sharedPreferences.getString("optionSelected", "0");
-        final String[] currentValue = {optionSelected};
+        linearLayoutAutomatically = view.findViewById(R.id.linearLayoutAutomatyczne);
+        linearLayoutManually = view.findViewById(R.id.linearLayoutRęczne);
 
-        option = Integer.valueOf(currentValue[0]);
-        setPref(option);
-
-        textInputEditTextCalories = view.findViewById(R.id.textInputEditTextKalorie);
-        textInputEditTextProtein = view.findViewById(R.id.textInputEditTextProtein);
-        textInputEditTextCarb = view.findViewById(R.id.textInputEditTextCarb);
-        textInputEditTextFat = view.findViewById(R.id.textInputEditTextFat);
+        optionSelected = String.valueOf(sharedPreferences.getString("optionSelected", "0"));
+        setPref(optionSelected);
 
         String dataMacro = sharedPreferences.getString("textCalories", "0"); //no id: default value
         textInputEditTextCalories.setText(dataMacro);
@@ -80,213 +75,169 @@ public class SportFragment extends Fragment {
         dataMacro = sharedPreferences.getString("textFat", "0"); //no id: default value
         textInputEditTextFat.setText(dataMacro);
 
-  /*      String dataCalories = sharedPreferences.getString("textCalories", "0"); //no id: default value
-        textInputEditTextCalories.setText(dataCalories);
-
-        String dataProtein = sharedPreferences.getString("textProtein", "0"); //no id: default value
-        textInputEditTextProtein.setText(dataProtein);
-
-        String dataCarb = sharedPreferences.getString("textCarb", "0"); //no id: default value
-        textInputEditTextCarb.setText(dataCarb);
-
-        String dataFat = sharedPreferences.getString("textFat", "0"); //no id: default value
-        textInputEditTextFat.setText(dataFat);*/
-
-        buttonAutomatycznie.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                ViewGroup.LayoutParams paramsReczne = linearLayoutReczne.getLayoutParams();
-                paramsReczne.height = 0;
-                paramsReczne.width = 0;
-                linearLayoutReczne.setLayoutParams(paramsReczne);
-                linearLayoutAutomatyczne.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
-                linearLayoutAutomatyczne.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
-
-                currentValue[0] = "0";
-
-            }
+        buttonAutomatically.setOnClickListener(view12 -> {
+            ViewGroup.LayoutParams paramsManually = linearLayoutManually.getLayoutParams();
+            paramsManually.height = 0;
+            paramsManually.width = 0;
+            linearLayoutManually.setLayoutParams(paramsManually);
+            linearLayoutAutomatically.getLayoutParams().height = WRAP_CONTENT;
+            linearLayoutAutomatically.getLayoutParams().width = MATCH_PARENT;
+            optionSelected = "0";
         });
 
-        buttonRecznie.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                ViewGroup.LayoutParams paramsAutomatyczne = linearLayoutAutomatyczne.getLayoutParams();
-                paramsAutomatyczne.height = 0;
-                paramsAutomatyczne.width = 0;
-                linearLayoutAutomatyczne.setLayoutParams(paramsAutomatyczne);
-                linearLayoutReczne.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
-                linearLayoutReczne.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
-
-                currentValue[0] = "1";
-
-            }
+        buttonManually.setOnClickListener(view13 -> {
+            ViewGroup.LayoutParams paramsAutomatically = linearLayoutAutomatically.getLayoutParams();
+            paramsAutomatically.height = 0;
+            paramsAutomatically.width = 0;
+            linearLayoutAutomatically.setLayoutParams(paramsAutomatically);
+            linearLayoutManually.getLayoutParams().height = WRAP_CONTENT;
+            linearLayoutManually.getLayoutParams().width = MATCH_PARENT;
+            optionSelected = "1";
         });
-
 
         buttonSave = view.findViewById(R.id.buttonSave);
 
-        final Spinner spinnerAktywnosc = view.findViewById(R.id.spinnerAktywnosc);
-        ArrayAdapter<CharSequence> adapterAktywnosc = ArrayAdapter.createFromResource(getActivity(), R.array.spinnerActivities, R.layout.spinner_item_my);
-        adapterAktywnosc.setDropDownViewResource(R.layout.spinner_item_my);
-        spinnerAktywnosc.setAdapter(adapterAktywnosc);
+        final Spinner spinnerActivity = view.findViewById(R.id.spinnerAktywnosc);
+        ArrayAdapter<CharSequence> adapterActivity = ArrayAdapter.createFromResource(requireNonNull(getActivity()), R.array.spinnerActivities, R.layout.spinner_item_my);
+        adapterActivity.setDropDownViewResource(R.layout.spinner_item_my);
+        spinnerActivity.setAdapter(adapterActivity);
 
         buttonSave.setEnabled(true);
 
-        String dataAktywnosc = sharedPreferences.getString("spinnerAktywnosc", "0");
-        spinnerAktywnosc.setSelection(Integer.valueOf(dataAktywnosc));
+        String activitySpinnerValue = sharedPreferences.getString("spinnerAktywnosc", "0");
+        assert activitySpinnerValue != null;
+        spinnerActivity.setSelection(Integer.parseInt(activitySpinnerValue));
 
-        spinnerAktywnosc.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinnerActivity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-                String position = String.valueOf(spinnerAktywnosc.getSelectedItemPosition());
-
-                wartoscAktywnosc = Integer.valueOf(position);
+                String position = String.valueOf(spinnerActivity.getSelectedItemPosition());
+                valueActivity = Integer.parseInt(position);
                 buttonSave.setEnabled(true);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
+                // empty method from setOnItemSelectedListener
             }
         });
 
-        final Spinner spinnerRodzajSportu = view.findViewById(R.id.spinnerRodzajSportu);
-        ArrayAdapter<CharSequence> adapterRodzajSportu = ArrayAdapter.createFromResource(getActivity(), R.array.spinnerTypeOfActivities, R.layout.spinner_item_my);
-        adapterRodzajSportu.setDropDownViewResource(R.layout.spinner_item_my);
-        spinnerRodzajSportu.setAdapter(adapterRodzajSportu);
+        final Spinner spinnerKindOfSport = view.findViewById(R.id.spinnerRodzajSportu);
+        ArrayAdapter<CharSequence> adapterKindOfSport = ArrayAdapter.createFromResource(getActivity(), R.array.spinnerTypeOfActivities, R.layout.spinner_item_my);
+        adapterKindOfSport.setDropDownViewResource(R.layout.spinner_item_my);
+        spinnerKindOfSport.setAdapter(adapterKindOfSport);
 
         String dataRodzajSportu = sharedPreferences.getString("spinnerRodzajSportu", "0"); //no id: default value
-        spinnerRodzajSportu.setSelection(Integer.valueOf(dataRodzajSportu));
+        assert dataRodzajSportu != null;
+        spinnerKindOfSport.setSelection(Integer.parseInt(dataRodzajSportu));
 
-        spinnerRodzajSportu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinnerKindOfSport.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-                String position = String.valueOf(spinnerRodzajSportu.getSelectedItemPosition());
-
-                wartoscRodzajSportu = Integer.valueOf(position);
+                String position = String.valueOf(spinnerKindOfSport.getSelectedItemPosition());
+                valueKindOfSport = Integer.parseInt(position);
                 buttonSave.setEnabled(true);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
+                // empty method from setOnItemSelectedListener
             }
         });
 
-        final Spinner spinnerCel = view.findViewById(R.id.spinnerCel);
-        ArrayAdapter<CharSequence> adapterCel = ArrayAdapter.createFromResource(getActivity(), R.array.spinnerGoals, R.layout.spinner_item_my);
-        adapterCel.setDropDownViewResource(R.layout.spinner_item_my);
-        spinnerCel.setAdapter(adapterCel);
+        final Spinner spinnerGoal = view.findViewById(R.id.spinnerCel);
+        ArrayAdapter<CharSequence> adapterGoal = ArrayAdapter.createFromResource(getActivity(), R.array.spinnerGoals, R.layout.spinner_item_my);
+        adapterGoal.setDropDownViewResource(R.layout.spinner_item_my);
+        spinnerGoal.setAdapter(adapterGoal);
 
-        String dataCel = sharedPreferences.getString("spinnerCel", "0"); //no id: default value
-        spinnerCel.setSelection(Integer.valueOf(dataCel));
+        String dataGoal = sharedPreferences.getString("spinnerCel", "0"); //no id: default value
+        assert dataGoal != null;
+        spinnerGoal.setSelection(Integer.parseInt(dataGoal));
 
-        spinnerCel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinnerGoal.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String position = String.valueOf(spinnerCel.getSelectedItemPosition());
-                wartoscCel = Integer.valueOf(position);
+                String position = String.valueOf(spinnerGoal.getSelectedItemPosition());
+                valueGoal = Integer.parseInt(position);
                 buttonSave.setEnabled(true);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
+                //empty method from setOnItemSelectedListener
             }
         });
 
-        buttonSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SharedPreferences sharedPreferences = getContext().getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
+        buttonSave.setOnClickListener(view1 -> {
+            SharedPreferences sharedPreferencesSharedPrefs = getContext().getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferencesSharedPrefs.edit();
 
-                if (currentValue[0].equals("0")) {
-                    optionSet("0");
+            if (optionSelected.equals("0")) {
+                optionSet("0");
+                editor.putString("spinnerAktywnosc", String.valueOf(valueActivity)); //InputString: from the EditText
+                spinnerActivity.setSelection(valueActivity);
+                editor.putString("spinnerRodzajSportu", String.valueOf(valueKindOfSport)); //InputString: from the EditText
+                spinnerKindOfSport.setSelection(valueKindOfSport);
+                editor.putString("spinnerCel", String.valueOf(valueGoal)); //InputString: from the EditText
+                spinnerGoal.setSelection(valueGoal);
+                editor.apply();
+            }
+            // druga opcja
+            if (!optionSelected.equals("0")) {
+                optionSet("1");
+                int protein = Integer.parseInt(requireNonNull(textInputEditTextProtein.getText()).toString());
+                int carb = Integer.parseInt(requireNonNull(textInputEditTextCarb.getText()).toString());
+                int fat = Integer.parseInt(requireNonNull(textInputEditTextFat.getText()).toString());
 
-                    editor.putString("spinnerAktywnosc", String.valueOf(wartoscAktywnosc)); //InputString: from the EditText
-                    spinnerAktywnosc.setSelection(wartoscAktywnosc);
-                    editor.putString("spinnerRodzajSportu", String.valueOf(wartoscRodzajSportu)); //InputString: from the EditText
-                    spinnerRodzajSportu.setSelection(wartoscRodzajSportu);
-                    editor.putString("spinnerCel", String.valueOf(wartoscCel)); //InputString: from the EditText
-                    spinnerCel.setSelection(wartoscCel);
-
+                if ((protein + carb + fat) == 100) {
+                    editor.putString("textProtein", String.valueOf(protein));
+                    editor.putString("textCarb", String.valueOf(carb));
+                    editor.putString("textFat", String.valueOf(fat));
                     editor.commit();
 
-                }
-                // druga opcja
-                if (currentValue[0].equals("1")) {
-                    optionSet("1");
-                    int Protein = Integer.valueOf(textInputEditTextProtein.getText().toString());
-                    int Carb = Integer.valueOf(textInputEditTextCarb.getText().toString());
-                    int Fat = Integer.valueOf(textInputEditTextFat.getText().toString());
-
-                    {
-                        if ((Protein + Carb + Fat) == 100) {
-
-                            editor.putString("textProtein", String.valueOf(Protein));
-                            editor.putString("textCarb", String.valueOf(Carb));
-                            editor.putString("textFat", String.valueOf(Fat));
-
-                            editor.commit();
-
-                        } else {
-                            Toast.makeText(getContext(), "Wartość procentowa nie jest równa 100%", Toast.LENGTH_SHORT).show();
-
-                        }
-
-                    }
-                    {
-                        int Calories = Integer.valueOf(textInputEditTextCalories.getText().toString());
-                        if ((Calories) < 100) {
-                            Toast.makeText(getContext(), "Wartosc za mala", Toast.LENGTH_SHORT).show();
-                        } else {
-
-                            editor.putString("textCalories", String.valueOf(Calories));
-                            editor.commit();
-                        }
-                    }
-
+                } else {
+                    Toast.makeText(getContext(), "Wartość procentowa nie jest równa 100%", Toast.LENGTH_SHORT).show();
                 }
 
-                Toast.makeText(getContext(), "Zapisano", Toast.LENGTH_SHORT).show();
-                buttonSave.setEnabled(true);
+                int calories = Integer.parseInt(requireNonNull(textInputEditTextCalories.getText()).toString());
+                if ((calories) < 100) {
+                    Toast.makeText(getContext(), "Wartość jest za mała", Toast.LENGTH_SHORT).show();
+                } else {
+                    editor.putString("textCalories", String.valueOf(calories));
+                    editor.commit();
+                }
             }
+            Toast.makeText(getContext(), "Zapisano!", Toast.LENGTH_SHORT).show();
+            buttonSave.setEnabled(true);
         });
-
         return view;
-
     }
 
     public void optionSet(String option) {
-
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = requireNonNull(getContext()).getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("optionSelected", String.valueOf(option));
-        editor.commit();
-
+        editor.putString("optionSelected", option);
+        editor.apply();
     }
 
-    public void setPref(int optionSelected) {
-        if (optionSelected == 0) {
-            ViewGroup.LayoutParams paramsReczne = linearLayoutReczne.getLayoutParams();
+    public void setPref(String optionSelected) {
+        if (optionSelected.equals("0")) {
+            ViewGroup.LayoutParams paramsReczne = linearLayoutManually.getLayoutParams();
             paramsReczne.height = 0;
             paramsReczne.width = 0;
-            linearLayoutReczne.setLayoutParams(paramsReczne);
-            linearLayoutAutomatyczne.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
-            linearLayoutAutomatyczne.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
+            linearLayoutManually.setLayoutParams(paramsReczne);
+            linearLayoutAutomatically.getLayoutParams().height = WRAP_CONTENT;
+            linearLayoutAutomatically.getLayoutParams().width = MATCH_PARENT;
         }
-        if (optionSelected == 1) {
-            ViewGroup.LayoutParams paramsAutomatyczne = linearLayoutAutomatyczne.getLayoutParams();
+        if (optionSelected.equals("1")) {
+            ViewGroup.LayoutParams paramsAutomatyczne = linearLayoutAutomatically.getLayoutParams();
             paramsAutomatyczne.height = 0;
             paramsAutomatyczne.width = 0;
-            linearLayoutAutomatyczne.setLayoutParams(paramsAutomatyczne);
-            linearLayoutReczne.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
-            linearLayoutReczne.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
+            linearLayoutAutomatically.setLayoutParams(paramsAutomatyczne);
+            linearLayoutManually.getLayoutParams().height = WRAP_CONTENT;
+            linearLayoutManually.getLayoutParams().width = MATCH_PARENT;
         }
     }
-
 }

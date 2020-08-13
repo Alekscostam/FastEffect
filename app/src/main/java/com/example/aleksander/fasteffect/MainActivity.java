@@ -5,31 +5,38 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.example.aleksander.fasteffect.AuxiliaryClass.BazaDanychStruktura;
+import com.example.aleksander.fasteffect.AdditionalClasses.DatabaseClasses.SQLDatabaseStructure;
 import com.example.aleksander.fasteffect.FragmentClass.ExportFragment;
 import com.example.aleksander.fasteffect.FragmentClass.HouseFragment;
 import com.example.aleksander.fasteffect.FragmentClass.ProfileFragment;
 import com.example.aleksander.fasteffect.FragmentClass.SportFragment;
 import com.google.firebase.auth.FirebaseAuth;
 
+import static com.example.aleksander.fasteffect.AdditionalClasses.DatabaseClasses.SQLDatabaseStructure.TABLE_TIME_OF_DAY;
+import static com.example.aleksander.fasteffect.AdditionalClasses.DatabaseClasses.SQLDatabaseStructure.TIME_COLUMN_TIME_OF_DAY;
+import static com.example.aleksander.fasteffect.Repository.DatabaseQuery.createTableHash;
+import static com.example.aleksander.fasteffect.Repository.DatabaseQuery.createTableMeal;
+import static com.example.aleksander.fasteffect.Repository.DatabaseQuery.createTableTimeOfDay;
+import static com.example.aleksander.fasteffect.Repository.DatabaseQuery.dropTable;
 
+/**
+ * Klasa główna która inicializuje bazę i wszelkie podtsawowe componenty
+ */
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-
     private static final String PREF_NAME = "prefs";
-    String Login = "RememberMe";
+    private String login = "RememberMe";
     private DrawerLayout drawer;
-    SharedPreferences sharedPreferencesLog;
-    SharedPreferences.Editor editorRemember;
+    private SharedPreferences sharedPreferencesLog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,49 +45,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        sharedPreferencesLog= getSharedPreferences(PREF_NAME,Context.MODE_PRIVATE);
-        editorRemember = sharedPreferencesLog.edit();
+        sharedPreferencesLog = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editorRemember = sharedPreferencesLog.edit();
-        editorRemember.putBoolean(Login, true);
-        editorRemember.commit();
+        editorRemember.putBoolean(login, true);
+        editorRemember.apply();
 
-
-        SQLiteDatabase baza = openOrCreateDatabase(BazaDanychStruktura.BazaPlik, Context.MODE_PRIVATE, null);
-
-        baza.execSQL("DROP TABLE IF EXISTS PoraDnia");
-        baza.execSQL("CREATE TABLE IF NOT EXISTS 'PoraDnia'" +
-                "( idPoraDnia INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,Pora TEXT)");
-
-
-        baza.execSQL("CREATE TABLE IF NOT EXISTS 'Posilek'" +
-                "( idPosilek INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "Nazwa TEXT,Bialko REAL,Weglowodany REAL,Tluszcze REAL, Błonnik REAL, Kalorie REAL, Ilość INTEGER NOT NULL)");
-
-
-        baza.execSQL("CREATE TABLE IF NOT EXISTS 'Hash'" +
-                "(idHash INTEGER PRIMARY KEY AUTOINCREMENT, Data NUMERIC NOT NULL," +
-                " idPosilek INTEGER NOT NULL,idPoraDnia INTEGER NOT NULL," +
-                "CONSTRAINT fk_idPosilek FOREIGN KEY(idPosilek) REFERENCES Posilek(idPosilek)," +
-                "CONSTRAINT fk_idPoraDnia FOREIGN KEY(idPoraDnia) REFERENCES PoraDnia(idPoraDnia))");
-
-
-        ContentValues contentValuesŚniadanie = new ContentValues();
-        ContentValues contentValuesLunch = new ContentValues();
-        ContentValues contentValuesObiad = new ContentValues();
-        ContentValues contentValuesPrzekąska = new ContentValues();
-        ContentValues contentValuesKolacja = new ContentValues();
-
-        ContentValues[] contentValues = new ContentValues[]{contentValuesŚniadanie,contentValuesLunch,contentValuesObiad,contentValuesPrzekąska,contentValuesKolacja};
-
-        String[] timeOfDay = new String[]{"Śniadanie","Lunch","Obiad","Przekąska","Kolacja"};
-
-
-        for (int i = 0; i <timeOfDay.length ; i++) {
-            contentValues[i].put(BazaDanychStruktura.BazaTabelaPora,timeOfDay[i]);
-            baza.insert(BazaDanychStruktura.TabelaPoraDnia,null, contentValues[i]);
-        }
-
-        baza.close();
+        databaseInit();
 
         android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -96,22 +66,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HouseFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_house);
         }
-
     }
 
     @Override
     public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
+        if (drawer.isDrawerOpen(GravityCompat.START))
             drawer.closeDrawer(GravityCompat.START);
-        } else {
+        else
             super.onBackPressed();
-        }
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
-
             case R.id.nav_house:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HouseFragment()).commit();
                 break;
@@ -126,14 +93,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_logOut:
                 logout();
-
                 break;
-
+            default:
         }
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
-
     }
 
     private void logout() {
@@ -142,11 +107,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
-        editorRemember = sharedPreferencesLog.edit();
         SharedPreferences.Editor editorRemember = sharedPreferencesLog.edit();
-        editorRemember.putBoolean(Login, false);
-        editorRemember.commit();
+        editorRemember.putBoolean(login, false);
+        editorRemember.apply();
         finish();
+    }
+
+    private void databaseInit() {
+        SQLiteDatabase sqLiteDatabase = openOrCreateDatabase(SQLDatabaseStructure.DATABASE_FILE, Context.MODE_PRIVATE, null);
+
+        sqLiteDatabase.execSQL(dropTable(TABLE_TIME_OF_DAY));
+        sqLiteDatabase.execSQL(createTableTimeOfDay());
+        sqLiteDatabase.execSQL(createTableMeal());
+        sqLiteDatabase.execSQL(createTableHash());
+
+        ContentValues contentValues = new ContentValues();
+        String[] timeOfDay = new String[]{"Śniadanie", "Lunch", "Obiad", "Przekąska", "Kolacja"};
+
+        for (String s : timeOfDay) {
+            contentValues.put(TIME_COLUMN_TIME_OF_DAY, s);
+            sqLiteDatabase.insert(SQLDatabaseStructure.TABLE_TIME_OF_DAY, null, contentValues);
+        }
+
+        sqLiteDatabase.close();
     }
 }
 

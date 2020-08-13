@@ -7,7 +7,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:ignore="UselessParent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -20,25 +21,23 @@
 
                 <TextView
                     android:id="@+id/textViewOpis"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:layout_weight="1"
                     android:background="#41AECF"
                     android:drawableStart="@drawable/ic_left"
                     android:gravity="center"
-                    android:text="Znajdź produkt badz danie"
+                    android:text="@string/findFood"
                     android:textColor="#FFFFFF"
                     android:textSize="20sp"
                     tools:ignore="MissingConstraints" />
                 <ImageButton
-
                     android:id="@+id/buttonAdd"
                     android:layout_width="wrap_content"
-
                     android:layout_height="60dp"
                     android:background="#41AECF"
-                    android:src="@drawable/ic_add"/>
-
+                    android:src="@drawable/ic_add"
+                    android:contentDescription="@string/descAdd"/>
             </LinearLayout>
             <EditText
                 android:id="@+id/editTextSearch"
@@ -52,7 +51,8 @@
                 android:inputType="textPersonName"
                 android:textColor="#000000"
                 android:textSize="18sp"
-                tools:ignore="MissingConstraints" />
+                tools:ignore="LabelFor,MissingConstraints"
+                android:autofillHints="" />
 
             <ImageView
                 android:id="@+id/imageView"
@@ -61,10 +61,8 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="-38dp"
                 app:srcCompat="@drawable/ic_search_black_24dp"
-                tools:ignore="VectorDrawableCompat" />
-
-
-
+                tools:ignore="VectorDrawableCompat"
+                android:contentDescription="@string/descAdd"  />
             <ListView
                 android:id="@+id/listViewProdukty"
                 android:layout_width="wrap_content"
@@ -72,7 +70,8 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="0dp" />
+                android:layout_marginBottom="0dp"
+                tools:ignore="NestedScrolling" />
 
         </LinearLayout>
     </ScrollView>

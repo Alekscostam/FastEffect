@@ -1,30 +1,34 @@
 package com.example.aleksander.fasteffect;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
+import com.example.aleksander.fasteffect.AdditionalClasses.FilteringInterfaces.TextViewFilter;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class LoginActivity extends AppCompatActivity implements TextWatcher {
+import java.util.Objects;
+
+import static android.app.ProgressDialog.show;
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
+
+/**
+ * Klasa będąca oknem logowania do aplikacji
+ */
+public class LoginActivity extends  AppCompatActivity{
 
     private AutoCompleteTextView autoCompleteTextViewEmail;
     private AutoCompleteTextView autoCompleteTextViewPassword;
@@ -34,8 +38,9 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
     private static final String KEY_REMEMBER = "remember";
     private static final String KEY_USERNAME = "username";
     private static final String KEY_PASS = "password";
-    private static final String remeberMe = "No";
-    String Login = "RememberMe";
+    private static final String REMEMBER_ME = "No";
+    private static final String LOGIN = "RememberMe";
+    private boolean showPassword=false;
 
     SharedPreferences sharedPreferencesRemember;
     SharedPreferences.Editor editorRemember;
@@ -48,166 +53,113 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher {
         setContentView(R.layout.login_main);
 
         Intent intent = new Intent();
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
+        intent.setFlags(FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TASK);
         sharedPreferencesRemember = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         editorRemember = sharedPreferencesRemember.edit();
-        boolean check = sharedPreferencesRemember.getBoolean(Login, false);
+        editorRemember.apply();
 
-       // Toast.makeText(this, String.valueOf(check), Toast.LENGTH_SHORT).show();
+        boolean checkRemember = sharedPreferencesRemember.getBoolean(LOGIN, false);
+        rememberOrNot(checkRemember);
 
-        if (check == true) {
+    }
 
-
+    private void rememberOrNot(boolean checkRemember) {
+        if (checkRemember) {
             Intent intentLogin = new Intent(LoginActivity.this, MainActivity.class);
-            intentLogin.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intentLogin.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intentLogin.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
+            intentLogin.addFlags(FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intentLogin);
 
         } else {
-
-
-            final int[] password_show = {0};
-
             firebaseAuth = FirebaseAuth.getInstance();
             autoCompleteTextViewEmail = findViewById(R.id.autoCompleteTextViewEmail);
             autoCompleteTextViewPassword = findViewById(R.id.autoCompleteTextViewPassword);
             ImageButton imageButtonShowPassword = findViewById(R.id.imageButtonPassword);
             TextView textViewRegister = findViewById(R.id.textViewRegister);
 
-
             sharedPreferencesRemember = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
             editorRemember = sharedPreferencesRemember.edit();
+            editorRemember.apply();
             checkBoxRememberMe = findViewById(R.id.checkBoxRememberMe);
 
-
-            if (sharedPreferencesRemember.getBoolean(KEY_REMEMBER, false)) {
-                checkBoxRememberMe.setChecked(true);
-            } else
-                checkBoxRememberMe.setChecked(false);
-
+            boolean checked = sharedPreferencesRemember.getBoolean(KEY_REMEMBER, false);
+            checkBoxRememberMe.setChecked(checked);
 
             autoCompleteTextViewEmail.setText(sharedPreferencesRemember.getString(KEY_USERNAME, ""));
             autoCompleteTextViewPassword.setText(sharedPreferencesRemember.getString(KEY_PASS, ""));
 
-            autoCompleteTextViewEmail.addTextChangedListener(this);
-            autoCompleteTextViewPassword.addTextChangedListener(this);
+            autoCompleteTextViewEmail.addTextChangedListener((TextViewFilter) (charSequence, i, i1, i2) -> managePrefs());
+            autoCompleteTextViewPassword.addTextChangedListener((TextViewFilter) (charSequence, i, i1, i2) -> managePrefs());
 
-
-            checkBoxRememberMe.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    managePrefs();
-                }
-            });
-
-
-            textViewRegister.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent register = new Intent(getApplicationContext(), RegisterActivity.class);
-                    startActivity(register);
-                }
-            });
+            checkBoxRememberMe.setOnCheckedChangeListener((compoundButton, b) -> managePrefs());
+            textViewRegister.setOnClickListener(setRegister -> startActivity(new Intent(getApplicationContext(), RegisterActivity.class)));
 
             autoCompleteTextViewPassword.setTransformationMethod(new PasswordTransformationMethod());
-
-            imageButtonShowPassword.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    if (password_show[0] == 0) {
-
-                        autoCompleteTextViewPassword.setTransformationMethod(null);
-                        password_show[0] = 1;
-                        autoCompleteTextViewPassword.setSelection(autoCompleteTextViewPassword.length());
-
-                    } else if (password_show[0] == 1) {
-
-                        autoCompleteTextViewPassword.setTransformationMethod(new PasswordTransformationMethod());
-                        password_show[0] = 0;
-                        autoCompleteTextViewPassword.setSelection(autoCompleteTextViewPassword.length());
-
-                    }
-                }
-            });
-        }
-    }
-    public void buttonLogin_Click(View v) {
-        String sEmail = autoCompleteTextViewEmail.getText().toString();
-        String sPassword = autoCompleteTextViewPassword.getText().toString();
-
-        if (!sEmail.matches("") && !sPassword.matches("")) {
-
-
-            final ProgressDialog progressDialog = ProgressDialog.show(LoginActivity.this, "Proszę czekać...", "Uwierzytelnianie", true);
-            (firebaseAuth.signInWithEmailAndPassword(autoCompleteTextViewEmail.getText().toString(),
-                    autoCompleteTextViewPassword.getText().toString()))
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            progressDialog.dismiss();
-
-                            if (task.isSuccessful()) {
-                                if(firebaseAuth.getCurrentUser().isEmailVerified()){
-                                    Toast.makeText(LoginActivity.this, "Zalogowano", Toast.LENGTH_SHORT).show();
-                                    Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    i.putExtra("Email", firebaseAuth.getCurrentUser().getEmail());
-                                    startActivity(i);
-                                }
-                                else{
-                                    Toast.makeText(LoginActivity.this, "Zweryfikuj swój adres email!", Toast.LENGTH_SHORT).show();
-                                }
-
-                            } else {
-                                Log.e("Error", task.getException().toString());
-                                Toast.makeText(LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-
-
-        } else {
-            Toast.makeText(this, "Niekompletne dane!", Toast.LENGTH_SHORT).show();
+            imageButtonShowPassword.setOnClickListener(password -> showOrHide());
         }
     }
 
-    @Override
-    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+    private void showOrHide() {
+        if(showPassword) {
+            autoCompleteTextViewPassword.setTransformationMethod(new PasswordTransformationMethod());
+            autoCompleteTextViewPassword.setSelection(autoCompleteTextViewPassword.length());
+            showPassword=false;
+        }
+        else {
+            autoCompleteTextViewPassword.setTransformationMethod(null);
+            autoCompleteTextViewPassword.setSelection(autoCompleteTextViewPassword.length());
+            showPassword=true;
+        }
     }
-
-    @Override
-    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-        managePrefs();
-    }
-
-    @Override
-    public void afterTextChanged(Editable editable) {
-
-    }
-
 
     private void managePrefs() {
         if (checkBoxRememberMe.isChecked()) {
             editorRemember.putString(KEY_USERNAME, autoCompleteTextViewEmail.getText().toString().trim());
             editorRemember.putString(KEY_PASS, autoCompleteTextViewPassword.getText().toString().trim());
             editorRemember.putBoolean(KEY_REMEMBER, true);
-            editorRemember.putString(remeberMe,"Yes");
-            editorRemember.apply();
-
+            editorRemember.putString(REMEMBER_ME, "Yes");
         } else {
             editorRemember.putBoolean(KEY_REMEMBER, false);
             editorRemember.remove(KEY_PASS);
             editorRemember.remove(KEY_USERNAME);
-            editorRemember.putString(remeberMe,"No");
-            editorRemember.apply();
+            editorRemember.putString(REMEMBER_ME, "No");
         }
+        editorRemember.apply();
     }
 
+    public void buttonLoginClick(View view) {
+
+        String sEmail = autoCompleteTextViewEmail.getText().toString();
+        String sPassword = autoCompleteTextViewPassword.getText().toString();
+
+        if (!sEmail.matches("") && !sPassword.matches("")) {
+
+            (firebaseAuth.signInWithEmailAndPassword(autoCompleteTextViewEmail.getText().toString(),
+                    autoCompleteTextViewPassword.getText().toString()))
+                    .addOnCompleteListener(task -> {
+                        show(LoginActivity.this, "Proszę czekać...", "Uwierzytelnianie", true).dismiss();
+
+                        if (task.isSuccessful()) {
+                            if (Objects.requireNonNull(firebaseAuth.getCurrentUser()).isEmailVerified()) {
+                                Toast.makeText(this, "Zalogowano", Toast.LENGTH_SHORT).show();
+                                Intent intentLogin = new Intent(LoginActivity.this, MainActivity.class);
+                                intentLogin.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
+                                intentLogin.addFlags(FLAG_ACTIVITY_CLEAR_TASK);
+                                intentLogin.putExtra("Email", firebaseAuth.getCurrentUser().getEmail());
+                                startActivity(intentLogin);
+                            } else {
+                                Toast.makeText(this, "Zweryfikuj swój adres email!", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Log.e("Error", Objects.requireNonNull(task.getException()).toString());
+                            Toast.makeText(this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+        } else {
+            Toast.makeText(this, "Niekompletne dane!", Toast.LENGTH_SHORT).show();
+        }
+    }
 }
 
 

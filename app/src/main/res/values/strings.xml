@@ -11,10 +11,15 @@
     <string name="passwordAgain">Powtórz hasło</string>
     <string name="rememberMe">Zapamiętaj mnie</string>
 
+    <string name="desc">
+        Button do przejscia na inna strone
+    </string>
+    <string name="descAdd">
+        Przycisk dodawania nowego wlasnego produktu
+    </string>
     //register
     <string name="imie">Nazwa użytkownika</string>
     <string name="email">E-mail</string>
-
 
     <string name="name">Imie</string>
     <string name="surname">Nazwisko</string>
@@ -25,6 +30,7 @@
     <string name="age">Wiek</string>
     <string name="plec">Płeć</string>
     <string name="nazwa">Nazwa</string>
+    <string name="yourEmail">Twój E-mail</string>
 
 
     //spinnerAktywnosc
@@ -73,11 +79,23 @@
 
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="setMacro">Ustal rozkład makroskładników i kalorii</string>
+    <string name="automatically">Automatycznie</string>
+    <string name="manually">Ręcznie</string>
+    <string name="kindOfSport">Określ rodzaj sportu który uprawiasz</string>
+    <string name="activity">Aktywnośc fizyczna</string>
+    <string name="whatIsPlanning">Co planuje</string>
+    <string name="addNewProduct">Dodawanie nowego produktu…</string>
+    <string name="eneterValue">Podaj wartości na 100g danego produktu</string>
+    <string name="enterProduct">Wprowadź produkt</string>
+    <string name="findFood">Znajdź produkt badz danie</string>
+    <string name="createAnAccount">Tworzenie konta…</string>
+
     <string-array name="spinnerActivities">
         <item>brak aktywności, praca siedząca</item>
-        <item>niska aktywność(praca siedzaca, i 1-2 treningi w tygodniu)</item>
-        <item>średnia aktywność(praca siedzaca, i 3-4 treningi w tygodniu)</item>
-        <item>wysoka aktywność(praca fizyczna, i 3-4 treningi w tygodniu)</item>
+        <item>niska aktywność(praca siedzaca, i 1–2 treningi w tygodniu)</item>
+        <item>średnia aktywność(praca siedzaca, i 3–4 treningi w tygodniu)</item>
+        <item>wysoka aktywność(praca fizyczna, i 3–4 treningi w tygodniu)</item>
         <item>bardzo wysoka aktywność(sportowcy, osoby codziennie trenujące)</item>
     </string-array>
     <string-array name="spinnerTypeOfActivities">
@@ -87,7 +105,6 @@
         <item>Żaden</item>
     </string-array>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string-array name="spinnerGoals">
         <item>utrzymanie wagi</item>
         <item>zwiększenie wagi</item>

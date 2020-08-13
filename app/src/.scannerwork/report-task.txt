@@ -2,5 +2,5 @@ projectKey=FastEffect
 serverUrl=http://localhost:9000
 serverVersion=8.3.1.34397
 dashboardUrl=http://localhost:9000/dashboard?id=FastEffect
-ceTaskId=AXLsUXNFD308F7OFkPLw
-ceTaskUrl=http://localhost:9000/api/ce/task?id=AXLsUXNFD308F7OFkPLw
+ceTaskId=AXLtiG7cBqfro-XJayrp
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AXLtiG7cBqfro-XJayrp

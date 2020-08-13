@@ -8,7 +8,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -23,7 +22,7 @@
                 android:background="#41AECF"
                 android:drawableStart="@drawable/ic_left"
                 android:gravity="center"
-                android:text="Tworzenie konta..."
+                android:text="@string/createAnAccount"
                 android:textColor="#FFFFFF"
                 android:textSize="27sp" />
 
@@ -178,7 +177,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="30dp"
                 android:background="@drawable/button_rounded_aqua"
-                android:onClick="buttonRegister_Click"
+                android:onClick="buttonRegisterClick"
                 android:text="@string/Create_Account"
                 android:textAllCaps="false"
                 android:textSize="18sp"

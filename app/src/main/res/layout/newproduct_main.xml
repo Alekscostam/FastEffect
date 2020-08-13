@@ -18,7 +18,7 @@
                 android:background="#41AECF"
                 android:drawableStart="@drawable/ic_left"
                 android:gravity="center"
-                android:text="Dodawanie nowego produktu..."
+                android:text="@string/addNewProduct"
                 android:textColor="#FFFFFF"
                 android:textSize="20sp" />
 
@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:gravity="center"
-                android:text="Podaj wartości na 100g danego produktu"
+                android:text="@string/eneterValue"
                 android:textColor="#000"
                 android:textSize="13sp" />
 
@@ -146,8 +146,6 @@
                     android:textSize="18sp" />
             </android.support.design.widget.TextInputLayout>
 
-
-
             <Button
                 android:id="@+id/buttonSave"
                 android:layout_width="240dp"
@@ -156,7 +154,7 @@
                 android:layout_marginTop="25dp"
                 android:layout_marginBottom="50dp"
                 android:background="@drawable/button_rounded_aqua"
-                android:text="Wprowadź produkt"
+                android:text="@string/enterProduct"
                 android:textAllCaps="false"
                 android:textSize="18sp" />
         </LinearLayout>

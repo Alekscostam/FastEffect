@@ -8,10 +8,10 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:ignore="UselessParent">
 
         <LinearLayout
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -23,7 +23,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="18dp"
-                android:text="Ustal rozkład makroskładników i kalorii"
+                android:text="@string/setMacro"
                 android:textColor="#000"
                 android:textSize="18sp"
                 android:gravity="center"
@@ -36,12 +36,12 @@
 
                 <Button
                     android:id="@+id/buttonAutomatycznie"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_weight="1"
                     android:background="@drawable/button_rounded_aqua"
-                    android:text="Automatycznie"
+                    android:text="@string/automatically"
                     android:textAlignment="center"
                     android:textAllCaps="false"
                     android:textSize="14sp"
@@ -52,10 +52,10 @@
                     android:id="@+id/buttonRęczne"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginEnd="10dp"
                     android:layout_weight="1"
                     android:background="@drawable/button_rounded_aqua"
-                    android:text="Ręcznie"
+                    android:text="@string/manually"
                     android:textAlignment="center"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
@@ -81,7 +81,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Określ rodzaj sportu który uprawiasz"
+                    android:text="@string/kindOfSport"
                     android:textSize="14sp"
                   />
 
@@ -92,7 +92,8 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:textColor="#000000"
-                    android:textSize="5sp" />
+                    android:textSize="5sp"
+                    tools:ignore="SmallSp" />
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -102,7 +103,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Aktywnośc fizyczna"
+                    android:text="@string/activity"
                     android:textSize="14sp"
                      />
                 <Spinner
@@ -113,7 +114,8 @@
                     android:gravity="center"
                     android:textColor="#000000"
 
-                    android:textSize="5sp" />
+                    android:textSize="5sp"
+                    tools:ignore="SmallSp" />
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -123,7 +125,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Co planuje "
+                    android:text="@string/whatIsPlanning"
                     android:textSize="14sp" />
                 <Spinner
                     android:id="@+id/spinnerCel"
@@ -133,7 +135,8 @@
                     android:layout_marginTop="0dp"
                     android:gravity="center"
                     android:textColor="#000000"
-                    android:textSize="5sp" />
+                    android:textSize="5sp"
+                    tools:ignore="SmallSp" />
 
                 <View
                     android:layout_width="match_parent"
@@ -168,9 +171,8 @@
                         android:maxLength="4"
                         android:singleLine="true"
                         android:textColor="	#808080"
-                        android:textSize="15sp"
+                        android:textSize="15sp" />
 
-                        />
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
@@ -213,10 +215,10 @@
                         android:hint="@string/carb"
                         android:inputType="number"
                         android:maxLength="2"
-
                         android:singleLine="true"
                         android:textColor="	#808080"
                         android:textSize="12sp" />
+
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
@@ -240,11 +242,7 @@
                         android:textSize="12sp" />
                 </android.support.design.widget.TextInputLayout>
 
-
             </LinearLayout>
-
-
-
 
             <Button
                 android:id="@+id/buttonSave"
@@ -259,7 +257,6 @@
                 android:textAllCaps="false"
                 android:textSize="18sp"
                 tools:ignore="MissingConstraints" />
-
 
         </LinearLayout>
     </ScrollView>

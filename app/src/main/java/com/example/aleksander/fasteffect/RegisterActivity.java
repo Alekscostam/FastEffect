@@ -1,9 +1,7 @@
 package com.example.aleksander.fasteffect;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -12,24 +10,27 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.aleksander.fasteffect.AuxiliaryClass.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
+import com.example.aleksander.fasteffect.AdditionalClasses.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Objects;
+
+import static android.app.ProgressDialog.show;
+
+
+/**
+ * Klasa będąca oknem rejestracji użytkownika
+ */
 public class RegisterActivity extends AppCompatActivity {
 
-    private TextInputEditText textInputEditTextPassword;
-    private TextInputEditText textInputEditTextPasswordAgain;
-    private TextInputEditText textInputEditTextEmail;
-    private TextInputEditText textInputEditTextWaga;
-    private TextInputEditText textInputEditTextWiek;
-    private TextInputEditText textInputEditTextWzrost;
-    private RadioButton radioButtonM;
-    private RadioButton radioButtonW;
-    final String[] plec = {""};
+   private String sGender;
+   private String sPassword;
+   private String sPasswordAgain;
+   private String sEmail;
+   private String sAge;
+   private String sWeight;
+   private String sHeight;
 
     private FirebaseAuth firebaseAuth;
 
@@ -41,119 +42,74 @@ public class RegisterActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         TextView textViewBack = findViewById(R.id.textViewBack);
 
-        textInputEditTextPassword = findViewById(R.id.textInputEditTextPassword);
-        textInputEditTextPasswordAgain = findViewById(R.id.textInputEditTextPasswordAgain);
-        textInputEditTextEmail = findViewById(R.id.textInputEditTextEmail);
+        RadioButton radioButtonM = findViewById(R.id.radioButtonM);
+        RadioButton radioButtonW = findViewById(R.id.radioButtonW);
 
-        textInputEditTextWaga = findViewById(R.id.textInputEditTextWaga);
-        textInputEditTextWiek = findViewById(R.id.textInputEditTextWiek);
-        textInputEditTextWzrost = findViewById(R.id.textInputEditTextWzrost);
+        radioButtonM.setOnClickListener(m -> sGender = "M");
+        radioButtonW.setOnClickListener(w -> sGender = "W");
 
-        radioButtonM = findViewById(R.id.radioButtonM);
-        radioButtonW = findViewById(R.id.radioButtonW);
-
-        radioButtonM.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                plec[0] = "M";
-                String test = plec[0];
-                Toast.makeText(RegisterActivity.this, test, Toast.LENGTH_SHORT).show();
-            }
+        textViewBack.setOnClickListener(back -> {
+            Intent backIntent = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(backIntent);
         });
-        radioButtonW.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                plec[0] = "W";
-                String test = plec[0];
-                Toast.makeText(RegisterActivity.this, test, Toast.LENGTH_SHORT).show();
-
-            }
-        });
-
-        textViewBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent cofnij = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(cofnij);
-            }
-        });
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-
-        if (firebaseAuth.getCurrentUser() != null) {
-        }
+       /* if (firebaseAuth.getCurrentUser() != null) {
+        }*/
+        firebaseAuth.getCurrentUser();
     }
 
-    public void buttonRegister_Click(View v) {
 
-        String sPassword = textInputEditTextPassword.getText().toString();
-        String sPasswordAgain = textInputEditTextPasswordAgain.getText().toString();
-        final String sEmail = textInputEditTextEmail.getText().toString();
-        final String sAge = textInputEditTextWiek.getText().toString();
-        final String sWeight = textInputEditTextWaga.getText().toString();
-        final String sHeight = textInputEditTextWzrost.getText().toString();
-        final String sGender = plec[0];
+    private void editTextInit() {
+        TextInputEditText password =(findViewById(R.id.textInputEditTextPassword));
+        TextInputEditText passwordAgain =(findViewById(R.id.textInputEditTextPasswordAgain));
+        TextInputEditText email =(findViewById(R.id.textInputEditTextEmail));
+        TextInputEditText weight =(findViewById(R.id.textInputEditTextWaga));
+        TextInputEditText age =(findViewById(R.id.textInputEditTextWiek));
+        TextInputEditText height =(findViewById(R.id.textInputEditTextWzrost));
 
-        if (!sEmail.matches("") && !sPassword.matches("") && !sPasswordAgain.matches("")) {
+        sPassword = Objects.requireNonNull(password.getText()).toString();
+        sPasswordAgain = Objects.requireNonNull(passwordAgain.getText()).toString();
+        sEmail = Objects.requireNonNull(email.getText()).toString();
+        sWeight = Objects.requireNonNull(weight.getText()).toString();
+        sAge = Objects.requireNonNull(age.getText()).toString();
+        sHeight = Objects.requireNonNull(height.getText()).toString();
+    }
 
-            final ProgressDialog progressDialog = ProgressDialog.show(RegisterActivity.this, "Proszę czekać...",
-                    "Rejestrowanie", true);
+    public void buttonRegisterClick(View view) {
+        editTextInit();
+        view.getId();
+
+        if (!sEmail.isEmpty() && !sPassword.isEmpty() && !sPasswordAgain.isEmpty()) {
             (firebaseAuth.createUserWithEmailAndPassword(sEmail, sPassword))
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            progressDialog.dismiss();
-                            if (task.isSuccessful()) {
-                                User user = new User(
-                                        sWeight,
-                                        sAge,
-                                        sHeight,
-                                        sGender,
-                                        sEmail
-                                );
-                                FirebaseDatabase.getInstance().getReference("Users")
-                                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                        .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            firebaseAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    if(task.isSuccessful()){
+                    .addOnCompleteListener(task -> {
+                        show(RegisterActivity.this, "Proszę czekać...", "Rejestrowanie", true).dismiss();
+                        if (task.isSuccessful()) {
+                            User user = new User(sWeight, sAge, sHeight, sGender, sEmail);
+                            FirebaseDatabase.getInstance().getReference("Users")
+                                    .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
+                                    .setValue(user).addOnCompleteListener(taskUser -> {
+                                if (taskUser.isSuccessful()) {
+                                    Objects.requireNonNull(firebaseAuth.getCurrentUser()).sendEmailVerification().addOnCompleteListener(taskLast -> {
+                                        if (taskLast.isSuccessful())
+                                            Toast.makeText(RegisterActivity.this, "Zarejestrowano! Sprawdź swój email w celu weryfikacji", Toast.LENGTH_SHORT).show();
+                                        else
+                                            Toast.makeText(RegisterActivity.this, Objects.requireNonNull(taskLast.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                                    });
 
-                                                        Toast.makeText(RegisterActivity.this, "Zarejestrowano, sprawdź swój email w celu weryfikacji weryfikacji", Toast.LENGTH_SHORT).show();
-
-                                                    }else
-                                                        Toast.makeText(RegisterActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                                }
-                                            });
-
-                                        } else {
-                                            Toast.makeText(RegisterActivity.this, "fail", Toast.LENGTH_SHORT).show();
-
-                                        }
-                                    }
-                                });
-
-                            } else {
-                                Log.e("Error", task.getException().toString());
-                                Toast.makeText(RegisterActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                            }
+                                } else
+                                    Toast.makeText(RegisterActivity.this, "fail", Toast.LENGTH_SHORT).show();
+                            });
+                        } else {
+                            Log.e("Error", Objects.requireNonNull(task.getException()).toString());
+                            Toast.makeText(RegisterActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
-
-        } else {
+        } else
             Toast.makeText(this, "Niekompletne dane!", Toast.LENGTH_SHORT).show();
-        }
-
-
     }
-
-
 }
 
