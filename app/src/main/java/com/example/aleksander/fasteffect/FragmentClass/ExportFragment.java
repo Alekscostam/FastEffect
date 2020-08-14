@@ -34,22 +34,27 @@ import static java.util.Objects.requireNonNull;
  * Zakladka "Przeslij dziennik"
  */
 @NoArgsConstructor
-public class ExportFragment extends Fragment {
+public class ExportFragment extends Fragment   {
 
     private SQLiteDatabase sqLiteDatabase;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,@Nullable Bundle savedInstanceState)
     {
+
         View view = inflater.inflate(R.layout.fragment_export, container, false);
+
 
         sqLiteDatabase = requireNonNull(getActivity()).openOrCreateDatabase(SQLDatabaseStructure.DATABASE_FILE, Context.MODE_PRIVATE, null);
 
         Button buttonExport = view.findViewById(R.id.d_export);
-        buttonExport.setOnClickListener((export) -> exportData());
+        buttonExport.setOnClickListener(export -> exportData());
         return view;
     }
 
+    /**
+     * Metoda exportujaca dane
+     */
     private void exportData() {
         Cursor cursor = sqLiteDatabase.rawQuery(findAll(), null);
         cursor.moveToFirst();
@@ -91,5 +96,7 @@ public class ExportFragment extends Fragment {
         }
         cursor.close();
     }
+
+
 
 }

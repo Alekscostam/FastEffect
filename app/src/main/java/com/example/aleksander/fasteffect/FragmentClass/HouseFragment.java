@@ -1,7 +1,6 @@
 package com.example.aleksander.fasteffect.FragmentClass;
 
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.ContentValues;
 import android.content.Context;
@@ -21,7 +20,6 @@ import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -69,7 +67,7 @@ import static java.util.Objects.requireNonNull;
  * Klasa będąca głównym oknem aplikacji. Pobiera ona wszelkie dane z lokalnej bazy danych
  * Zakladka "Strona główna"
  */
-public class HouseFragment extends Fragment {
+public class HouseFragment extends Fragment{
 
     public static final String SHARED_PREFS = "shaaredPrefs";
 
@@ -94,62 +92,23 @@ public class HouseFragment extends Fragment {
     private TextView textViewData;
 
     //Sniadanie
-    private TextView textViewKcalS;
-    private TextView textViewPS;
-    private TextView textViewWS;
-    private TextView textViewTS;
-
-    //lunch
-    private TextView textViewKcalL;
-    private TextView textViewPL;
-    private TextView textViewWL;
-    private TextView textViewTL;
-    //obiad
-    private TextView textViewKcalO;
-    private TextView textViewPO;
-    private TextView textViewWO;
-    private TextView textViewTO;
-    //przekasaka
-    private TextView textViewKcalP;
-    private TextView textViewPP;
-    private TextView textViewWP;
-    private TextView textViewTP;
-    //kolacja
-    private TextView textViewKcalK;
-    private TextView textViewPK;
-    private TextView textViewWK;
-    private TextView textViewTK;
+    private List<TextView> breakfastListMacro;
+    private List<TextView> lunchListMacro;
+    private List<TextView> dinnerListMacro;
+    private List<TextView> snackListMacro;
+    private List<TextView> supperListMacro;
 
     private TextView textViewAllCalories;
     private TextView textViewAllProtein;
     private TextView textViewAllCarb;
     private TextView textViewAllFat;
 
-    private ListView listViewBreakfast;
-    private ListView listViewLunch;
-    private ListView listViewDinner;
-    private ListView listViewSnack;
-    private ListView listViewSupper;
+    private List<ListView> listViewList;
+    private List<CardView> cardViewList;
+    private List<TextView> textViews;
+    private List<ArrayList<String>> arrayItemList;
+    private List<ArrayAdapter<String>> arrayAdaptersForList;
 
-    private CardView cardViewBreakfast;
-    private CardView cardViewLunch;
-    private CardView cardViewDinner;
-    private CardView cardViewSnack;
-    private CardView cardViewSupper;
-
-    private ArrayList<String> listItemBreakfast;
-    private ArrayList<String> listItemLunch;
-    private ArrayList<String> listItemDinner;
-    private ArrayList<String> listItemSnack;
-    private ArrayList<String> listItemSupper;
-
-    List<TextView> textViews;
-
-    private ArrayAdapter<String> adapterBreakfast;
-    private ArrayAdapter<String> adapterLunch;
-    private ArrayAdapter<String> adapterDinner;
-    private ArrayAdapter<String> adapterSnack;
-    private ArrayAdapter<String> adapterSupper;
 
     private DatePickerDialog.OnDateSetListener mDateSetListener;
 
@@ -157,8 +116,6 @@ public class HouseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         final View view = inflater.inflate(R.layout.fragment_house, container, false);
-
-        hideSoftKeyboard(requireNonNull(getActivity()));
 
         progressBarCalories = view.findViewById(R.id.progressBarCalories);
         progressBarProtein = view.findViewById(R.id.progressBarProtein);
@@ -170,37 +127,42 @@ public class HouseFragment extends Fragment {
         textViewAllCarb = view.findViewById(R.id.textViewAllCarb);
         textViewAllFat = view.findViewById(R.id.textViewAllFat);
 
-        textViewKcalS = view.findViewById(R.id.KcalS);
-        textViewPS = view.findViewById(R.id.PS);
-        textViewWS = view.findViewById(R.id.WS);
-        textViewTS = view.findViewById(R.id.TS);
+        breakfastListMacro = Arrays.asList(
+                view.findViewById(R.id.KcalS),
+                view.findViewById(R.id.WS),
+                view.findViewById(R.id.PS),
+                view.findViewById(R.id.TS));
 
-        textViewKcalL = view.findViewById(R.id.KcalL);
-        textViewPL = view.findViewById(R.id.PL);
-        textViewWL = view.findViewById(R.id.WL);
-        textViewTL = view.findViewById(R.id.TL);
+        lunchListMacro = Arrays.asList(
+                view.findViewById(R.id.KcalL),
+                view.findViewById(R.id.WL),
+                view.findViewById(R.id.PL),
+                view.findViewById(R.id.TL));
 
-        textViewKcalO = view.findViewById(R.id.KcalO);
-        textViewPO = view.findViewById(R.id.PO);
-        textViewWO = view.findViewById(R.id.WO);
-        textViewTO = view.findViewById(R.id.TO);
+        dinnerListMacro = Arrays.asList(
+                view.findViewById(R.id.KcalO),
+                view.findViewById(R.id.WO),
+                view.findViewById(R.id.PO),
+                view.findViewById(R.id.TO));
 
-        textViewKcalP = view.findViewById(R.id.KcalP);
-        textViewPP = view.findViewById(R.id.PP);
-        textViewWP = view.findViewById(R.id.WP);
-        textViewTP = view.findViewById(R.id.TP);
+        snackListMacro = Arrays.asList(
+                view.findViewById(R.id.KcalP),
+                view.findViewById(R.id.WP),
+                view.findViewById(R.id.PP),
+                view.findViewById(R.id.TP));
 
-        textViewKcalK = view.findViewById(R.id.KcalK);
-        textViewPK = view.findViewById(R.id.PK);
-        textViewWK = view.findViewById(R.id.WK);
-        textViewTK = view.findViewById(R.id.TK);
+        supperListMacro = Arrays.asList(
+                view.findViewById(R.id.KcalK),
+                view.findViewById(R.id.WK),
+                view.findViewById(R.id.PK),
+                view.findViewById(R.id.TK));
 
-        listItemBreakfast = new ArrayList<>();
-        listItemLunch = new ArrayList<>();
-        listItemDinner = new ArrayList<>();
-        listItemSnack = new ArrayList<>();
-        listItemSupper = new ArrayList<>();
-
+        arrayItemList = Arrays.asList(
+                new ArrayList<>(),
+                new ArrayList<>(),
+                new ArrayList<>(),
+                new ArrayList<>(),
+                new ArrayList<>());
 
         textViews = Arrays.asList(
                 view.findViewById(R.id.textViewSniadanie),
@@ -209,18 +171,19 @@ public class HouseFragment extends Fragment {
                 view.findViewById(R.id.textViewPrzekąska),
                 view.findViewById(R.id.textViewKolacja));
 
+        cardViewList = Arrays.asList(
+                view.findViewById(R.id.cardViewSniadanie),
+                view.findViewById(R.id.cardViewLunch),
+                view.findViewById(R.id.cardViewObiad),
+                view.findViewById(R.id.cardViewPrzekąska),
+                view.findViewById(R.id.cardViewKolacja));
 
-        cardViewBreakfast = view.findViewById(R.id.cardViewSniadanie);
-        cardViewLunch = view.findViewById(R.id.cardViewLunch);
-        cardViewDinner = view.findViewById(R.id.cardViewObiad);
-        cardViewSnack = view.findViewById(R.id.cardViewPrzekąska);
-        cardViewSupper = view.findViewById(R.id.cardViewKolacja);
-
-        listViewBreakfast = view.findViewById(R.id.ListViewSniadanie);
-        listViewLunch = view.findViewById(R.id.ListViewLunch);
-        listViewDinner = view.findViewById(R.id.ListViewObiad);
-        listViewSnack = view.findViewById(R.id.ListViewPrzekąska);
-        listViewSupper = view.findViewById(R.id.ListViewKolacja);
+        listViewList = Arrays.asList(
+                view.findViewById(R.id.ListViewSniadanie),
+                view.findViewById(R.id.ListViewLunch),
+                view.findViewById(R.id.ListViewObiad),
+                view.findViewById(R.id.ListViewPrzekąska),
+                view.findViewById(R.id.ListViewKolacja));
 
         ImageButton buttonAddProductBreakfast = view.findViewById(R.id.buttonAddProductBreakfast);
         ImageButton buttonAddProductLunch = view.findViewById(R.id.buttonAddProductLunch);
@@ -229,50 +192,39 @@ public class HouseFragment extends Fragment {
         ImageButton buttonAddProductSupper = view.findViewById(R.id.buttonAddProductSupper);
         textViewData = view.findViewById(R.id.textViewData);
 
-        /*
-         List view wywołują metody dotyczace wybrania konkretnych operacji na danych
-         */
-        listViewBreakfast.setOnItemClickListener((adapterView, breakfast, positionValue, l) ->
+        arrayAdaptersForList = Arrays.asList(
+                new ArrayAdapter<>(requireNonNull(getContext()), android.R.layout.simple_list_item_1, arrayItemList.get(0)),
+                new ArrayAdapter<>(requireNonNull(getContext()), android.R.layout.simple_list_item_1, arrayItemList.get(1)),
+                new ArrayAdapter<>(requireNonNull(getContext()), android.R.layout.simple_list_item_1, arrayItemList.get(2)),
+                new ArrayAdapter<>(requireNonNull(getContext()), android.R.layout.simple_list_item_1, arrayItemList.get(3)),
+                new ArrayAdapter<>(requireNonNull(getContext()), android.R.layout.simple_list_item_1, arrayItemList.get(4)));
+
+        listViewList.get(0).setOnItemClickListener((adapterView, breakfast, positionValue, l) ->
                 alertOperation(1, getAmountFromValue((String) adapterView.getItemAtPosition(positionValue)), getNameFromValue((String) adapterView.getItemAtPosition(positionValue))));
-        listViewLunch.setOnItemClickListener((adapterView, lunch, positionValue, l) ->
+        listViewList.get(1).setOnItemClickListener((adapterView, lunch, positionValue, l) ->
                 alertOperation(2, getAmountFromValue((String) adapterView.getItemAtPosition(positionValue)), getNameFromValue((String) adapterView.getItemAtPosition(positionValue))));
-        listViewDinner.setOnItemClickListener((adapterView, dinner, positionValue, l) ->
+        listViewList.get(2).setOnItemClickListener((adapterView, dinner, positionValue, l) ->
                 alertOperation(3, getAmountFromValue((String) adapterView.getItemAtPosition(positionValue)), getNameFromValue((String) adapterView.getItemAtPosition(positionValue))));
-        listViewSnack.setOnItemClickListener((adapterView, snack, positionValue, l) ->
+        listViewList.get(3).setOnItemClickListener((adapterView, snack, positionValue, l) ->
                 alertOperation(4, getAmountFromValue((String) adapterView.getItemAtPosition(positionValue)), getNameFromValue((String) adapterView.getItemAtPosition(positionValue))));
-        listViewSupper.setOnItemClickListener((adapterView, supper, positionValue, l) ->
+        listViewList.get(4).setOnItemClickListener((adapterView, supper, positionValue, l) ->
                 alertOperation(5, getAmountFromValue((String) adapterView.getItemAtPosition(positionValue)), getNameFromValue((String) adapterView.getItemAtPosition(positionValue))));
 
-        /*
-        Klikniecie konkretnego cardView wywołuje metode umożliwiającą ukrycie badz pokazanie danej listy po jej kliknieciu
-         */
-        cardViewBreakfast.setOnClickListener(cardBreakfast -> cardViewShowOrHide(0, listViewBreakfast));
-        cardViewLunch.setOnClickListener(cardLunch -> cardViewShowOrHide(1, listViewLunch));
-        cardViewDinner.setOnClickListener(cardDinner -> cardViewShowOrHide(2, listViewDinner));
-        cardViewSnack.setOnClickListener(cardSnack -> cardViewShowOrHide(3, listViewSnack));
-        cardViewSupper.setOnClickListener(cardSupper -> cardViewShowOrHide(4, listViewSupper));
+        cardViewList.get(0).setOnClickListener(cardBreakfast -> cardViewShowOrHide(0, listViewList.get(0)));
+        cardViewList.get(1).setOnClickListener(cardLunch -> cardViewShowOrHide(1, listViewList.get(1)));
+        cardViewList.get(2).setOnClickListener(cardDinner -> cardViewShowOrHide(2, listViewList.get(2)));
+        cardViewList.get(3).setOnClickListener(cardSnack -> cardViewShowOrHide(3, listViewList.get(3)));
+        cardViewList.get(4).setOnClickListener(cardSupper -> cardViewShowOrHide(4, listViewList.get(4)));
 
-        /*
-        Ustawia date jeżeli jest pusta
-         */
         if (DataHolder.getInstance().getData().equals(""))
             setDate();
         else
             textViewData.setText(DataHolder.getInstance().getData());
 
-        /*
-        Pokazanie daty za pomoca za pomocą kalendarza
-         */
         textViewData.setOnClickListener(dataView -> setOnViewDataField());
 
-        /*
-        pozwala ustawic date po jej wybraniu w kalendarzu
-         */
         mDateSetListener = this::dataSetListener;
 
-        /*
-        Pozwala na przejscie do okna dodawnai produktów
-         */
         buttonAddProductBreakfast.setOnClickListener(add -> addProduct("1"));
         buttonAddProductLunch.setOnClickListener(add -> addProduct("2"));
         buttonAddProductDinner.setOnClickListener(add -> addProduct("3"));
@@ -284,8 +236,10 @@ public class HouseFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Funkcja pokazuje kalendarz w wybranym formacie daty
+     */
     private void setOnViewDataField() {
-
         Calendar calendarDate = Calendar.getInstance();
         int day = calendarDate.get(Calendar.DAY_OF_MONTH);
         int month = calendarDate.get(Calendar.MONTH);
@@ -302,18 +256,17 @@ public class HouseFragment extends Fragment {
             refreshAfterDbChanged();
         });
 
-            /*
-            Ustawienie wygladu dla komponentow
-             */
-        checkAdapter(adapterBreakfast, cardViewBreakfast, listViewBreakfast, textViews.get(0));
-        checkAdapter(adapterLunch, cardViewLunch, listViewLunch, textViews.get(1));
-        checkAdapter(adapterDinner, cardViewDinner, listViewDinner, textViews.get(2));
-        checkAdapter(adapterSnack, cardViewSnack, listViewSnack, textViews.get(3));
-        checkAdapter(adapterSupper, cardViewSupper, listViewSupper, textViews.get(4));
+
+        for (int i = 0; i < arrayAdaptersForList.size(); i++) {
+            checkAdapter(arrayAdaptersForList.get(i), cardViewList.get(i), listViewList.get(i), textViews.get(i));
+        }
 
         dialog.show();
     }
 
+    /**
+     * Zapamietuje wybraną date przez uzytkownika do pamieci telefonu aby po zamkniecu aplikacji nie zmieniała sie na aktualną
+     */
     private void dataSetListener(DatePicker datePicker, int year, int month, int day) {
         month = month + 1;
         String monthString = String.valueOf(month);
@@ -336,8 +289,10 @@ public class HouseFragment extends Fragment {
         refreshAfterDbChanged();
     }
 
+    /**
+     * Metoda, która decyduje o pokazaniu lub ukryciu apliakcji
+     */
     private void cardViewShowOrHide(int index, ListView listView) {
-
         if (hide[index] == 0) {
             showListView(listView);
             hide[index] = 1;
@@ -347,15 +302,24 @@ public class HouseFragment extends Fragment {
         }
     }
 
+    /**
+     * Pobiera ilosc produktu ze stringa
+     */
     private String getAmountFromValue(String itemAtPosition) {
         String substringFromItemAtPosition = itemAtPosition.substring(itemAtPosition.indexOf("Ilość:") + 6);
         return substringFromItemAtPosition.replaceAll("\\s+", "");
     }
 
+    /**
+     * Pobiera nazwe produktu ze stringa
+     */
     private String getNameFromValue(String itemAtPosition) {
         return itemAtPosition.substring(0, itemAtPosition.indexOf('|'));
     }
 
+    /**
+     * Ustawia date w odpowiednim formacie i dodaje ją do bazy danych
+     */
     private void setDate() {
         Date today = Calendar.getInstance().getTime();
         SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
@@ -365,18 +329,23 @@ public class HouseFragment extends Fragment {
         DataHolder.getInstance().setData(date);
     }
 
+    /**
+     * Dodaje date do bazy danych
+     */
     private void addToDatabase(String dateSend) {
         SQLiteDatabase sqLiteDatabase = requireNonNull(getActivity()).openOrCreateDatabase(DATABASE_FILE, android.content.Context.MODE_PRIVATE, null);
-
         ContentValues content = new ContentValues();
         content.put(TABLE_HASH, dateSend);
         sqLiteDatabase.insert(TABLE_HASH, null, content);
         sqLiteDatabase.close();
     }
 
+    /**
+     * Sluzy do odczytu produktow z bazy danych do okna głównego aplikacji
+     */
     private void viewDatabase() {
 
-        clearAndSetAdapter();
+        clearListAndSetAdapter(arrayAdaptersForList);
         SQLiteDatabase sqLiteDatabase = requireNonNull(getActivity()).openOrCreateDatabase(DATABASE_FILE, android.content.Context.MODE_PRIVATE, null);
 
         for (int id = 1; id <= 5; id++) {
@@ -387,48 +356,45 @@ public class HouseFragment extends Fragment {
             if ((selectFromMeal.getCount() != 0)) {
                 switch (id) {
                     case 1:
-                        pickDinner(selectFromMeal, listItemBreakfast, listViewBreakfast, cardViewBreakfast, textViews.get(0), 0);
+                        pickDinner(selectFromMeal, arrayItemList.get(0), listViewList.get(0), cardViewList.get(0), textViews.get(0), 0);
                         break;
                     case 2:
-                        pickDinner(selectFromMeal, listItemLunch, listViewLunch, cardViewLunch, textViews.get(1), 1);
+                        pickDinner(selectFromMeal, arrayItemList.get(1), listViewList.get(1), cardViewList.get(1), textViews.get(1), 1);
                         break;
                     case 3:
-                        pickDinner(selectFromMeal, listItemDinner, listViewDinner, cardViewDinner, textViews.get(2), 2);
+                        pickDinner(selectFromMeal, arrayItemList.get(2), listViewList.get(2), cardViewList.get(2), textViews.get(2), 2);
                         break;
                     case 4:
-                        pickDinner(selectFromMeal, listItemSnack, listViewSnack, cardViewSnack, textViews.get(3), 3);
+                        pickDinner(selectFromMeal, arrayItemList.get(3), listViewList.get(3), cardViewList.get(3), textViews.get(3), 3);
                         break;
                     default:
-                        pickDinner(selectFromMeal, listItemSupper, listViewSupper, cardViewSupper, textViews.get(4), 4);
+                        pickDinner(selectFromMeal, arrayItemList.get(4), listViewList.get(4), cardViewList.get(4), textViews.get(4), 4);
                 }
             }
         }
         sqLiteDatabase.close();
     }
 
-    private void clearAndSetAdapter() {
-
-        listItemBreakfast.clear();
-        adapterBreakfast = new ArrayAdapter<>(requireNonNull(getContext()), android.R.layout.simple_list_item_1, listItemBreakfast);
-        listViewBreakfast.setAdapter(adapterBreakfast);
-
-        listItemLunch.clear();
-        adapterLunch = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, listItemLunch);
-        listViewLunch.setAdapter(adapterLunch);
-
-        listItemDinner.clear();
-        adapterDinner = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, listItemDinner);
-        listViewDinner.setAdapter(adapterDinner);
-
-        listItemSnack.clear();
-        adapterSnack = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, listItemSnack);
-        listViewSnack.setAdapter(adapterSnack);
-
-        listItemSupper.clear();
-        adapterSupper = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, listItemSupper);
-        listViewSupper.setAdapter(adapterSupper);
+    /**
+     * Clearuje liste i ustawia adapter
+     * @param adapter ktory zostaje ustawiony na liscie
+     */
+    private void clearListAndSetAdapter(List<ArrayAdapter<String>> adapter) {
+        for (int i = 0; i < arrayItemList.size(); i++) {
+            arrayItemList.get(i).clear();
+            listViewList.get(i).setAdapter(adapter.get(i));
+        }
     }
 
+    /**
+     * Podstawowa metoda sluzaca do wybrania i wykonania operacji na konkretnym produkcie
+     * @param cursor okresla elementy z bazy
+     * @param listItem lista elementow
+     * @param listView  lista wyswietalania produktow
+     * @param cardView  na nim pokazuja sie wszystkie elementy
+     * @param textView  elementy na cardView
+     * @param timeOfDay pora dnia wybranego danego elementu
+     */
     private void pickDinner(Cursor cursor, List<String> listItem, ListView listView, CardView cardView,
                             TextView textView, int timeOfDay) {
 
@@ -441,8 +407,7 @@ public class HouseFragment extends Fragment {
                             cursor.getString(3) + " | T: " +
                             cursor.getString(4) + " | Błonnik: " +
                             cursor.getString(5) + " | Ilość: " +
-                            cursor.getString(6)
-            );
+                            cursor.getString(6));
 
             addValueCalories[timeOfDay] = addValueCalories[timeOfDay] + Integer.parseInt(cursor.getString(1));
             addValueProtein[timeOfDay] = addValueProtein[timeOfDay] + Double.parseDouble(cursor.getString(2));
@@ -459,35 +424,47 @@ public class HouseFragment extends Fragment {
                 return view;
             }
         };
-        checkTimeOfDay(timeOfDay, addValueCalories[timeOfDay], addValueProtein[timeOfDay], addValueCarb[timeOfDay], addValueFat[timeOfDay]);
+        setMacroForChosenTimeOfDay(timeOfDay, addValueCalories[timeOfDay], addValueProtein[timeOfDay], addValueCarb[timeOfDay], addValueFat[timeOfDay]);
         checkAdapter(adapter, cardView, listView, textView);
     }
 
-    private void addProduct(String i) {
+    /**
+     * Sluzy do przejscia na strone dodawania produktu
+     * @param index okresla pore dnia do ktorej zostanie dodany produkt
+     */
+    private void addProduct(String index) {
         Intent addProduct = new Intent(getContext(), AddProductActivity.class);
         startActivity(addProduct);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("PoraDnia", i); //InputString: from the EditText
+        editor.putString("PoraDnia", index); //InputString: from the EditText
         editor.apply();
     }
 
+    /**
+     * Metoda sluzaca do schowania listy wyswietlania po jej wybraniu
+     */
     private void hideOneListView(ListView listView) {
         listView.setVisibility(GONE);
     }
 
+    /**
+     * Metoda sluzaca do schowania wszystkich list w przypadku np. ponownego uruchomienia aplikacji
+     */
     private void hideAllListViews() {
-        listViewBreakfast.setVisibility(GONE);
-        listViewLunch.setVisibility(GONE);
-        listViewDinner.setVisibility(GONE);
-        listViewSnack.setVisibility(GONE);
-        listViewSupper.setVisibility(GONE);
+        listViewList.forEach(element -> element.setVisibility(GONE));
     }
 
+    /**
+     * Metoda sluzaca do pokazania listy wyswietlania po jej wybraniu
+     */
     private void showListView(ListView listView) {
         listView.setVisibility(VISIBLE);
     }
 
+    /**
+     * Sprawdza adapter na podstawie jego zawartosci i okresla odpowiedni wyglad dla cardView i textView
+     */
     private void checkAdapter(ArrayAdapter<String> adapter, CardView cardView, ListView listView, TextView textView) {
 
         if (adapter.getCount() == 0) {
@@ -506,45 +483,44 @@ public class HouseFragment extends Fragment {
         }
     }
 
-    private void checkTimeOfDay(int timeOfDay, int calories, Double protein, Double carb, Double fat) {
+    /**
+     * Wywoluje metode setListMacro dla konkretnej pory dnia i przekazuje do niej makroskladniki
+     */
+    private void setMacroForChosenTimeOfDay(int timeOfDay, int calories, Double protein, Double carb, Double fat) {
 
         switch (timeOfDay) {
             case 0:
-                textViewKcalS.setText(String.valueOf(calories));
-                textViewWS.setText(String.valueOf(doubleFormat(carb)));
-                textViewPS.setText(String.valueOf(doubleFormat(protein)));
-                textViewTS.setText(String.valueOf(doubleFormat(fat)));
+                setListMacro(breakfastListMacro, calories, protein, carb, fat);
                 break;
             case 1:
-                textViewKcalL.setText(String.valueOf(calories));
-                textViewWL.setText(String.valueOf(doubleFormat(carb)));
-                textViewPL.setText(String.valueOf(doubleFormat(protein)));
-                textViewTL.setText(String.valueOf(doubleFormat(fat)));
+                setListMacro(lunchListMacro, calories, protein, carb, fat);
                 break;
             case 2:
-                textViewKcalO.setText(String.valueOf(calories));
-                textViewWO.setText(String.valueOf(doubleFormat(carb)));
-                textViewPO.setText(String.valueOf(doubleFormat(protein)));
-                textViewTO.setText(String.valueOf(doubleFormat(fat)));
+                setListMacro(dinnerListMacro, calories, protein, carb, fat);
                 break;
             case 3:
-                textViewKcalP.setText(String.valueOf(calories));
-                textViewWP.setText(String.valueOf(doubleFormat(carb)));
-                textViewPP.setText(String.valueOf(doubleFormat(protein)));
-                textViewTP.setText(String.valueOf(doubleFormat(fat)));
+                setListMacro(snackListMacro, calories, protein, carb, fat);
                 break;
             case 4:
-                textViewKcalK.setText(String.valueOf(calories));
-                textViewWK.setText(String.valueOf(doubleFormat(carb)));
-                textViewPK.setText(String.valueOf(doubleFormat(protein)));
-                textViewTK.setText(String.valueOf(doubleFormat(fat)));
+                setListMacro(supperListMacro, calories, protein, carb, fat);
                 break;
             default:
                 // code block
         }
     }
-    /*
-    Ustawia componenty do poczatkowych/startowych wartosci
+
+    /**
+     * Wstawia text dla elementow listy
+     */
+    private void setListMacro(List<TextView> listMacro, int calories, Double protein, Double carb, Double fat) {
+        listMacro.get(0).setText(String.valueOf(calories));
+        listMacro.get(1).setText(String.valueOf(doubleFormatWithDot(carb)));
+        listMacro.get(2).setText(String.valueOf(doubleFormatWithDot(protein)));
+        listMacro.get(3).setText(String.valueOf(doubleFormatWithDot(fat)));
+    }
+
+    /**
+     * Ustawia componenty do poczatkowych/startowych wartosci
      */
     private void resetAllComponents() {
 
@@ -566,41 +542,20 @@ public class HouseFragment extends Fragment {
         progressBarFat.getProgressDrawable().setColorFilter(
                 Color.parseColor("#FFA500"), android.graphics.PorterDuff.Mode.SRC_IN);
 
-        String resetText = "0";
-        textViewKcalS.setText(resetText);
-        textViewWS.setText(resetText);
-        textViewPS.setText(resetText);
-        textViewTS.setText(resetText);
+        breakfastListMacro.forEach(element -> element.setText("0"));
+        lunchListMacro.forEach(element -> element.setText("0"));
+        dinnerListMacro.forEach(element -> element.setText("0"));
+        snackListMacro.forEach(element -> element.setText("0"));
+        supperListMacro.forEach(element -> element.setText("0"));
 
-        textViewKcalL.setText(resetText);
-        textViewWL.setText(resetText);
-        textViewPL.setText(resetText);
-        textViewTL.setText(resetText);
-
-        textViewKcalO.setText(resetText);
-        textViewWO.setText(resetText);
-        textViewPO.setText(resetText);
-        textViewTO.setText(resetText);
-
-        textViewKcalP.setText(resetText);
-        textViewWP.setText(resetText);
-        textViewPP.setText(resetText);
-        textViewTP.setText(resetText);
-
-        textViewKcalK.setText(resetText);
-        textViewWK.setText(resetText);
-        textViewPK.setText(resetText);
-        textViewTK.setText(resetText);
-
-        textViewAllCalories.setText(resetText);
-        textViewAllProtein.setText(resetText);
-        textViewAllCarb.setText(resetText);
-        textViewAllFat.setText(resetText);
-
+        textViewAllCalories.setText("0");
+        textViewAllProtein.setText("0");
+        textViewAllCarb.setText("0");
+        textViewAllFat.setText("0");
     }
 
-    /*
-    Sumuje wszystko we wszystkich komponentach
+    /**
+     * Sumuje wszystko we wszystkich komponentach
      */
     private void sumUpEverything() {
 
@@ -609,14 +564,14 @@ public class HouseFragment extends Fragment {
         assert dataSportFragment != null;
         int optionSportFragment = Integer.parseInt(dataSportFragment);
 
-        int sumCalories = Integer.parseInt(textViewKcalS.getText().toString()) + Integer.parseInt(textViewKcalL.getText().toString()) + Integer.parseInt(textViewKcalO.getText().toString()) + Integer.parseInt(textViewKcalP.getText().toString()) + Integer.parseInt(textViewKcalK.getText().toString());
-        double sumP = Double.parseDouble(textViewPS.getText().toString()) + Double.parseDouble(textViewPL.getText().toString()) + Double.parseDouble(textViewPO.getText().toString()) + Double.parseDouble(textViewPP.getText().toString()) + Double.parseDouble(textViewPK.getText().toString());
-        double sumW = Double.parseDouble(textViewWS.getText().toString()) + Double.parseDouble(textViewWL.getText().toString()) + Double.parseDouble(textViewWO.getText().toString()) + Double.parseDouble(textViewWP.getText().toString()) + Double.parseDouble(textViewWK.getText().toString());
-        double sumT = Double.parseDouble(textViewTS.getText().toString()) + Double.parseDouble(textViewTL.getText().toString()) + Double.parseDouble(textViewTO.getText().toString()) + Double.parseDouble(textViewTP.getText().toString()) + Double.parseDouble(textViewTK.getText().toString());
+        int sumCalories = Integer.parseInt(breakfastListMacro.get(0).getText().toString()) + Integer.parseInt(lunchListMacro.get(0).getText().toString()) + Integer.parseInt(dinnerListMacro.get(0).getText().toString()) + Integer.parseInt(snackListMacro.get(0).getText().toString()) + Integer.parseInt(supperListMacro.get(0).getText().toString());
+        double sumCarbs = Double.parseDouble(breakfastListMacro.get(1).getText().toString()) + Double.parseDouble(lunchListMacro.get(1).getText().toString()) + Double.parseDouble(dinnerListMacro.get(1).getText().toString()) + Double.parseDouble(snackListMacro.get(1).getText().toString()) + Double.parseDouble(supperListMacro.get(1).getText().toString());
+        double sumProtein = Double.parseDouble(breakfastListMacro.get(2).getText().toString()) + Double.parseDouble(lunchListMacro.get(2).getText().toString()) + Double.parseDouble(dinnerListMacro.get(2).getText().toString()) + Double.parseDouble(snackListMacro.get(2).getText().toString()) + Double.parseDouble(supperListMacro.get(2).getText().toString());
+        double sumFats = Double.parseDouble(breakfastListMacro.get(3).getText().toString()) + Double.parseDouble(lunchListMacro.get(3).getText().toString()) + Double.parseDouble(dinnerListMacro.get(3).getText().toString()) + Double.parseDouble(snackListMacro.get(3).getText().toString()) + Double.parseDouble(supperListMacro.get(3).getText().toString());
 
-        double proteinS = doubleFormat(sumP);
-        double fatS = doubleFormat(sumT);
-        double carbS = doubleFormat(sumW);
+        double proteinS = doubleFormatWithDot(sumProtein);
+        double fatS = doubleFormatWithDot(sumFats);
+        double carbS = doubleFormatWithDot(sumCarbs);
 
         if (optionSportFragment == 1) {
 
@@ -650,9 +605,9 @@ public class HouseFragment extends Fragment {
             assert dataGender != null;
 
             kindOfSport = Integer.parseInt(dataKindOfSport);
-            double waga = Double.parseDouble(dataWeight);
-            int wzrost = Integer.parseInt(dataHeight);
-            int wiek = Integer.parseInt(dataAge);
+            double weight = Double.parseDouble(dataWeight);
+            int height = Integer.parseInt(dataHeight);
+            int age = Integer.parseInt(dataAge);
 
             switch (dataActivity) {
                 case "0":
@@ -672,7 +627,6 @@ public class HouseFragment extends Fragment {
                     break;
                 default:
             }
-
             switch (dataGoal) {
                 case "0":
                     goal = 0;
@@ -685,7 +639,7 @@ public class HouseFragment extends Fragment {
                     break;
                 default:
             }
-            caloriesSummary = mathematicalForSecondOption(waga, wzrost, wiek, dataGender, goal, activity);
+            caloriesSummary = mathematicalForSecondOption(weight, height, age, dataGender, goal, activity);
         }
 
         String calories = "Kcal:\n " + caloriesSummary + "/" + sumCalories;
@@ -699,17 +653,22 @@ public class HouseFragment extends Fragment {
         textViewAllFat.setText(fat);
 
         setProgressBar(caloriesSummary, sumCalories, progressBarCalories);
-        setProgressBar((int) (maxValue[0]), (int) (sumP), progressBarProtein);
-        setProgressBar((int) (maxValue[1]), (int) (sumW), progressBarCarb);
-        setProgressBar((int) (maxValue[2]), (int) (sumT), progressBarFat);
-
+        setProgressBar((int) (maxValue[0]), (int) (sumProtein), progressBarProtein);
+        setProgressBar((int) (maxValue[1]), (int) (sumCarbs), progressBarCarb);
+        setProgressBar((int) (maxValue[2]), (int) (sumFats), progressBarFat);
     }
 
-    private double mathematicalFormulas(String kcal, String macro, int division) {
-        double mathematicalFormulas = ((Double.parseDouble(kcal) * Double.parseDouble(macro)) / 100) / division;
-        return doubleFormat(mathematicalFormulas);
+    /**
+     * Funkcja pomocnicza, która dokonuje obliczen i zwraca wynik funkcji doubleFormatWithDot
+     */
+    private double mathematicalFormulas(String calories, String macro, int division) {
+        double mathematicalFormulas = ((Double.parseDouble(calories) * Double.parseDouble(macro)) / 100) / division;
+        return doubleFormatWithDot(mathematicalFormulas);
     }
 
+    /**
+     * Ustawienia dotyczace ProgressBar
+     */
     private void setProgressBar(int maxValue, int currentValue, ProgressBar progressBar) {
         progressBar.setMax(maxValue);
         progressBar.setProgress(currentValue);
@@ -719,6 +678,9 @@ public class HouseFragment extends Fragment {
         }
     }
 
+    /**
+     * Wzor na druga opcje wybrana przez uzytkownika w sekcji "Aktywnosc"
+     */
     private int mathematicalForSecondOption(double weight, int height, int age, String gender, int goal, double activity) {
 
         double mathematicalFormula = 0;
@@ -757,6 +719,12 @@ public class HouseFragment extends Fragment {
         return valueToConvert;
     }
 
+    /**
+     * Alert dotyczacy operacji po kliknieciu na dany produkt
+     * @param poraDnia dla ktorej ma zostac wybrana operacja
+     * @param ilosc ktorą, byc moze nalezy zmodyfikowac lub usunąc
+     * @param nazwa produktu na ktorym ma zostac wybrana konkretna operacja
+     */
     private void alertOperation(final int poraDnia, final String ilosc, final String nazwa) {
 
         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(requireNonNull(getContext()), R.style.Dialog);
@@ -771,7 +739,6 @@ public class HouseFragment extends Fragment {
             } else {
                 editProductInDatabase(wartoscGram, poraDnia, ilosc, nazwa);
             }
-
         });
         builder.setPositiveButton("Usuń", (dialogInterface, i) -> deleteFromDatabase(poraDnia, ilosc, nazwa));
         builder.setNegativeButton("Anuluj", (dialogInterface, i) -> dialogInterface.cancel());
@@ -785,19 +752,22 @@ public class HouseFragment extends Fragment {
         alertDialog.getButton(BUTTON_NEUTRAL).setTextColor(Color.GREEN);
     }
 
-    private void deleteFromDatabase(int idTimeOfDay, String ilosc, String nazwa) {
+    /**
+     * Funkcja slużaca do usuwania produktu z bazy danych, a w konsekwencji usuniecia jej z listy produktow z głównej strony aplikacji
+     */
+    private void deleteFromDatabase(int idTimeOfDay, String amount, String name) {
 
         SQLiteDatabase sqLiteDatabase = requireNonNull(getActivity()).openOrCreateDatabase(DATABASE_FILE, Context.MODE_PRIVATE, null);
-        int iloscCON = Integer.parseInt(ilosc.replaceAll("\\s+", ""));
-        String nazwaCON = nazwa.replaceAll("\\s+$", "");
+        int amountReplace = Integer.parseInt(amount.replaceAll("\\s+", ""));
+        String nameReplace = name.replaceAll("\\s+$", "");
 
-        Cursor idMeal = sqLiteDatabase.rawQuery(getMealIdByNameAndAmountFromTableMeal(nazwaCON,iloscCON),null);
+        Cursor idMeal = sqLiteDatabase.rawQuery(getMealIdByNameAndAmountFromTableMeal(nameReplace, amountReplace), null);
         idMeal.moveToFirst();
 
-        Cursor idHash = sqLiteDatabase.rawQuery(getElementByIdTimeOfDayAndDataAndIdMealFromHash(idTimeOfDay,textViewData.getText().toString(),idMeal.getString(0)), null);
+        Cursor idHash = sqLiteDatabase.rawQuery(getElementByIdTimeOfDayAndDataAndIdMealFromHash(idTimeOfDay, textViewData.getText().toString(), idMeal.getString(0)), null);
         idHash.moveToFirst();
 
-        Cursor delete = sqLiteDatabase.rawQuery(deleteByIdHashFromHashTable(idHash.getString(0)),null);
+        Cursor delete = sqLiteDatabase.rawQuery(deleteByIdHashFromHashTable(idHash.getString(0)), null);
         delete.moveToFirst();
 
         idMeal.close();
@@ -808,31 +778,34 @@ public class HouseFragment extends Fragment {
         refreshAfterDbChanged();
     }
 
-    private void editProductInDatabase(int wartoscGram, int idTimeOfDay, String ilosc, String nazwa) {
+    /**
+     * Funkcja slużaca do edytowania produktu z bazy danych, a w konsekwencji zmodyfikwoania jej wartosci na liscie produktow
+     */
+    private void editProductInDatabase(int amountOfProduct, int idTimeOfDay, String ilosc, String nazwa) {
 
         SQLiteDatabase baza = requireNonNull(getActivity()).openOrCreateDatabase(DATABASE_FILE, Context.MODE_PRIVATE, null);
         int iloscCON = Integer.parseInt(ilosc.replaceAll("\\s+", ""));
         String nazwaCON = nazwa.replaceAll("\\s+$", "");
 
-        Cursor idMeal = baza.rawQuery(getMealIdByNameAndAmountFromTableMeal(nazwaCON,iloscCON),null);
+        Cursor idMeal = baza.rawQuery(getMealIdByNameAndAmountFromTableMeal(nazwaCON, iloscCON), null);
         idMeal.moveToFirst();
 
-        Cursor dataProduct = baza.rawQuery(getMealIdByDataAndIdMealFromTableMeal(textViewData.getText().toString(),idMeal.getString(0)), null);
+        Cursor dataProduct = baza.rawQuery(getMealIdByDataAndIdMealFromTableMeal(textViewData.getText().toString(), idMeal.getString(0)), null);
         dataProduct.moveToFirst();
 
-        Cursor idHash = baza.rawQuery(getElementByIdTimeOfDayAndDataAndIdMealFromHash(idTimeOfDay,textViewData.getText().toString(),idMeal.getString(0)), null);
+        Cursor idHash = baza.rawQuery(getElementByIdTimeOfDayAndDataAndIdMealFromHash(idTimeOfDay, textViewData.getText().toString(), idMeal.getString(0)), null);
         idHash.moveToFirst();
 
-        int  il = Integer.parseInt(dataProduct.getString(5));
-        double b = doubleFormat((wartoscGram * Double.parseDouble(dataProduct.getString(0))) / il);
-        double bl = doubleFormat((wartoscGram * Double.parseDouble(dataProduct.getString(1))) / il);
-        int kcal = (wartoscGram * Integer.parseInt(dataProduct.getString(2))) / il;
-        double t = doubleFormat((wartoscGram * Double.parseDouble(dataProduct.getString(3))) / il);
-        double w = doubleFormat((wartoscGram * Double.parseDouble(dataProduct.getString(4))) / il);
-        il = wartoscGram;
+        int il = Integer.parseInt(dataProduct.getString(5));
+        double b = doubleFormatWithDot((amountOfProduct * Double.parseDouble(dataProduct.getString(0))) / il);
+        double bl = doubleFormatWithDot((amountOfProduct * Double.parseDouble(dataProduct.getString(1))) / il);
+        int kcal = (amountOfProduct * Integer.parseInt(dataProduct.getString(2))) / il;
+        double t = doubleFormatWithDot((amountOfProduct * Double.parseDouble(dataProduct.getString(3))) / il);
+        double w = doubleFormatWithDot((amountOfProduct * Double.parseDouble(dataProduct.getString(4))) / il);
+        il = amountOfProduct;
 
         try {
-            Cursor checkInMealTable = baza.rawQuery(getElementByNameAndValueFromPosilek(dataProduct.getString(6), wartoscGram), null);
+            Cursor checkInMealTable = baza.rawQuery(getElementByNameAndValueFromPosilek(dataProduct.getString(6), amountOfProduct), null);
             checkInMealTable.moveToFirst();
 
             Cursor deleteFromHashTable = baza.rawQuery(deleteElementByIdHashFromHash(idHash.getString(0)), null);
@@ -847,7 +820,7 @@ public class HouseFragment extends Fragment {
             Cursor insertToMealTable = baza.rawQuery(insertElementIntoMealTable(dataProduct.getString(6), b, w, t, bl, kcal, il), null);
             insertToMealTable.moveToFirst();
 
-            Cursor checkInMealTable = baza.rawQuery(getElementByNameAndValueFromPosilek(dataProduct.getString(6), wartoscGram), null);
+            Cursor checkInMealTable = baza.rawQuery(getElementByNameAndValueFromPosilek(dataProduct.getString(6), amountOfProduct), null);
             checkInMealTable.moveToFirst();
 
             Cursor deleteFromHashTable = baza.rawQuery(deleteElementByIdHashFromHash(idHash.getString(0)), null);
@@ -865,6 +838,9 @@ public class HouseFragment extends Fragment {
         refreshAfterDbChanged();
     }
 
+    /**
+     * Funkcja slużaca do refreshowania aplikacji po konkretnych operacjach
+     */
     private void refreshApp() {
         resetAllComponents();
         hideAllListViews();
@@ -872,11 +848,17 @@ public class HouseFragment extends Fragment {
         sumUpEverything();
     }
 
-    private double doubleFormat(double variables) {
+    /**
+     * Ustawia odpowiedni format i zamienia kropke na przecinek.
+     */
+    private double doubleFormatWithDot(double variables) {
         DecimalFormat df = new DecimalFormat("#.#");
         return Double.parseDouble(df.format(variables).replace(",", "."));
     }
 
+    /**
+     * metoda która refresh'uje zawartosc w oknie głównym po zmianie wartosci w bazie danych
+     */
     private void refreshAfterDbChanged() {
         assert getFragmentManager() != null;
         FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -884,13 +866,5 @@ public class HouseFragment extends Fragment {
             ft.setReorderingAllowed(false);
         }
         ft.detach(this).attach(this).commit();
-    }
-
-    private static void hideSoftKeyboard(Activity activity) {
-        if (activity.getCurrentFocus() == null) {
-            return;
-        }
-        InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
     }
 }

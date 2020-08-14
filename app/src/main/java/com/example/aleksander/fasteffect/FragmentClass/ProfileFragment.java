@@ -15,6 +15,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses.HideSoftKeyboard;
 import com.example.aleksander.fasteffect.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,7 +33,7 @@ import java.util.Objects;
  * Klasa posiada podstawowe informacje o użytkowniku
  * Zakladka "Profil"
  */
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment{
 
     public static final String SHARED_PREFS = "shaaredPrefs";
 
@@ -42,7 +43,6 @@ public class ProfileFragment extends Fragment {
     private String childWeight = "weight";
     private String childAge = "age";
     private String childHeight = "height";
-    private String childEmail = "email";
     private String childGender = "gender";
 
     private TextInputEditText textInputEditTextAge;
@@ -85,7 +85,6 @@ public class ProfileFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 onLoadRef(dataSnapshot);
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 databaseError.getMessage();
@@ -96,6 +95,9 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Zmiana w zdalnej bazie danych po kliknieciu przycisku "zapisz"
+     */
     private void onSaveRef() {
         if (Double.parseDouble(String.valueOf(textInputEditTextWeight.getText())) > 200)
             Toast.makeText(getContext(), "Nieprawidłowa waga", Toast.LENGTH_SHORT).show();
@@ -123,11 +125,15 @@ public class ProfileFragment extends Fragment {
                     Objects.requireNonNull(textInputEditTextHeight.getText()).toString(),
                     userGender);
 
+            HideSoftKeyboard.hideSoftKeyboard(Objects.requireNonNull(getActivity()));
             Toast.makeText(getContext(), "Zapisano zmiany!", Toast.LENGTH_SHORT).show();
         }
     }
-
+    /**
+     * Zaladowanie informacji o uzytkowniku ze zdalnej bazy danych po wejsciu w zakładke "Profil"
+     */
     public void onLoadRef(DataSnapshot dataSnapshot) {
+        String childEmail = "email";
         String userEmail = dataSnapshot.child(uid).child(childEmail).getValue(String.class);
         userAge = dataSnapshot.child(uid).child(childAge).getValue(String.class);
         userWeight = dataSnapshot.child(uid).child(childWeight).getValue(String.class);
@@ -146,6 +152,13 @@ public class ProfileFragment extends Fragment {
         }
     }
 
+    /**
+     * Zapamietanie informacji o uzytkowniku do pamieciu urzadzenia w celu ich dalszego przetwarzania
+     * @param weight waga uzytkownika
+     * @param age wiek uzytkownika
+     * @param height wzrost uzytkownika
+     * @param gender plec uzytkownika
+     */
     public void setShared(String weight, String age, String height, String gender) {
         SharedPreferences sharedPreferences = Objects.requireNonNull(this.getActivity()).getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -155,4 +168,6 @@ public class ProfileFragment extends Fragment {
         editor.putString("optionPlec", gender);
         editor.apply();
     }
+
+
 }

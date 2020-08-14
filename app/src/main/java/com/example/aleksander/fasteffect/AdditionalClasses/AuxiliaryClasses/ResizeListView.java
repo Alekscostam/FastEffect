@@ -10,6 +10,10 @@ import android.widget.ListView;
  */
 public class ResizeListView {
 
+    /**
+     * Zmienia rozmiary opkna w sposob "dynamiczny"
+     * @param listView ktory ma zostac zmieniony
+     */
     public void resize(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter();
         if (listAdapter == null) {

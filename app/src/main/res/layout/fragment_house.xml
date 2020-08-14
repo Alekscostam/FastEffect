@@ -25,7 +25,7 @@
                 android:layout_height="50dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/view_rounded"
-                android:drawableRight="@drawable/ic_date_aqua_24dp"
+                android:drawableEnd="@drawable/ic_date_aqua_24dp"
                 android:gravity="center"
                 android:textColor="#41aecf"
                 android:textSize="20sp" />

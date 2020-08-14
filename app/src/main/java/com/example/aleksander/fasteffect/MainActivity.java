@@ -14,6 +14,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses.HideSoftKeyboard;
 import com.example.aleksander.fasteffect.AdditionalClasses.DatabaseClasses.SQLDatabaseStructure;
 import com.example.aleksander.fasteffect.FragmentClass.ExportFragment;
 import com.example.aleksander.fasteffect.FragmentClass.HouseFragment;
@@ -27,6 +28,7 @@ import static com.example.aleksander.fasteffect.Repository.DatabaseQuery.createT
 import static com.example.aleksander.fasteffect.Repository.DatabaseQuery.createTableMeal;
 import static com.example.aleksander.fasteffect.Repository.DatabaseQuery.createTableTimeOfDay;
 import static com.example.aleksander.fasteffect.Repository.DatabaseQuery.dropTable;
+
 
 /**
  * Klasa główna która inicializuje bazę i wszelkie podtsawowe componenty
@@ -70,6 +72,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
+        HideSoftKeyboard.hideSoftKeyboard(this);
+
         if (drawer.isDrawerOpen(GravityCompat.START))
             drawer.closeDrawer(GravityCompat.START);
         else
@@ -78,6 +82,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+        HideSoftKeyboard.hideSoftKeyboard(this);
+
         switch (menuItem.getItemId()) {
             case R.id.nav_house:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HouseFragment()).commit();
@@ -101,6 +108,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    /**
+     * Dokonuje wylogowywania z aplikacji i przejscie na strone logowania
+     */
     private void logout() {
         FirebaseAuth.getInstance().signOut();
         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
@@ -113,6 +123,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         finish();
     }
 
+    /**
+     * Inicjuje baze danych
+     */
     private void databaseInit() {
         SQLiteDatabase sqLiteDatabase = openOrCreateDatabase(SQLDatabaseStructure.DATABASE_FILE, Context.MODE_PRIVATE, null);
 

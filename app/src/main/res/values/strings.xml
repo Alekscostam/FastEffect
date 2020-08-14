@@ -90,6 +90,7 @@
     <string name="enterProduct">Wprowadź produkt</string>
     <string name="findFood">Znajdź produkt badz danie</string>
     <string name="createAnAccount">Tworzenie konta…</string>
+    <string name="logOut">Wyloguj</string>
 
     <string-array name="spinnerActivities">
         <item>brak aktywności, praca siedząca</item>

@@ -1,4 +1,4 @@
-package com.example.aleksander.fasteffect.AdditionalClasses.FilteringInterfaces;
+package com.example.aleksander.fasteffect.AdditionalClasses.Interfaces;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;

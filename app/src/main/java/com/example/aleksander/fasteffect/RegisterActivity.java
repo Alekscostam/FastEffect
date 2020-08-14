@@ -10,6 +10,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses.HideSoftKeyboard;
 import com.example.aleksander.fasteffect.AdditionalClasses.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
@@ -57,12 +58,13 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-       /* if (firebaseAuth.getCurrentUser() != null) {
-        }*/
         firebaseAuth.getCurrentUser();
     }
 
 
+    /**
+     * Inicjuje komponenty
+     */
     private void editTextInit() {
         TextInputEditText password =(findViewById(R.id.textInputEditTextPassword));
         TextInputEditText passwordAgain =(findViewById(R.id.textInputEditTextPasswordAgain));
@@ -79,6 +81,10 @@ public class RegisterActivity extends AppCompatActivity {
         sHeight = Objects.requireNonNull(height.getText()).toString();
     }
 
+
+    /**
+     * Dokonuje rejestracji użytkownika do zdalnej bazy danych w Google Firebase
+     */
     public void buttonRegisterClick(View view) {
         editTextInit();
         view.getId();
@@ -94,8 +100,10 @@ public class RegisterActivity extends AppCompatActivity {
                                     .setValue(user).addOnCompleteListener(taskUser -> {
                                 if (taskUser.isSuccessful()) {
                                     Objects.requireNonNull(firebaseAuth.getCurrentUser()).sendEmailVerification().addOnCompleteListener(taskLast -> {
-                                        if (taskLast.isSuccessful())
+                                        if (taskLast.isSuccessful()) {
                                             Toast.makeText(RegisterActivity.this, "Zarejestrowano! Sprawdź swój email w celu weryfikacji", Toast.LENGTH_SHORT).show();
+                                            HideSoftKeyboard.hideSoftKeyboard(this);
+                                        }
                                         else
                                             Toast.makeText(RegisterActivity.this, Objects.requireNonNull(taskLast.getException()).getMessage(), Toast.LENGTH_SHORT).show();
                                     });

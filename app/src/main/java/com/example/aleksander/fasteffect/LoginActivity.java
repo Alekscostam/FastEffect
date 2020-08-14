@@ -14,7 +14,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.aleksander.fasteffect.AdditionalClasses.FilteringInterfaces.TextViewFilter;
+import com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses.HideSoftKeyboard;
+import com.example.aleksander.fasteffect.AdditionalClasses.Interfaces.TextWatcherFilter;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
@@ -63,6 +64,9 @@ public class LoginActivity extends  AppCompatActivity{
 
     }
 
+    /**
+     * Dokonuje ustawienia wszystkich komponentow
+     */
     private void rememberOrNot(boolean checkRemember) {
         if (checkRemember) {
             Intent intentLogin = new Intent(LoginActivity.this, MainActivity.class);
@@ -88,8 +92,8 @@ public class LoginActivity extends  AppCompatActivity{
             autoCompleteTextViewEmail.setText(sharedPreferencesRemember.getString(KEY_USERNAME, ""));
             autoCompleteTextViewPassword.setText(sharedPreferencesRemember.getString(KEY_PASS, ""));
 
-            autoCompleteTextViewEmail.addTextChangedListener((TextViewFilter) (charSequence, i, i1, i2) -> managePrefs());
-            autoCompleteTextViewPassword.addTextChangedListener((TextViewFilter) (charSequence, i, i1, i2) -> managePrefs());
+            autoCompleteTextViewEmail.addTextChangedListener((TextWatcherFilter) (charSequence, i, i1, i2) -> managePrefs());
+            autoCompleteTextViewPassword.addTextChangedListener((TextWatcherFilter) (charSequence, i, i1, i2) -> managePrefs());
 
             checkBoxRememberMe.setOnCheckedChangeListener((compoundButton, b) -> managePrefs());
             textViewRegister.setOnClickListener(setRegister -> startActivity(new Intent(getApplicationContext(), RegisterActivity.class)));
@@ -99,6 +103,9 @@ public class LoginActivity extends  AppCompatActivity{
         }
     }
 
+    /**
+     * Metoda która umozliwia pokazanie lub ukrycie hasla
+     */
     private void showOrHide() {
         if(showPassword) {
             autoCompleteTextViewPassword.setTransformationMethod(new PasswordTransformationMethod());
@@ -112,6 +119,9 @@ public class LoginActivity extends  AppCompatActivity{
         }
     }
 
+    /**
+     * Ustawienia dotyczace tego czy dane logowania użytkownika maja zostać zapisane
+     */
     private void managePrefs() {
         if (checkBoxRememberMe.isChecked()) {
             editorRemember.putString(KEY_USERNAME, autoCompleteTextViewEmail.getText().toString().trim());
@@ -126,9 +136,13 @@ public class LoginActivity extends  AppCompatActivity{
         }
         editorRemember.apply();
     }
-
+    /**
+     * Uwierzytelnia użytkownika,
+     * Dokonuje przejscia na główna strone aplikacji po wybraniu logowania
+     */
     public void buttonLoginClick(View view) {
 
+        view.getId();
         String sEmail = autoCompleteTextViewEmail.getText().toString();
         String sPassword = autoCompleteTextViewPassword.getText().toString();
 
@@ -146,6 +160,7 @@ public class LoginActivity extends  AppCompatActivity{
                                 intentLogin.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
                                 intentLogin.addFlags(FLAG_ACTIVITY_CLEAR_TASK);
                                 intentLogin.putExtra("Email", firebaseAuth.getCurrentUser().getEmail());
+                                HideSoftKeyboard.hideSoftKeyboard(this);
                                 startActivity(intentLogin);
                             } else {
                                 Toast.makeText(this, "Zweryfikuj swój adres email!", Toast.LENGTH_SHORT).show();

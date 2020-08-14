@@ -1,6 +1,4 @@
 
 `
-java:S1874ä"BRemove this use of "THEME_DEVICE_DEFAULT_LIGHT"; it is deprecated.(‰·â8ùœ‚¾¾.
-p
-java:S3776ª"RRefactor this method to reduce its Cognitive Complexity from 21 to the 15 allowed.(«ÃÀ÷8áß¾¾.
+java:S1874‡"BRemove this use of "THEME_DEVICE_DEFAULT_LIGHT"; it is deprecated.(‰·â8Ç§Ôé¾.
 o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(Åï»Ô

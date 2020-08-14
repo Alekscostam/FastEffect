@@ -22,8 +22,8 @@ import android.widget.TextView;
 import com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses.DataHolder;
 import com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses.ResizeListView;
 import com.example.aleksander.fasteffect.AdditionalClasses.DatabaseClasses.Product;
-import com.example.aleksander.fasteffect.AdditionalClasses.FilteringInterfaces.OnChildAddedEventListener;
-import com.example.aleksander.fasteffect.AdditionalClasses.FilteringInterfaces.TextViewFilter;
+import com.example.aleksander.fasteffect.AdditionalClasses.Interfaces.OnChildAddedEventListener;
+import com.example.aleksander.fasteffect.AdditionalClasses.Interfaces.TextWatcherFilter;
 import com.example.aleksander.fasteffect.MainActivity;
 import com.example.aleksander.fasteffect.R;
 import com.google.firebase.database.DatabaseReference;
@@ -128,7 +128,7 @@ public class AddProductActivity extends AppCompatActivity {
 
         listViewProducts.setAdapter(arrayAdapter);
 
-        editTextFilter.addTextChangedListener((TextViewFilter) (charSequence, start, count, after) -> (AddProductActivity.this)
+        editTextFilter.addTextChangedListener((TextWatcherFilter) (charSequence, start, count, after) -> (AddProductActivity.this)
                 .arrayAdapter
                 .getFilter()
                 .filter(charSequence.toString()));
@@ -149,7 +149,9 @@ public class AddProductActivity extends AppCompatActivity {
 
     }
 
-
+    /**
+     * ExecutorService, który wykonuję tę metode w celu asynchronicznego pobrania danych ze zdalenj bazy danych
+     */
     private void executorServiceMethod() {
 
         databaseReference.addChildEventListener((OnChildAddedEventListener) (dataSnapshot, s) -> {
@@ -173,6 +175,10 @@ public class AddProductActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Zapisuje produkt do lokalnej bazy danych
+     * @param amount to ilosc produktu , który ma zostac dodany
+     */
     private void addProductToDatabase(String amount) {
 
         SQLiteDatabase sqLiteDatabase = openOrCreateDatabase(DATABASE_FILE,
@@ -216,6 +222,11 @@ public class AddProductActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Operacje arytmetyczne na wartosciach wybranego produktu, ktore musza zostac wykonane przed ich zapisaniem do lokalnej bazy danych
+     * @param selectedItem okresla wybrany produkt
+     * @param amount ilosc wybranego produktu
+     */
     private void arithmeticOperationsForVariables(String selectedItem, String amount) {
         double converterValue = (Double.parseDouble(amount) / 100);
         DecimalFormat df = new DecimalFormat("#.#");
