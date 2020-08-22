@@ -11,6 +11,7 @@ import com.google.firebase.database.DatabaseError;
  * Interfejs rozszerzajacy interfejs ChildEventListener
  * Ogranicza się do implementacji tylko onChildAdded z interfejsu ChildEventListener
  */
+@FunctionalInterface
 public interface OnChildAddedEventListener extends ChildEventListener {
     @Override
     void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s);

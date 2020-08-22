@@ -12,7 +12,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
@@ -30,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses.Closer;
+import com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses.CustomAdapter;
 import com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses.DataHolder;
 import com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses.ResizeListView;
 import com.example.aleksander.fasteffect.ProductClasses.AddProductActivity;
@@ -307,6 +307,7 @@ public class HouseFragment extends Fragment{
      */
     private String getAmountFromValue(String itemAtPosition) {
         String substringFromItemAtPosition = itemAtPosition.substring(itemAtPosition.indexOf("Ilość:") + 6);
+        System.out.println("substringFromItemAtPosition"+substringFromItemAtPosition);;
         return substringFromItemAtPosition.replaceAll("\\s+", "");
     }
 
@@ -314,7 +315,8 @@ public class HouseFragment extends Fragment{
      * Pobiera nazwe produktu ze stringa
      */
     private String getNameFromValue(String itemAtPosition) {
-        return itemAtPosition.substring(0, itemAtPosition.indexOf('|'));
+        System.out.println("ITEM:"+itemAtPosition.substring(0, itemAtPosition.indexOf(",")));
+        return itemAtPosition.substring(0, itemAtPosition.indexOf(","));
     }
 
     /**
@@ -400,13 +402,14 @@ public class HouseFragment extends Fragment{
 
         ArrayAdapter<String> adapter;
         while (cursor.moveToNext()) {
+
             listItem.add(
-                    cursor.getString(0) + " | Kcal: " +
-                            cursor.getString(1) + " | B: " +
-                            cursor.getString(2) + " | W: " +
-                            cursor.getString(3) + " | T: " +
-                            cursor.getString(4) + " | Błonnik: " +
-                            cursor.getString(5) + " | Ilość: " +
+                    cursor.getString(0) +",  Kalorie: "+
+                            cursor.getString(1) + ",  Białko: " +
+                            cursor.getString(2) + ",  Węglowodany: " +
+                            cursor.getString(3) + ",  Tłuszcze: " +
+                            cursor.getString(4) + ",  Błonnik: " +
+                            cursor.getString(5) + ",  Ilość: " +
                             cursor.getString(6));
 
             addValueCalories[timeOfDay] = addValueCalories[timeOfDay] + Integer.parseInt(cursor.getString(1));
@@ -415,15 +418,7 @@ public class HouseFragment extends Fragment{
             addValueFat[timeOfDay] = addValueFat[timeOfDay] + Double.parseDouble(cursor.getString(4));
         }
 
-        adapter = new ArrayAdapter<String>(requireNonNull(getContext()), android.R.layout.simple_list_item_1, listItem) {
-            @Override
-            public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-                View view = super.getView(position, convertView, parent);
-                TextView tv = view.findViewById(android.R.id.text1);
-                tv.setTextColor(Color.rgb(72, 72, 72));
-                return view;
-            }
-        };
+        adapter = new CustomAdapter(requireNonNull(getContext()), listItem);
         setMacroForChosenTimeOfDay(timeOfDay, addValueCalories[timeOfDay], addValueProtein[timeOfDay], addValueCarb[timeOfDay], addValueFat[timeOfDay]);
         checkAdapter(adapter, cardView, listView, textView);
     }

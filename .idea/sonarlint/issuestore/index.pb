@@ -33,8 +33,6 @@ japp/src/main/java/com/example/aleksander/fasteffect/AdditionalClasses/Auxiliary
 bapp/src/main/java/com/example/aleksander/fasteffect/AdditionalClasses/DatabaseClasses/Product.java,c\2\c271a328f1c0a2c9b65e9f82177aa8acab630c9c
 ü
 oapp/src/main/java/com/example/aleksander/fasteffect/AdditionalClasses/DatabaseClasses/SQLDatabaseStructure.java,3\5\35bbfbb7c13ec6d04f546b09e5b886f3dd456cf1
-®
-xapp/src/main/java/com/example/aleksander/fasteffect/AdditionalClasses/FilteringInterfaces/OnChildAddedEventListener.java,a\a\aa9cc42123053c805c163547ecee4c929291cf7c
 
 Oapp/src/main/java/com/example/aleksander/fasteffect/AdditionalClasses/User.java,3\c\3c1fb5f6ddfb64239e0740e6a575e7f7aa0d8fa5
 ç
@@ -43,5 +41,9 @@ Oapp/src/main/java/com/example/aleksander/fasteffect/AdditionalClasses/User.java
 Zapp/src/main/java/com/example/aleksander/fasteffect/ProductClasses/AddProductActivity.java,f\6\f6d4fbe072bc1bfd5b26ac6cd552dcb1ef896271
 Å
 Qapp/src/main/java/com/example/aleksander/fasteffect/Repository/DatabaseQuery.java,4\d\4d6cfc474c73fb06d5c3fae7ff19b6a4e26df2ab
-†
-papp/src/main/java/com/example/aleksander/fasteffect/AdditionalClasses/FilteringInterfaces/TextWatcherFilter.java,a\9\a95850cd20b4a9f091ecad6f83594ddfa5383366
+ú
+lapp/src/main/java/com/example/aleksander/fasteffect/AdditionalClasses/AuxiliaryClasses/HideSoftKeyboard.java,3\4\34bb4fd75ee2d5d9d8c0b64fd556326c8207cf07
+ó
+gapp/src/main/java/com/example/aleksander/fasteffect/AdditionalClasses/Interfaces/TextWatcherFilter.java,9\6\96a5d9832d1bc8f10f094a669296473d503f17ac
+ü
+oapp/src/main/java/com/example/aleksander/fasteffect/AdditionalClasses/Interfaces/OnChildAddedEventListener.java,1\1\113e685e899a5db39c337b46e1789ff6003ba647

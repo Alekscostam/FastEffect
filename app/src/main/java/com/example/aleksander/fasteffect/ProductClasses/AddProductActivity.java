@@ -1,5 +1,6 @@
 package com.example.aleksander.fasteffect.ProductClasses;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,17 +9,16 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses.CustomAdapter;
 import com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses.DataHolder;
 import com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses.ResizeListView;
 import com.example.aleksander.fasteffect.AdditionalClasses.DatabaseClasses.Product;
@@ -33,8 +33,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import static android.app.AlertDialog.BUTTON_POSITIVE;
 import static com.example.aleksander.fasteffect.AdditionalClasses.DatabaseClasses.SQLDatabaseStructure.DATABASE_FILE;
@@ -56,7 +54,7 @@ import static com.example.aleksander.fasteffect.AdditionalClasses.DatabaseClasse
 /**
  * Klasa służąca do odbierania danych ze zdalnej bazy danych do lokalnej bazy danych
  */
-public class AddProductActivity extends AppCompatActivity {
+public class AddProductActivity extends Activity {
 
     private String dateOpen;
     private String timeOfDay;
@@ -116,26 +114,12 @@ public class AddProductActivity extends AppCompatActivity {
 
         });
 
-        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, linkedList) {
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                View view = super.getView(position, convertView, parent);
-                TextView tv = view.findViewById(android.R.id.text1);
-                tv.setTextColor(Color.rgb(72, 72, 72));
-                return view;
-            }
-        };
-
-        listViewProducts.setAdapter(arrayAdapter);
 
         editTextFilter.addTextChangedListener((TextWatcherFilter) (charSequence, start, count, after) -> (AddProductActivity.this)
                 .arrayAdapter
                 .getFilter()
                 .filter(charSequence.toString()));
 
-        ExecutorService executorService = Executors.newFixedThreadPool(3);
-        executorService.submit(this::executorServiceMethod);
-        executorService.shutdown();
 
         textViewBack.setOnClickListener(v -> {
             Intent backIntent = new Intent(getApplicationContext(), MainActivity.class);
@@ -147,6 +131,19 @@ public class AddProductActivity extends AppCompatActivity {
             startActivity(addIntent);
         });
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        executorServiceMethod();
+        adapterInit();
     }
 
     /**
@@ -161,18 +158,20 @@ public class AddProductActivity extends AppCompatActivity {
             final List<StringBuilder> listModify = new ArrayList<>();
 
             stringBuilderValue
-                    .append(" ")
                     .append(dataSnapshot.getKey())
-                    .append(" ] ")
                     .append(dataSnapshot.getValue(Product.class));
 
             listModify.add(stringBuilderValue);
-
-            linkedList.add(String.valueOf(listModify));
+            linkedList.add(String.valueOf(listModify.get(0)));
             arrayAdapter.notifyDataSetChanged();
             ResizeListView resizeListView = new ResizeListView();
             resizeListView.resize(listViewProducts);
         });
+    }
+    private void adapterInit()
+    {
+        arrayAdapter = new CustomAdapter(this, linkedList);
+        listViewProducts.setAdapter(arrayAdapter);
     }
 
     /**
@@ -203,22 +202,23 @@ public class AddProductActivity extends AppCompatActivity {
 
         String where = "Nazwa=? AND Ilość=?";
         String[] args = {stringOfName, amount};
-
+        Cursor k = null;
         try {
-            Cursor k = sqLiteDatabase.query(TABLE_MEAL, columns, where, args, null, null, null);
+            k = sqLiteDatabase.query(TABLE_MEAL, columns, where, args, null, null, null);
             k.moveToFirst();
             rowHash.put(HASH_ID_MEAL, Integer.valueOf(k.getString(0)));
             sqLiteDatabase.insert(TABLE_HASH, null, rowHash);
-            k.close();
         } catch (Exception ex) {
             sqLiteDatabase.insert(TABLE_MEAL, null, rowProduct);
-            Cursor k = sqLiteDatabase.query(TABLE_MEAL, columns, where, args, null, null, null);
+            k = sqLiteDatabase.query(TABLE_MEAL, columns, where, args, null, null, null);
             k.moveToFirst();
             rowHash.put(HASH_ID_MEAL, Integer.valueOf(k.getString(0)));
             sqLiteDatabase.insert(TABLE_HASH, null, rowHash);
-            k.close();
+
         } finally {
             sqLiteDatabase.close();
+            assert k != null;
+            k.close();
         }
     }
 
@@ -231,11 +231,11 @@ public class AddProductActivity extends AppCompatActivity {
         double converterValue = (Double.parseDouble(amount) / 100);
         DecimalFormat df = new DecimalFormat("#.#");
 
-        int indexCarbs = selectedItem.indexOf("W:") + 2;
-        int indexProtein = selectedItem.indexOf("B:") + 2;
-        int indexFat = selectedItem.indexOf("T:") + 2;
-        int indexFibre = selectedItem.indexOf("Błonnik:") + 8;
-        int indexCalories = selectedItem.indexOf("Kalorie:") + 8;
+        int indexCarbs = selectedItem.indexOf("Węglowodany:") + 13;
+        int indexProtein = selectedItem.indexOf("Białko:") + 8;
+        int indexFat = selectedItem.indexOf("Tłuszcze:") + 10;
+        int indexFibre = selectedItem.indexOf("Błonnik:") + 9;
+        int indexCalories = selectedItem.indexOf("Kalorie:") + 9;
 
         int dotCarbIndex = selectedItem.indexOf(".", indexCarbs);
         int dotProteinIndex = selectedItem.indexOf(".", indexProtein);
@@ -256,7 +256,8 @@ public class AddProductActivity extends AppCompatActivity {
         double carb = Double.parseDouble(stringOfCarbs) * converterValue;
         double fibre = Double.parseDouble(stringOfFibre) * converterValue;
 
-        stringOfName = selectedItem.substring(0, indexCalories);
+
+        stringOfName = selectedItem.substring(0, selectedItem.indexOf(","));
         replaceCalories = (df.format(Math.round(calories))).replace(",", ".");
         replaceProtein = (df.format(protein)).replace(",", ".");
         replaceFat = (df.format(fat)).replace(",", ".");

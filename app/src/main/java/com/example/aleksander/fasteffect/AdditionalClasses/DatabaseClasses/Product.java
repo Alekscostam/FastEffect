@@ -29,10 +29,10 @@ public class Product {
     @Override
     public String toString() {
         return
-                "  Kalorie: " + Kalorie +
-                ", B: " + Białko +
-                ", T: " + Tłuszcze +
-                ", W: " + Węglowodany +
-                ", Błonnik: " + Błonnik ;
+                ",  Kalorie: "     + Kalorie +
+                ",  Białko: "      + Białko +
+                ",  Tłuszcze: "     + Tłuszcze +
+                ",  Węglowodany: " + Węglowodany +
+                ",  Błonnik: "     + Błonnik ;
     }
 }
