@@ -47,3 +47,5 @@ lapp/src/main/java/com/example/aleksander/fasteffect/AdditionalClasses/Auxiliary
 gapp/src/main/java/com/example/aleksander/fasteffect/AdditionalClasses/Interfaces/TextWatcherFilter.java,9\6\96a5d9832d1bc8f10f094a669296473d503f17ac
 Ÿ
 oapp/src/main/java/com/example/aleksander/fasteffect/AdditionalClasses/Interfaces/OnChildAddedEventListener.java,1\1\113e685e899a5db39c337b46e1789ff6003ba647
+™
+iapp/src/main/java/com/example/aleksander/fasteffect/AdditionalClasses/AuxiliaryClasses/CustomAdapter.java,7\4\74eaf6d977274392a5c762758ea8fc79bb320761

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
     android:orientation="vertical">
 
     <LinearLayout
-    android:layout_marginTop="10dp"
+    android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -15,9 +15,9 @@
             android:id="@+id/productName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="3sp"
-            android:layout_marginTop="3dp"
-            android:text="Product"
+            android:layout_marginStart="5sp"
+            android:layout_marginTop="0dp"
+            android:text="@string/product"
             android:textColor="#000000"
             android:textSize="16sp" />
 
@@ -25,9 +25,9 @@
             android:id="@+id/productCalories"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="3sp"
-            android:layout_marginTop="3dp"
-            android:text="Kalorie:"
+            android:layout_marginStart="5sp"
+            android:layout_marginTop="0dp"
+            android:text="@string/kalorie"
             android:textColor="#551A8B"
             android:textSize="14sp" />
 
@@ -39,11 +39,12 @@
         android:id="@+id/restOfValuesName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="3dp"
+        android:layout_marginStart="5dp"
         android:layout_marginEnd="3dp"
         android:gravity="left"
-        android:text="Białko: Węglowodany: Błonnik: Tłuszcze: "
-        android:textSize="13sp">
+        android:text="@string/bia_ko_w_glowodany_b_onnik_t_uszcze"
+        android:textSize="13sp"
+        tools:ignore="RtlHardcoded">
 
     </TextView>
 

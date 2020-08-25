@@ -1,3 +1,5 @@
 
-X	java:S110;"<This class has 8 parents which is greater than 5 authorized.(›¯öµ8îÙçñ½.
 t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ÚşÅÈşÿÿÿÿ
+X	java:S1109"<This class has 8 parents which is greater than 5 authorized.(›¯öµ8ô´œ„Â.
+E
+java:S1185ƒ"(Remove this method to simply inherit it.(ºŠñ=8ô´œ„Â.

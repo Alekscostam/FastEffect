@@ -88,9 +88,14 @@
     <string name="addNewProduct">Dodawanie nowego produktu…</string>
     <string name="eneterValue">Podaj wartości na 100g danego produktu</string>
     <string name="enterProduct">Wprowadź produkt</string>
-    <string name="findFood">Znajdź produkt badz danie</string>
+    <string name="findFood">Znajdź produkt bądź danie</string>
     <string name="createAnAccount">Tworzenie konta…</string>
     <string name="logOut">Wyloguj</string>
+    <string name="product">Product</string>
+    <string name="kalorie">Kalorie:</string>
+    <string name="bia_ko_w_glowodany_b_onnik_t_uszcze">Białko: Węglowodany: Błonnik: Tłuszcze:</string>
+    <string name="my_description">Zmień ilość bądź usuń produkt</string>
+    <string name="description_for_alert_in_addProductActivity">Ile gram produktu chcesz wybrać?</string>
 
     <string-array name="spinnerActivities">
         <item>brak aktywności, praca siedząca</item>

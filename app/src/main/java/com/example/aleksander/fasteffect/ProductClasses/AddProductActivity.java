@@ -1,17 +1,17 @@
 package com.example.aleksander.fasteffect.ProductClasses;
 
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
-import android.text.InputType;
+import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -34,7 +34,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import static android.app.AlertDialog.BUTTON_POSITIVE;
 import static com.example.aleksander.fasteffect.AdditionalClasses.DatabaseClasses.SQLDatabaseStructure.DATABASE_FILE;
 import static com.example.aleksander.fasteffect.AdditionalClasses.DatabaseClasses.SQLDatabaseStructure.HASH_DATA;
 import static com.example.aleksander.fasteffect.AdditionalClasses.DatabaseClasses.SQLDatabaseStructure.HASH_ID_MEAL;
@@ -49,12 +48,13 @@ import static com.example.aleksander.fasteffect.AdditionalClasses.DatabaseClasse
 import static com.example.aleksander.fasteffect.AdditionalClasses.DatabaseClasses.SQLDatabaseStructure.MEAL_PROTEIN_COLUMN;
 import static com.example.aleksander.fasteffect.AdditionalClasses.DatabaseClasses.SQLDatabaseStructure.TABLE_HASH;
 import static com.example.aleksander.fasteffect.AdditionalClasses.DatabaseClasses.SQLDatabaseStructure.TABLE_MEAL;
+import static java.util.Objects.requireNonNull;
 
 
 /**
  * Klasa służąca do odbierania danych ze zdalnej bazy danych do lokalnej bazy danych
  */
-public class AddProductActivity extends Activity {
+public class AddProductActivity extends AppCompatActivity {
 
     private String dateOpen;
     private String timeOfDay;
@@ -90,30 +90,25 @@ public class AddProductActivity extends Activity {
         listViewProducts = findViewById(R.id.listViewProdukty);
         listViewProducts.setOnItemClickListener((adapterView, view, i, l) -> {
 
-            final EditText input = new EditText(this);
+            LayoutInflater li = LayoutInflater.from(this);
+            View promptsView = li.inflate(R.layout.custom_alert_dialog_add_product, null);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            final EditText userInput = (EditText) promptsView.findViewById(R.id.inputNumber);
             final String selectedItem = (String) adapterView.getItemAtPosition(i);
+            builder.setView(promptsView);
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.Dialog);
-            builder.setTitle("Ile gram produktu chcesz wybrać?");
-            builder.setCancelable(true);
-            builder.setPositiveButton("Ok", (dialogInterface, positive) -> {
-
-                String amount = input.getText().toString();
-                arithmeticOperationsForVariables(selectedItem, amount);
-                addProductToDatabase(amount);
-
-            });
-            builder.setNegativeButton("Anuluj", (dialogInterface, negative) -> dialogInterface.cancel());
-
+            builder
+                    .setCancelable(false)
+                    .setPositiveButton("Ok", (dialogInterface, positive) -> {
+                        String amount = userInput.getText().toString();
+                        arithmeticOperationsForVariables(selectedItem, amount);
+                        addProductToDatabase(amount);
+                    })
+                    .setNegativeButton("Anuluj", (dialogInterface, negative) -> dialogInterface.cancel());
             AlertDialog alertDialog = builder.create();
-            input.setTextColor(Color.GRAY);
-            input.setInputType(InputType.TYPE_CLASS_NUMBER);
-            alertDialog.setView(input);
+            requireNonNull(alertDialog.getWindow()).setLayout(450, 350);
             alertDialog.show();
-            alertDialog.getButton(BUTTON_POSITIVE).setTextColor(Color.GREEN);
-
         });
-
 
         editTextFilter.addTextChangedListener((TextWatcherFilter) (charSequence, start, count, after) -> (AddProductActivity.this)
                 .arrayAdapter
@@ -130,7 +125,6 @@ public class AddProductActivity extends Activity {
             Intent addIntent = new Intent(getApplicationContext(), AddNewProductActivity.class);
             startActivity(addIntent);
         });
-
     }
 
     @Override
@@ -168,14 +162,15 @@ public class AddProductActivity extends Activity {
             resizeListView.resize(listViewProducts);
         });
     }
-    private void adapterInit()
-    {
+
+    private void adapterInit() {
         arrayAdapter = new CustomAdapter(this, linkedList);
         listViewProducts.setAdapter(arrayAdapter);
     }
 
     /**
      * Zapisuje produkt do lokalnej bazy danych
+     *
      * @param amount to ilosc produktu , który ma zostac dodany
      */
     private void addProductToDatabase(String amount) {
@@ -224,8 +219,9 @@ public class AddProductActivity extends Activity {
 
     /**
      * Operacje arytmetyczne na wartosciach wybranego produktu, ktore musza zostac wykonane przed ich zapisaniem do lokalnej bazy danych
+     *
      * @param selectedItem okresla wybrany produkt
-     * @param amount ilosc wybranego produktu
+     * @param amount       ilosc wybranego produktu
      */
     private void arithmeticOperationsForVariables(String selectedItem, String amount) {
         double converterValue = (Double.parseDouble(amount) / 100);

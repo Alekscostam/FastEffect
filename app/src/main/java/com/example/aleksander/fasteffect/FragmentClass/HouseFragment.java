@@ -1,6 +1,7 @@
 package com.example.aleksander.fasteffect.FragmentClass;
 
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.ContentValues;
 import android.content.Context;
@@ -15,7 +16,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,8 +44,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import static android.app.AlertDialog.BUTTON_NEUTRAL;
-import static android.app.AlertDialog.BUTTON_POSITIVE;
 import static android.app.AlertDialog.THEME_DEVICE_DEFAULT_LIGHT;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -67,7 +65,7 @@ import static java.util.Objects.requireNonNull;
  * Klasa będąca głównym oknem aplikacji. Pobiera ona wszelkie dane z lokalnej bazy danych
  * Zakladka "Strona główna"
  */
-public class HouseFragment extends Fragment{
+public class HouseFragment extends Fragment {
 
     public static final String SHARED_PREFS = "shaaredPrefs";
 
@@ -307,7 +305,8 @@ public class HouseFragment extends Fragment{
      */
     private String getAmountFromValue(String itemAtPosition) {
         String substringFromItemAtPosition = itemAtPosition.substring(itemAtPosition.indexOf("Ilość:") + 6);
-        System.out.println("substringFromItemAtPosition"+substringFromItemAtPosition);;
+        System.out.println("substringFromItemAtPosition" + substringFromItemAtPosition);
+        ;
         return substringFromItemAtPosition.replaceAll("\\s+", "");
     }
 
@@ -315,7 +314,7 @@ public class HouseFragment extends Fragment{
      * Pobiera nazwe produktu ze stringa
      */
     private String getNameFromValue(String itemAtPosition) {
-        System.out.println("ITEM:"+itemAtPosition.substring(0, itemAtPosition.indexOf(",")));
+        System.out.println("ITEM:" + itemAtPosition.substring(0, itemAtPosition.indexOf(",")));
         return itemAtPosition.substring(0, itemAtPosition.indexOf(","));
     }
 
@@ -379,6 +378,7 @@ public class HouseFragment extends Fragment{
 
     /**
      * Clearuje liste i ustawia adapter
+     *
      * @param adapter ktory zostaje ustawiony na liscie
      */
     private void clearListAndSetAdapter(List<ArrayAdapter<String>> adapter) {
@@ -390,8 +390,9 @@ public class HouseFragment extends Fragment{
 
     /**
      * Podstawowa metoda sluzaca do wybrania i wykonania operacji na konkretnym produkcie
-     * @param cursor okresla elementy z bazy
-     * @param listItem lista elementow
+     *
+     * @param cursor    okresla elementy z bazy
+     * @param listItem  lista elementow
      * @param listView  lista wyswietalania produktow
      * @param cardView  na nim pokazuja sie wszystkie elementy
      * @param textView  elementy na cardView
@@ -404,7 +405,7 @@ public class HouseFragment extends Fragment{
         while (cursor.moveToNext()) {
 
             listItem.add(
-                    cursor.getString(0) +",  Kalorie: "+
+                    cursor.getString(0) + ",  Kalorie: " +
                             cursor.getString(1) + ",  Białko: " +
                             cursor.getString(2) + ",  Węglowodany: " +
                             cursor.getString(3) + ",  Tłuszcze: " +
@@ -425,6 +426,7 @@ public class HouseFragment extends Fragment{
 
     /**
      * Sluzy do przejscia na strone dodawania produktu
+     *
      * @param index okresla pore dnia do ktorej zostanie dodany produkt
      */
     private void addProduct(String index) {
@@ -636,11 +638,10 @@ public class HouseFragment extends Fragment{
             }
             caloriesSummary = mathematicalForSecondOption(weight, height, age, dataGender, goal, activity);
         }
-
-        String calories = "Kcal:\n " + caloriesSummary + "/" + sumCalories;
-        String protein = "Białko:\n " + maxValue[0] + "/" + proteinS;
-        String carb = "Węglowodany:\n " + maxValue[1] + "/" + carbS;
-        String fat = "Tłuszcze:\n " + maxValue[2] + "/" + fatS;
+        String calories = "Kcal:\n " + sumCalories + "/" + caloriesSummary;
+        String protein = "Białko:\n " + proteinS + "/" + maxValue[0];
+        String carb = "Węglowodany:\n " + carbS + "/" + maxValue[1];
+        String fat = "Tłuszcze:\n " + fatS + "/" + maxValue[2];
 
         textViewAllCalories.setText(calories);
         textViewAllProtein.setText(protein);
@@ -716,35 +717,36 @@ public class HouseFragment extends Fragment{
 
     /**
      * Alert dotyczacy operacji po kliknieciu na dany produkt
-     * @param poraDnia dla ktorej ma zostac wybrana operacja
-     * @param ilosc ktorą, byc moze nalezy zmodyfikowac lub usunąc
-     * @param nazwa produktu na ktorym ma zostac wybrana konkretna operacja
+     *
+     * @param timeOfDay   dla ktorej ma zostac wybrana operacja
+     * @param amount      ktorą, byc moze nalezy zmodyfikowac lub usunąc
+     * @param productName produktu na ktorym ma zostac wybrana konkretna operacja
      */
-    private void alertOperation(final int poraDnia, final String ilosc, final String nazwa) {
+    private void alertOperation(final int timeOfDay, final String amount, final String productName) {
+        LayoutInflater li = LayoutInflater.from(getContext());
+        View promptsView = li.inflate(R.layout.custom_alert_dialog_house, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                getContext());
+        alertDialogBuilder.setView(promptsView);
+        final EditText input = (EditText) promptsView.findViewById(R.id.inputNumber);
 
-        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(requireNonNull(getContext()), R.style.Dialog);
-        builder.setTitle("Zmień ilość bądź usuń produkt");
-        builder.setCancelable(true);
-        final EditText input = new EditText(getActivity());
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("Usuń", (dialogInterface, i) -> deleteFromDatabase(timeOfDay, amount, productName))
+                .setNegativeButton("Anuluj", (dialogInterface, i) -> dialogInterface.cancel())
+                .setNeutralButton("Edytuj", (dialogInterface, i) -> {
+                    int amountValue = Integer.parseInt(input.getText().toString());
+                    if (amountValue == 0) {
+                        Toast.makeText(getContext(), "Wartość nie może wynosić 0!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        editProductInDatabase(amountValue, timeOfDay, amount, productName);
+                    }
+                });
 
-        builder.setNeutralButton("Edytuj", (dialogInterface, i) -> {
-            int wartoscGram = Integer.parseInt(input.getText().toString());
-            if (wartoscGram == 0) {
-                Toast.makeText(getContext(), "Wartość nie może wynosić 0!", Toast.LENGTH_SHORT).show();
-            } else {
-                editProductInDatabase(wartoscGram, poraDnia, ilosc, nazwa);
-            }
-        });
-        builder.setPositiveButton("Usuń", (dialogInterface, i) -> deleteFromDatabase(poraDnia, ilosc, nazwa));
-        builder.setNegativeButton("Anuluj", (dialogInterface, i) -> dialogInterface.cancel());
-
-        android.support.v7.app.AlertDialog alertDialog = builder.create();
-        input.setTextColor(Color.GRAY);
-        input.setInputType(InputType.TYPE_CLASS_NUMBER);
-        alertDialog.setView(input);
+        AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
-        alertDialog.getButton(BUTTON_POSITIVE).setTextColor(Color.RED);
-        alertDialog.getButton(BUTTON_NEUTRAL).setTextColor(Color.GREEN);
+        requireNonNull(alertDialog.getWindow()).setLayout(600, 420);
+
     }
 
     /**
@@ -765,9 +767,7 @@ public class HouseFragment extends Fragment{
         Cursor delete = sqLiteDatabase.rawQuery(deleteByIdHashFromHashTable(idHash.getString(0)), null);
         delete.moveToFirst();
 
-        idMeal.close();
-        idHash.close();
-        delete.close();
+        Closer.closeCursors(idHash, idMeal, delete);
         sqLiteDatabase.close();
         refreshApp();
         refreshAfterDbChanged();
