@@ -1,4 +1,4 @@
-package com.example.aleksander.fasteffect.FragmentClass;
+package com.example.aleksander.fasteffect.FragmentClasses;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,14 +37,14 @@ import static java.util.Objects.requireNonNull;
 @NoArgsConstructor
 public class ExportFragment extends Fragment   {
 
+   private static final String TAG = "com.example.aleksander.fasteffect.FragmentClass" ;
+
     private SQLiteDatabase sqLiteDatabase;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,@Nullable Bundle savedInstanceState)
     {
-
         View view = inflater.inflate(R.layout.fragment_export, container, false);
-
 
         sqLiteDatabase = requireNonNull(getActivity()).openOrCreateDatabase(SQLDatabaseStructure.DATABASE_FILE, Context.MODE_PRIVATE, null);
 
@@ -56,11 +57,13 @@ public class ExportFragment extends Fragment   {
      * Metoda exportujaca dane
      */
     private void exportData() {
+
+        Log.i(TAG,"exportData - export bazy danych");
+
         Cursor cursor = sqLiteDatabase.rawQuery(findAll(), null);
         cursor.moveToFirst();
 
         StringBuilder data = new StringBuilder("Data, Pora dnia, Nazwa, Kalorie, Ilość, Białko, Weglowodany, Tłuszcze, Błonnik");
-
         for (int i = 0; i < cursor.getCount(); i++) {
             String message = (
                     cursor.getString(0) + ", " +
@@ -75,8 +78,8 @@ public class ExportFragment extends Fragment   {
             data.append("\n").append(message);
             cursor.moveToNext();
         }
-        FileOutputStream outputStream;
 
+        FileOutputStream outputStream;
         try {
             outputStream = requireNonNull(getActivity()).openFileOutput("Dziennik", Context.MODE_PRIVATE);
             outputStream.write((data.toString()).getBytes());
@@ -90,11 +93,12 @@ public class ExportFragment extends Fragment   {
             fileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             fileIntent.putExtra(Intent.EXTRA_STREAM, path);
             startActivity(Intent.createChooser(fileIntent, "Wyślij albo zapisz swój dziennik"));
-
         } catch (IOException e) {
             e.printStackTrace();
+        }finally {
+            cursor.close();
         }
-        cursor.close();
+
     }
 
 

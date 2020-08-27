@@ -1,4 +1,4 @@
-package com.example.aleksander.fasteffect.FragmentClass;
+package com.example.aleksander.fasteffect.FragmentClasses;
 
 
 import android.app.AlertDialog;
@@ -16,6 +16,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,8 +68,9 @@ import static java.util.Objects.requireNonNull;
  */
 public class HouseFragment extends Fragment {
 
-    public static final String SHARED_PREFS = "shaaredPrefs";
+    public static final String TAG="com.example.aleksander.fasteffect.FragmentClass";
 
+    public static final String SHARED_PREFS = "shaaredPrefs";
 
     private int caloriesSummary = 0;
     private int[] hide = {0, 0, 0, 0, 0};
@@ -238,6 +240,7 @@ public class HouseFragment extends Fragment {
      * Funkcja pokazuje kalendarz w wybranym formacie daty
      */
     private void setOnViewDataField() {
+
         Calendar calendarDate = Calendar.getInstance();
         int day = calendarDate.get(Calendar.DAY_OF_MONTH);
         int month = calendarDate.get(Calendar.MONTH);
@@ -254,11 +257,9 @@ public class HouseFragment extends Fragment {
             refreshAfterDbChanged();
         });
 
-
         for (int i = 0; i < arrayAdaptersForList.size(); i++) {
             checkAdapter(arrayAdaptersForList.get(i), cardViewList.get(i), listViewList.get(i), textViews.get(i));
         }
-
         dialog.show();
     }
 
@@ -305,8 +306,6 @@ public class HouseFragment extends Fragment {
      */
     private String getAmountFromValue(String itemAtPosition) {
         String substringFromItemAtPosition = itemAtPosition.substring(itemAtPosition.indexOf("Ilość:") + 6);
-        System.out.println("substringFromItemAtPosition" + substringFromItemAtPosition);
-        ;
         return substringFromItemAtPosition.replaceAll("\\s+", "");
     }
 
@@ -314,7 +313,6 @@ public class HouseFragment extends Fragment {
      * Pobiera nazwe produktu ze stringa
      */
     private String getNameFromValue(String itemAtPosition) {
-        System.out.println("ITEM:" + itemAtPosition.substring(0, itemAtPosition.indexOf(",")));
         return itemAtPosition.substring(0, itemAtPosition.indexOf(","));
     }
 
@@ -345,6 +343,8 @@ public class HouseFragment extends Fragment {
      * Sluzy do odczytu produktow z bazy danych do okna głównego aplikacji
      */
     private void viewDatabase() {
+
+        Log.i(TAG,"viewDatabase - odczyt produktów z bazy danych");
 
         clearListAndSetAdapter(arrayAdaptersForList);
         SQLiteDatabase sqLiteDatabase = requireNonNull(getActivity()).openOrCreateDatabase(DATABASE_FILE, android.content.Context.MODE_PRIVATE, null);
@@ -556,6 +556,7 @@ public class HouseFragment extends Fragment {
      */
     private void sumUpEverything() {
 
+        Log.i(TAG,"sumUpEverything - sumowanie wszytskich komponentow");
         SharedPreferences sharedPreferences = requireNonNull(getContext()).getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
         String dataSportFragment = sharedPreferences.getString("optionSelected", "0"); //no id: default value
         assert dataSportFragment != null;
@@ -666,6 +667,8 @@ public class HouseFragment extends Fragment {
      * Ustawienia dotyczace ProgressBar
      */
     private void setProgressBar(int maxValue, int currentValue, ProgressBar progressBar) {
+        Log.i(TAG,"setProgressBar - ustawienie progressBar");
+
         progressBar.setMax(maxValue);
         progressBar.setProgress(currentValue);
         if (currentValue > maxValue + 5) {
@@ -678,7 +681,7 @@ public class HouseFragment extends Fragment {
      * Wzor na druga opcje wybrana przez uzytkownika w sekcji "Aktywnosc"
      */
     private int mathematicalForSecondOption(double weight, int height, int age, String gender, int goal, double activity) {
-
+        Log.i(TAG,"mathematicalForSecondOption - druga opcja wyboru sposobu wyliaczania kalori i makroskładników");
         double mathematicalFormula = 0;
         int valueToConvert;
 
@@ -723,6 +726,8 @@ public class HouseFragment extends Fragment {
      * @param productName produktu na ktorym ma zostac wybrana konkretna operacja
      */
     private void alertOperation(final int timeOfDay, final String amount, final String productName) {
+        Log.i(TAG,"alertOperation - Wywołanie alertu");
+
         LayoutInflater li = LayoutInflater.from(getContext());
         View promptsView = li.inflate(R.layout.custom_alert_dialog_house, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
@@ -746,13 +751,14 @@ public class HouseFragment extends Fragment {
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
         requireNonNull(alertDialog.getWindow()).setLayout(600, 420);
-
     }
 
     /**
      * Funkcja slużaca do usuwania produktu z bazy danych, a w konsekwencji usuniecia jej z listy produktow z głównej strony aplikacji
      */
     private void deleteFromDatabase(int idTimeOfDay, String amount, String name) {
+
+        Log.i(TAG,"deleteFromDatabase - usuwanie produktu z aplikacji");
 
         SQLiteDatabase sqLiteDatabase = requireNonNull(getActivity()).openOrCreateDatabase(DATABASE_FILE, Context.MODE_PRIVATE, null);
         int amountReplace = Integer.parseInt(amount.replaceAll("\\s+", ""));
@@ -777,6 +783,8 @@ public class HouseFragment extends Fragment {
      * Funkcja slużaca do edytowania produktu z bazy danych, a w konsekwencji zmodyfikwoania jej wartosci na liscie produktow
      */
     private void editProductInDatabase(int amountOfProduct, int idTimeOfDay, String ilosc, String nazwa) {
+
+        Log.i(TAG,"editProductInDatabase - edytowanie produktu z aplikacji");
 
         SQLiteDatabase baza = requireNonNull(getActivity()).openOrCreateDatabase(DATABASE_FILE, Context.MODE_PRIVATE, null);
         int iloscCON = Integer.parseInt(ilosc.replaceAll("\\s+", ""));

@@ -1,4 +1,4 @@
-package com.example.aleksander.fasteffect.FragmentClass;
+package com.example.aleksander.fasteffect.FragmentClasses;
 
 
 import android.content.Context;
@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,8 @@ import java.util.Objects;
  * Zakladka "Profil"
  */
 public class ProfileFragment extends Fragment{
+
+    public static final String TAG="com.example.aleksander.fasteffect.FragmentClass";
 
     public static final String SHARED_PREFS = "shaaredPrefs";
 
@@ -99,6 +102,9 @@ public class ProfileFragment extends Fragment{
      * Zmiana w zdalnej bazie danych po kliknieciu przycisku "zapisz"
      */
     private void onSaveRef() {
+
+        Log.i(TAG,"onSaveRef - zimiana danych dla uzytkownika");
+
         if (Double.parseDouble(String.valueOf(textInputEditTextWeight.getText())) > 200)
             Toast.makeText(getContext(), "Nieprawidłowa waga", Toast.LENGTH_SHORT).show();
         else {

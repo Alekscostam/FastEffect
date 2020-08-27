@@ -7,9 +7,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -55,6 +55,8 @@ import static java.util.Objects.requireNonNull;
  * Klasa służąca do odbierania danych ze zdalnej bazy danych do lokalnej bazy danych
  */
 public class AddProductActivity extends AppCompatActivity {
+
+    public static final String TAG= "com.example.aleksander.fasteffect.ProductClasses";
 
     private String dateOpen;
     private String timeOfDay;
@@ -130,14 +132,10 @@ public class AddProductActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
-    }
-
-    @Override
-    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
+        Log.i(TAG,"onStart - Pobieranie wartosci ze zdalnej bazy danych");
         executorServiceMethod();
         adapterInit();
+
     }
 
     /**

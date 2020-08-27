@@ -1,8 +1,4 @@
 
 `
-java:S1874ø"BRemove this use of "THEME_DEVICE_DEFAULT_LIGHT"; it is deprecated.(‰·â8Ñí¡ù¾.
-?
-java:S1116µ"Remove this empty statement.(Åñ­õşÿÿÿÿ8ôóƒÂ.
-[	java:S106½"9Replace this use of System.out or System.err by a logger.(ßÚ®âşÿÿÿÿ8ôóƒÂ.
+java:S1874û"BRemove this use of "THEME_DEVICE_DEFAULT_LIGHT"; it is deprecated.(‰·â8Ñí¡ù¾.
 o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(Åï»Ô
-[	java:S106´"9Replace this use of System.out or System.err by a logger.(İÄÍúüÿÿÿÿ8„¨«¸Á.

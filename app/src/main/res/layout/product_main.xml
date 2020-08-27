@@ -18,7 +18,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-
                 <TextView
                     android:id="@+id/textViewOpis"
                     android:layout_width="0dp"
@@ -39,6 +38,16 @@
                     android:src="@drawable/ic_add"
                     android:contentDescription="@string/descAdd"/>
             </LinearLayout>
+            <TextView
+                android:id="@+id/textViewDesription"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:background="#cdf2ff"
+                android:text="@string/warto_kaloryczna_na_100g_produktu"
+                android:textSize="15sp"
+                android:gravity="center"
+                tools:ignore="MissingConstraints"/>
             <EditText
                 android:id="@+id/editTextSearch"
                 android:layout_width="match_parent"
@@ -53,7 +62,6 @@
                 android:textSize="18sp"
                 tools:ignore="LabelFor,MissingConstraints"
                 android:autofillHints="" />
-
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="wrap_content"
@@ -68,7 +76,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="25dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="0dp"
                 tools:ignore="NestedScrolling" />

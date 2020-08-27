@@ -29,21 +29,23 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 /**
  * Klasa będąca oknem logowania do aplikacji
  */
-public class LoginActivity extends  AppCompatActivity{
+public class LoginActivity extends AppCompatActivity {
+
+    public static final String TAG = "com.example.aleksander.fasteffect";
 
     private AutoCompleteTextView autoCompleteTextViewEmail;
     private AutoCompleteTextView autoCompleteTextViewPassword;
     private FirebaseAuth firebaseAuth;
 
+    private String firstLogIn = "firstLogIn";
     private static final String PREF_NAME = "prefs";
     private static final String KEY_REMEMBER = "remember";
     private static final String KEY_USERNAME = "username";
     private static final String KEY_PASS = "password";
     private static final String REMEMBER_ME = "No";
     private static final String LOGIN = "RememberMe";
-    private boolean showPassword=false;
-
-    SharedPreferences sharedPreferencesRemember;
+    private boolean showPassword = false;
+    SharedPreferences sharedPreferences;
     SharedPreferences.Editor editorRemember;
     CheckBox checkBoxRememberMe;
 
@@ -55,11 +57,13 @@ public class LoginActivity extends  AppCompatActivity{
 
         Intent intent = new Intent();
         intent.setFlags(FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TASK);
-        sharedPreferencesRemember = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        editorRemember = sharedPreferencesRemember.edit();
+        sharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+
+
+        editorRemember = sharedPreferences.edit();
         editorRemember.apply();
 
-        boolean checkRemember = sharedPreferencesRemember.getBoolean(LOGIN, false);
+        boolean checkRemember = sharedPreferences.getBoolean(LOGIN, false);
         rememberOrNot(checkRemember);
 
     }
@@ -69,6 +73,8 @@ public class LoginActivity extends  AppCompatActivity{
      */
     private void rememberOrNot(boolean checkRemember) {
         if (checkRemember) {
+            Log.i(TAG, "rememberOrNot - zapamietanie uzytkownika");
+
             Intent intentLogin = new Intent(LoginActivity.this, MainActivity.class);
             intentLogin.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
             intentLogin.addFlags(FLAG_ACTIVITY_CLEAR_TASK);
@@ -81,16 +87,16 @@ public class LoginActivity extends  AppCompatActivity{
             ImageButton imageButtonShowPassword = findViewById(R.id.imageButtonPassword);
             TextView textViewRegister = findViewById(R.id.textViewRegister);
 
-            sharedPreferencesRemember = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-            editorRemember = sharedPreferencesRemember.edit();
+            sharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+            editorRemember = sharedPreferences.edit();
             editorRemember.apply();
             checkBoxRememberMe = findViewById(R.id.checkBoxRememberMe);
 
-            boolean checked = sharedPreferencesRemember.getBoolean(KEY_REMEMBER, false);
+            boolean checked = sharedPreferences.getBoolean(KEY_REMEMBER, false);
             checkBoxRememberMe.setChecked(checked);
 
-            autoCompleteTextViewEmail.setText(sharedPreferencesRemember.getString(KEY_USERNAME, ""));
-            autoCompleteTextViewPassword.setText(sharedPreferencesRemember.getString(KEY_PASS, ""));
+            autoCompleteTextViewEmail.setText(sharedPreferences.getString(KEY_USERNAME, ""));
+            autoCompleteTextViewPassword.setText(sharedPreferences.getString(KEY_PASS, ""));
 
             autoCompleteTextViewEmail.addTextChangedListener((TextWatcherFilter) (charSequence, i, i1, i2) -> managePrefs());
             autoCompleteTextViewPassword.addTextChangedListener((TextWatcherFilter) (charSequence, i, i1, i2) -> managePrefs());
@@ -107,15 +113,14 @@ public class LoginActivity extends  AppCompatActivity{
      * Metoda która umozliwia pokazanie lub ukrycie hasla
      */
     private void showOrHide() {
-        if(showPassword) {
+        if (showPassword) {
             autoCompleteTextViewPassword.setTransformationMethod(new PasswordTransformationMethod());
             autoCompleteTextViewPassword.setSelection(autoCompleteTextViewPassword.length());
-            showPassword=false;
-        }
-        else {
+            showPassword = false;
+        } else {
             autoCompleteTextViewPassword.setTransformationMethod(null);
             autoCompleteTextViewPassword.setSelection(autoCompleteTextViewPassword.length());
-            showPassword=true;
+            showPassword = true;
         }
     }
 
@@ -136,6 +141,7 @@ public class LoginActivity extends  AppCompatActivity{
         }
         editorRemember.apply();
     }
+
     /**
      * Uwierzytelnia użytkownika,
      * Dokonuje przejscia na główna strone aplikacji po wybraniu logowania
@@ -161,7 +167,16 @@ public class LoginActivity extends  AppCompatActivity{
                                 intentLogin.addFlags(FLAG_ACTIVITY_CLEAR_TASK);
                                 intentLogin.putExtra("Email", firebaseAuth.getCurrentUser().getEmail());
                                 HideSoftKeyboard.hideSoftKeyboard(this);
+
+                                boolean myFirstLog = sharedPreferences.getBoolean(firstLogIn, true);
+                                if (myFirstLog) {
+                                    editorRemember.putBoolean(firstLogIn, true);
+                                    editorRemember.apply();
+                                }
+                                editorRemember.apply();
                                 startActivity(intentLogin);
+
+                                Log.i(TAG, "buttonLoginClick - zalogowano prawidlowo");
                             } else {
                                 Toast.makeText(this, "Zweryfikuj swój adres email!", Toast.LENGTH_SHORT).show();
                             }
@@ -170,7 +185,6 @@ public class LoginActivity extends  AppCompatActivity{
                             Toast.makeText(this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
-
         } else {
             Toast.makeText(this, "Niekompletne dane!", Toast.LENGTH_SHORT).show();
         }

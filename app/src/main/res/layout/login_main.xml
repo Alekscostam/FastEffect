@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,20 +8,18 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:ignore="UselessParent">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-
             <AutoCompleteTextView
                 android:id="@+id/autoCompleteTextViewEmail"
-                android:layout_width="240dp"
+                android:layout_width="300dp"
                 android:layout_height="40dp"
-                android:layout_marginStart="8dp"
                 android:layout_marginTop="40dp"
-                android:layout_marginEnd="8dp"
                 android:background="@drawable/plainttext_roundedlogin"
                 android:drawableStart="@drawable/ic_email"
                 android:hint="@string/email"
@@ -30,19 +28,14 @@
                 android:singleLine="true"
                 android:textColor="#808080"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.497"
                 app:layout_constraintStart_toStartOf="parent"
-
-
                 app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
             <AutoCompleteTextView
                 android:id="@+id/autoCompleteTextViewPassword"
-                android:layout_width="240dp"
+                android:layout_width="300dp"
                 android:layout_height="40dp"
-                android:layout_marginStart="8dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginEnd="8dp"
                 android:background="@drawable/plainttext_roundedlogin"
                 android:drawableStart="@drawable/ic_lock"
                 android:hint="@string/password"
@@ -52,7 +45,6 @@
                 android:textColor="#808080"
                 android:typeface="sans"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.497"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/autoCompleteTextViewEmail" />
 
@@ -69,7 +61,6 @@
                 android:textAllCaps="false"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.497"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/checkBoxRememberMe"
                 tools:ignore="MissingConstraints" />
@@ -84,10 +75,9 @@
                 android:text="@string/rememberMe"
                 android:textColor="#0D0D0D"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/autoCompleteTextViewPassword"
-                tools:ignore="MissingConstraints" />
+                tools:ignore="MissingConstraints"/>
 
             <ImageButton
                 android:id="@+id/imageButtonPassword"
@@ -96,12 +86,11 @@
                 android:layout_marginEnd="3dp"
                 android:layout_marginBottom="3dp"
                 android:background="#FFFFFF"
-                android:contentDescription="hide or show password"
+                android:contentDescription="@string/hide_or_show_password"
                 app:layout_constraintBottom_toBottomOf="@+id/autoCompleteTextViewPassword"
                 app:layout_constraintEnd_toEndOf="@+id/autoCompleteTextViewPassword"
                 app:srcCompat="@drawable/ic_remove_red_eye_black_24dp"
-                tools:ignore="MissingConstraints,VectorDrawableCompat"
-                 />
+                tools:ignore="MissingConstraints,VectorDrawableCompat"/>
 
             <TextView
                 android:id="@+id/textViewRegister"
@@ -114,10 +103,9 @@
                 android:text="@string/Create_Account"
                 android:textColor="#FF0000"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/buttonLogin"
-                tools:ignore="MissingConstraints" />
+                tools:ignore="MissingConstraints"/>
 
             <TextView
                 android:id="@+id/textViewAlert"
@@ -129,7 +117,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/buttonLogin"
-                tools:ignore="MissingConstraints" />
+                tools:ignore="MissingConstraints"/>
 
             <TextView
                 android:id="@+id/textView13"
@@ -145,8 +133,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="MissingConstraints" />
+                tools:ignore="MissingConstraints"/>
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

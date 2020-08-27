@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FragmentClass.ExportFragment">
+    tools:context=".FragmentClasses.ExportFragment">
 
 
     <LinearLayout
@@ -11,18 +11,28 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/textViewDesription"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:background="#cdf2ff"
+            android:text="@string/d_export"
+            android:textSize="18sp"
+            android:gravity="center"
+            tools:ignore="MissingConstraints"/>
 
         <Button
             android:id="@+id/d_export"
-            android:layout_width="256dp"
-            android:layout_height="63dp"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:background="@drawable/button_rounded_aqua"
-            android:text="@string/d_export"
+            android:text="@string/export"
             android:textAllCaps="false"
             android:textSize="18sp" />
 
-
     </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>

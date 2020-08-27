@@ -8,7 +8,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
 /**
- * Interfejs rozszerzajacy interfejs ChildEventListener
+ * Interfejs funkcyjny rozszerzajacy interfejs ChildEventListener
  * Ogranicza się do implementacji tylko onChildAdded z interfejsu ChildEventListener
  */
 @FunctionalInterface

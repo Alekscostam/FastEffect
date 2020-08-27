@@ -25,6 +25,8 @@ import static android.app.ProgressDialog.show;
  */
 public class RegisterActivity extends AppCompatActivity {
 
+    public static final String TAG="com.example.aleksander.fasteffect";
+
    private String sGender;
    private String sPassword;
    private String sPasswordAgain;
@@ -60,7 +62,6 @@ public class RegisterActivity extends AppCompatActivity {
         super.onStart();
         firebaseAuth.getCurrentUser();
     }
-
 
     /**
      * Inicjuje komponenty
@@ -103,6 +104,7 @@ public class RegisterActivity extends AppCompatActivity {
                                         if (taskLast.isSuccessful()) {
                                             Toast.makeText(RegisterActivity.this, "Zarejestrowano! Sprawdź swój email w celu weryfikacji", Toast.LENGTH_SHORT).show();
                                             HideSoftKeyboard.hideSoftKeyboard(this);
+                                       Log.i(TAG,"buttonRegisterClick - udana rejestracja uzytkownika");
                                         }
                                         else
                                             Toast.makeText(RegisterActivity.this, Objects.requireNonNull(taskLast.getException()).getMessage(), Toast.LENGTH_SHORT).show();

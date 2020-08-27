@@ -12,14 +12,15 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses.HideSoftKeyboard;
 import com.example.aleksander.fasteffect.AdditionalClasses.DatabaseClasses.SQLDatabaseStructure;
-import com.example.aleksander.fasteffect.FragmentClass.ExportFragment;
-import com.example.aleksander.fasteffect.FragmentClass.HouseFragment;
-import com.example.aleksander.fasteffect.FragmentClass.ProfileFragment;
-import com.example.aleksander.fasteffect.FragmentClass.SportFragment;
+import com.example.aleksander.fasteffect.FragmentClasses.ExportFragment;
+import com.example.aleksander.fasteffect.FragmentClasses.HouseFragment;
+import com.example.aleksander.fasteffect.FragmentClasses.ProfileFragment;
+import com.example.aleksander.fasteffect.FragmentClasses.SportFragment;
 import com.google.firebase.auth.FirebaseAuth;
 
 import static com.example.aleksander.fasteffect.AdditionalClasses.DatabaseClasses.SQLDatabaseStructure.TABLE_TIME_OF_DAY;
@@ -35,23 +36,29 @@ import static com.example.aleksander.fasteffect.Repository.DatabaseQuery.dropTab
  */
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static final String TAG ="com.example.aleksander.fasteffect";
+
     private static final String PREF_NAME = "prefs";
     private String login = "RememberMe";
     private DrawerLayout drawer;
-    private SharedPreferences sharedPreferencesLog;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Log.i(TAG, "onCreate - inicjacja startowa po zalogowaniu uzytkownika");
+
         setContentView(R.layout.activity_main);
 
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        sharedPreferencesLog = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editorRemember = sharedPreferencesLog.edit();
-        editorRemember.putBoolean(login, true);
-        editorRemember.apply();
+        sharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editorRemember = sharedPreferences.edit();
 
+        String firstLogIn = "firstLogIn";
+        boolean myFirstLog = sharedPreferences.getBoolean(firstLogIn, false);
+        editorRemember.putBoolean(login, true);
         databaseInit();
 
         android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar);
@@ -68,6 +75,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HouseFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_house);
         }
+
+        if(myFirstLog)
+        {
+            editorRemember.putBoolean(firstLogIn,false);
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SportFragment()).commit();
+        }
+        editorRemember.apply();
     }
 
     @Override
@@ -117,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
-        SharedPreferences.Editor editorRemember = sharedPreferencesLog.edit();
+        SharedPreferences.Editor editorRemember = sharedPreferences.edit();
         editorRemember.putBoolean(login, false);
         editorRemember.apply();
         finish();

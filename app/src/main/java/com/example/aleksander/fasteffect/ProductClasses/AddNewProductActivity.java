@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +21,8 @@ import static java.util.Objects.requireNonNull;
  * Klasa przeznaczona do dodawania nowego produktu do zdalnej bazy danych
  */
 public class AddNewProductActivity extends Activity {
+
+    public static final String TAG="com.example.aleksander.fasteffect.ProductClasses";
 
     private String productsName;
     private double productsProtein;
@@ -58,9 +61,12 @@ public class AddNewProductActivity extends Activity {
 
                 Toast.makeText(AddNewProductActivity.this,
                         "Dodano nowy produkt!", Toast.LENGTH_SHORT).show();
+
+                Log.i(TAG,"onCreate - nastąpiło zapisanie nowego produktu");
             } catch (Exception e) {
                 Toast.makeText(AddNewProductActivity.this,
                         "Nie podano wszystkich wartości!", Toast.LENGTH_SHORT).show();
+                Log.i(TAG,"onCreate - nie udalo sie zapisac produktu");
             }
         });
 

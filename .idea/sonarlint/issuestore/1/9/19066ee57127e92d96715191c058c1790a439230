@@ -1,2 +1,5 @@
 
-]	java:S110 "<This class has 8 parents which is greater than 5 authorized.(·¡ïõøÿÿÿÿ8¶½¾.
+u
+java:S3776”"RRefactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.(ö¤¯‹ùÿÿÿÿ8¢—·ÖÂ.
+Y	java:S125¬"<This block of commented-out lines of code should be removed.(©İÕŸ8ö‹½ÖÂ.
+]	java:S110!"<This class has 8 parents which is greater than 5 authorized.(·¡ïõøÿÿÿÿ8á”¬ÖÂ.

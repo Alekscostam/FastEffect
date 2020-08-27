@@ -21,10 +21,8 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.DELETE" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
 
         <activity
@@ -37,15 +35,11 @@
 
         <activity
             android:name=".ProductClasses.AddProductActivity"
-            android:noHistory="true"
-
-            />
+            android:noHistory="true" />
 
         <activity
             android:name=".ProductClasses.AddNewProductActivity"
-            android:noHistory="true"
-
-            />
+            android:noHistory="true" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"

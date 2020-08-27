@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProfileFragment">
+    tools:context=".FragmentClasses.ProfileFragment">
 
     <ScrollView
         android:id="@+id/scrollView2"
@@ -21,11 +21,12 @@
 
             <TextView
                 android:id="@+id/textViewEmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="#cdf2ff"
                 android:layout_gravity="center"
-                android:layout_marginTop="20dp"
                 android:text="@string/yourEmail"
+                android:gravity="center"
                 android:textSize="18sp"
                 tools:ignore="MissingConstraints" />
 
@@ -106,9 +107,9 @@
             <Button
                 android:id="@+id/buttonSave"
                 android:layout_width="190dp"
-                android:layout_height="40dp"
+                android:layout_height="35dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="25dp"
                 android:background="@drawable/button_rounded_aqua"
                 android:text="@string/save"
                 android:textAllCaps="false"

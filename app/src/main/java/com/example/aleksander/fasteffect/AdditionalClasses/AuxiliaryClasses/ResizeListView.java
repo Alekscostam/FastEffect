@@ -1,5 +1,6 @@
 package com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses;
 
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
@@ -10,11 +11,16 @@ import android.widget.ListView;
  */
 public class ResizeListView {
 
+    public static final String TAG = "com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses";
+
     /**
      * Zmienia rozmiary opkna w sposob "dynamiczny"
      * @param listView ktory ma zostac zmieniony
      */
     public void resize(ListView listView) {
+
+        Log.i(TAG, "resize - resize dla listView");
+
         ListAdapter listAdapter = listView.getAdapter();
         if (listAdapter == null) {
 

@@ -32,7 +32,6 @@
     <string name="nazwa">Nazwa</string>
     <string name="yourEmail">Twój E-mail</string>
 
-
     //spinnerAktywnosc
     <string name="protein">Białko %</string>
 
@@ -42,14 +41,12 @@
     //spinnerCel
     <string name="carb">Węglowodany %</string>
 
-
     //makroskładniki i kalorie
     <string name="caloriesE">Kcal</string>
     <string name="proteinE">Białko</string>
     <string name="fatE">Tłuszcz</string>
     <string name="carbE">Węglowodany</string>
     <string name="fiberE">Błonnik</string>
-
 
     //stringi do strony glownej
     <string name="calories">0</string>
@@ -77,14 +74,13 @@
     <string name="d_export">Zapisz lub wyślij swój dziennik żywieniowy</string>
     <string name="d_import">Import</string>
 
-
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="setMacro">Ustal rozkład makroskładników i kalorii</string>
     <string name="automatically">Automatycznie</string>
     <string name="manually">Ręcznie</string>
-    <string name="kindOfSport">Określ rodzaj sportu który uprawiasz</string>
-    <string name="activity">Aktywnośc fizyczna</string>
-    <string name="whatIsPlanning">Co planuje</string>
+    <string name="kindOfSport">Rodzaj sportu: </string>
+    <string name="activity">Aktywność: </string>
+    <string name="whatIsPlanning">Co planuje: </string>
     <string name="addNewProduct">Dodawanie nowego produktu…</string>
     <string name="eneterValue">Podaj wartości na 100g danego produktu</string>
     <string name="enterProduct">Wprowadź produkt</string>
@@ -96,14 +92,18 @@
     <string name="bia_ko_w_glowodany_b_onnik_t_uszcze">Białko: Węglowodany: Błonnik: Tłuszcze:</string>
     <string name="my_description">Zmień ilość bądź usuń produkt</string>
     <string name="description_for_alert_in_addProductActivity">Ile gram produktu chcesz wybrać?</string>
+    <string name="export">export</string>
+    <string name="hide_or_show_password">hide or show password</string>
+    <string name="warto_kaloryczna_na_100g_produktu">Wartość kaloryczna na 100g produktu</string>
 
     <string-array name="spinnerActivities">
-        <item>brak aktywności, praca siedząca</item>
-        <item>niska aktywność(praca siedzaca, i 1–2 treningi w tygodniu)</item>
-        <item>średnia aktywność(praca siedzaca, i 3–4 treningi w tygodniu)</item>
-        <item>wysoka aktywność(praca fizyczna, i 3–4 treningi w tygodniu)</item>
-        <item>bardzo wysoka aktywność(sportowcy, osoby codziennie trenujące)</item>
+        <item>Brak aktywności, praca siedząca</item>
+        <item>Praca siedzaca, i 1–2 treningi w tygodniu</item>
+        <item>Praca siedzaca, i 3–4 treningi w tygodniu</item>
+        <item>Praca fizyczna, i 3–4 treningi w tygodniu</item>
+        <item>Wysoka aktywność, osoby codziennie trenujące</item>
     </string-array>
+
     <string-array name="spinnerTypeOfActivities">
         <item>Siłowy</item>
         <item>Wytrzymałościowy</item>
@@ -112,10 +112,9 @@
     </string-array>
 
     <string-array name="spinnerGoals">
-        <item>utrzymanie wagi</item>
-        <item>zwiększenie wagi</item>
-        <item>zmniejszenie wagi</item>
-
+        <item>Utrzymanie wagi</item>
+        <item>Zwiększenie wagi</item>
+        <item>Zmniejszenie wagi</item>
     </string-array>
 
 

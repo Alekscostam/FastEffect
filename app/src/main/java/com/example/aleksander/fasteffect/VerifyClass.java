@@ -2,6 +2,7 @@ package com.example.aleksander.fasteffect;
 
 import android.app.Application;
 import android.content.Intent;
+import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -13,9 +14,14 @@ import com.google.firebase.auth.FirebaseUser;
  */
 public class VerifyClass extends Application {
 
+    public static final String TAG="com.example.aleksander.fasteffect";
+
     @Override
     public void onCreate() {
         super.onCreate();
+
+        Log.i(TAG,"onCreate - dodatkowa weryfikacja uzytkownika");
+
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 

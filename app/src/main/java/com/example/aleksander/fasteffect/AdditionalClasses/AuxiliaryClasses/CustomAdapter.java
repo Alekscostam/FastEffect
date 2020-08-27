@@ -33,14 +33,15 @@ public class CustomAdapter extends ArrayAdapter<String> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
-        View CustomView = LayoutInflater.from(getContext()).inflate(R.layout.custom_row_adapter, parent, false);
+        Log.i(TAG,"getView - ładowanie produktów do adapterów");
+
+        View customView = LayoutInflater.from(getContext()).inflate(R.layout.custom_row_adapter, parent, false);
 
         String singleProduct = getItem(position);
 
-        TextView productName =  CustomView.findViewById(R.id.productName);
-        TextView productCalories =  CustomView.findViewById(R.id.productCalories);
-        TextView restOfValuesName = CustomView.findViewById(R.id.restOfValuesName);
-
+        TextView productName =  customView.findViewById(R.id.productName);
+        TextView productCalories =  customView.findViewById(R.id.productCalories);
+        TextView restOfValuesName = customView.findViewById(R.id.restOfValuesName);
 
         assert singleProduct != null;
         String[] splitProducts = singleProduct.split(" {2}");
@@ -49,8 +50,6 @@ public class CustomAdapter extends ArrayAdapter<String> {
         productCalories.setText(splitProducts[1]);
         restOfValuesName.setText((splitProducts[2] + " " + splitProducts[3] + " " + splitProducts[4] + " " + splitProducts[5]));
 
-        Log.i(TAG,"ładowanie produktów do adapterów");
-
-        return CustomView;
+        return customView;
     }
 }

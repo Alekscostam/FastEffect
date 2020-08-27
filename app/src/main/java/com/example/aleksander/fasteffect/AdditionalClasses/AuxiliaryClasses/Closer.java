@@ -1,6 +1,7 @@
 package com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses;
 
 import android.database.Cursor;
+import android.util.Log;
 
 import java.util.Arrays;
 
@@ -9,10 +10,16 @@ import java.util.Arrays;
  */
 public class Closer {
 
+    public static final String TAG ="com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses";
+
     private Closer() {
     }
 
     public static void closeCursors(Cursor... cursors) {
+
+        Log.i(TAG,"closeCursors - zamykanie wszystkich kursorw");
+
         Arrays.stream(cursors).forEach(Cursor::close);
+
     }
 }

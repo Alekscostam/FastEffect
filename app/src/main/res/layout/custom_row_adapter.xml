@@ -30,11 +30,8 @@
             android:text="@string/kalorie"
             android:textColor="#551A8B"
             android:textSize="14sp" />
-
-
-
-
     </LinearLayout>
+
     <TextView
         android:id="@+id/restOfValuesName"
         android:layout_width="match_parent"
@@ -45,7 +42,6 @@
         android:text="@string/bia_ko_w_glowodany_b_onnik_t_uszcze"
         android:textSize="13sp"
         tools:ignore="RtlHardcoded">
-
     </TextView>
 
 
