@@ -28,6 +28,4 @@
         tools:ignore="LabelFor,SmallSp"
         android:autofillHints="" />
 
-    <requestFocus />
-
 </RelativeLayout>

@@ -11,14 +11,6 @@ y
 Iapp/src/main/java/com/example/aleksander/fasteffect/RegisterActivity.java,4\5\4565e3aeebd80d346010baf1e1ffa3d411cc9219
 @
 app/build.gradle,f\4\f4a01d6a4fcb971362ec00a83903fd3902f52164
-…
-Uapp/src/main/java/com/example/aleksander/fasteffect/FragmentClass/ExportFragment.java,e\4\e443c05451e5430551e9d5981604c71a58afe260
-„
-Tapp/src/main/java/com/example/aleksander/fasteffect/FragmentClass/HouseFragment.java,a\e\ae2672f8dec0812923688b9625f8e070b3641049
-†
-Vapp/src/main/java/com/example/aleksander/fasteffect/FragmentClass/ProfileFragment.java,5\1\5197292d60cd94d1d32da51fd6c0adecd4b60080
-„
-Tapp/src/main/java/com/example/aleksander/fasteffect/FragmentClass/SportFragment.java,1\a\1a9fbe203380de1219e4a45b9ffe37710265a41e
 u
 Eapp/src/main/java/com/example/aleksander/fasteffect/MainActivity.java,e\4\e431109171be56ca7832558300dd605813540f9c
 t
@@ -49,3 +41,11 @@ gapp/src/main/java/com/example/aleksander/fasteffect/AdditionalClasses/Interface
 oapp/src/main/java/com/example/aleksander/fasteffect/AdditionalClasses/Interfaces/OnChildAddedEventListener.java,1\1\113e685e899a5db39c337b46e1789ff6003ba647
 ™
 iapp/src/main/java/com/example/aleksander/fasteffect/AdditionalClasses/AuxiliaryClasses/CustomAdapter.java,7\4\74eaf6d977274392a5c762758ea8fc79bb320761
+ˆ
+Xapp/src/main/java/com/example/aleksander/fasteffect/FragmentClasses/ProfileFragment.java,1\4\14a4c9b39884a0164bd3338b1dd6ebc481fb9361
+†
+Vapp/src/main/java/com/example/aleksander/fasteffect/FragmentClasses/HouseFragment.java,a\6\a66ef09668f078ca02a2f301dee0d50d1f1f7f0d
+†
+Vapp/src/main/java/com/example/aleksander/fasteffect/FragmentClasses/SportFragment.java,0\8\080d98ddb56cf6b1f3abb6c9f477204db0b1860d
+‡
+Wapp/src/main/java/com/example/aleksander/fasteffect/FragmentClasses/ExportFragment.java,0\c\0c779bb605d968b5f299860d17b839a8b5015b94

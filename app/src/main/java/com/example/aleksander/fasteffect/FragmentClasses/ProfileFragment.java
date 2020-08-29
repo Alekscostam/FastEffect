@@ -34,9 +34,9 @@ import java.util.Objects;
  * Klasa posiada podstawowe informacje o użytkowniku
  * Zakladka "Profil"
  */
-public class ProfileFragment extends Fragment{
+public class ProfileFragment extends Fragment implements ValueEventListener{
 
-    public static final String TAG="com.example.aleksander.fasteffect.FragmentClass";
+    public static final String TAG = "com.example.aleksander.fasteffect.FragmentClass";
 
     public static final String SHARED_PREFS = "shaaredPrefs";
 
@@ -69,8 +69,34 @@ public class ProfileFragment extends Fragment{
 
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
+        initViews(view);
+
         databaseReference = database.getReference(referenceName);
+        databaseReference.addValueEventListener(this);
+
+        Button buttonSave = view.findViewById(R.id.buttonSave);
+        buttonSave.setOnClickListener(save -> onSaveRef());
+
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        assert user != null;
+        uid = user.getUid();
+
+        return view;
+    }
+
+
+    @Override
+    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        onLoadRef(dataSnapshot);
+    }
+
+    @Override
+    public void onCancelled(@NonNull DatabaseError databaseError) {
+        databaseError.getMessage();
+    }
+
+    private void initViews(View view) {
 
         textInputEditTextAge = view.findViewById(R.id.TextInputEditTextWiek);
         textInputEditTextHeight = view.findViewById(R.id.TextInputEditTextWzrost);
@@ -78,24 +104,6 @@ public class ProfileFragment extends Fragment{
         radioButtonM = view.findViewById(R.id.radioButtonM);
         radioButtonW = view.findViewById(R.id.radioButtonW);
         textViewEmail = view.findViewById(R.id.textViewEmail);
-        Button buttonSave = view.findViewById(R.id.buttonSave);
-
-        assert user != null;
-        uid = user.getUid();
-
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                onLoadRef(dataSnapshot);
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                databaseError.getMessage();
-            }
-        });
-
-        buttonSave.setOnClickListener(save -> onSaveRef());
-        return view;
     }
 
     /**
@@ -103,7 +111,7 @@ public class ProfileFragment extends Fragment{
      */
     private void onSaveRef() {
 
-        Log.i(TAG,"onSaveRef - zimiana danych dla uzytkownika");
+        Log.i(TAG, "onSaveRef - zimiana danych dla uzytkownika");
 
         if (Double.parseDouble(String.valueOf(textInputEditTextWeight.getText())) > 200)
             Toast.makeText(getContext(), "Nieprawidłowa waga", Toast.LENGTH_SHORT).show();
@@ -135,6 +143,7 @@ public class ProfileFragment extends Fragment{
             Toast.makeText(getContext(), "Zapisano zmiany!", Toast.LENGTH_SHORT).show();
         }
     }
+
     /**
      * Zaladowanie informacji o uzytkowniku ze zdalnej bazy danych po wejsciu w zakładke "Profil"
      */
@@ -160,8 +169,9 @@ public class ProfileFragment extends Fragment{
 
     /**
      * Zapamietanie informacji o uzytkowniku do pamieciu urzadzenia w celu ich dalszego przetwarzania
+     *
      * @param weight waga uzytkownika
-     * @param age wiek uzytkownika
+     * @param age    wiek uzytkownika
      * @param height wzrost uzytkownika
      * @param gender plec uzytkownika
      */
@@ -174,6 +184,4 @@ public class ProfileFragment extends Fragment{
         editor.putString("optionPlec", gender);
         editor.apply();
     }
-
-
 }

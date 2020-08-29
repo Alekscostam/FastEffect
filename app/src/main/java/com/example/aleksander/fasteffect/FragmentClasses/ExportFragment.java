@@ -35,7 +35,7 @@ import static java.util.Objects.requireNonNull;
  * Zakladka "Przeslij dziennik"
  */
 @NoArgsConstructor
-public class ExportFragment extends Fragment   {
+public class ExportFragment extends Fragment{
 
    private static final String TAG = "com.example.aleksander.fasteffect.FragmentClass" ;
 

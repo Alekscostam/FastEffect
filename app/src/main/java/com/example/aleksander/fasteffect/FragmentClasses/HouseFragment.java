@@ -66,7 +66,7 @@ import static java.util.Objects.requireNonNull;
  * Klasa będąca głównym oknem aplikacji. Pobiera ona wszelkie dane z lokalnej bazy danych
  * Zakladka "Strona główna"
  */
-public class HouseFragment extends Fragment {
+public class HouseFragment extends Fragment implements View.OnClickListener {
 
     public static final String TAG="com.example.aleksander.fasteffect.FragmentClass";
 
@@ -117,87 +117,20 @@ public class HouseFragment extends Fragment {
 
         final View view = inflater.inflate(R.layout.fragment_house, container, false);
 
-        progressBarCalories = view.findViewById(R.id.progressBarCalories);
-        progressBarProtein = view.findViewById(R.id.progressBarProtein);
-        progressBarCarb = view.findViewById(R.id.progressBarCarb);
-        progressBarFat = view.findViewById(R.id.progressBarFat);
-
-        textViewAllCalories = view.findViewById(R.id.textViewAllCalories);
-        textViewAllProtein = view.findViewById(R.id.textViewAllProtein);
-        textViewAllCarb = view.findViewById(R.id.textViewAllCarb);
-        textViewAllFat = view.findViewById(R.id.textViewAllFat);
-
-        breakfastListMacro = Arrays.asList(
-                view.findViewById(R.id.KcalS),
-                view.findViewById(R.id.WS),
-                view.findViewById(R.id.PS),
-                view.findViewById(R.id.TS));
-
-        lunchListMacro = Arrays.asList(
-                view.findViewById(R.id.KcalL),
-                view.findViewById(R.id.WL),
-                view.findViewById(R.id.PL),
-                view.findViewById(R.id.TL));
-
-        dinnerListMacro = Arrays.asList(
-                view.findViewById(R.id.KcalO),
-                view.findViewById(R.id.WO),
-                view.findViewById(R.id.PO),
-                view.findViewById(R.id.TO));
-
-        snackListMacro = Arrays.asList(
-                view.findViewById(R.id.KcalP),
-                view.findViewById(R.id.WP),
-                view.findViewById(R.id.PP),
-                view.findViewById(R.id.TP));
-
-        supperListMacro = Arrays.asList(
-                view.findViewById(R.id.KcalK),
-                view.findViewById(R.id.WK),
-                view.findViewById(R.id.PK),
-                view.findViewById(R.id.TK));
-
-        arrayItemList = Arrays.asList(
-                new ArrayList<>(),
-                new ArrayList<>(),
-                new ArrayList<>(),
-                new ArrayList<>(),
-                new ArrayList<>());
-
-        textViews = Arrays.asList(
-                view.findViewById(R.id.textViewSniadanie),
-                view.findViewById(R.id.textViewLunch),
-                view.findViewById(R.id.textViewObiad),
-                view.findViewById(R.id.textViewPrzekąska),
-                view.findViewById(R.id.textViewKolacja));
-
-        cardViewList = Arrays.asList(
-                view.findViewById(R.id.cardViewSniadanie),
-                view.findViewById(R.id.cardViewLunch),
-                view.findViewById(R.id.cardViewObiad),
-                view.findViewById(R.id.cardViewPrzekąska),
-                view.findViewById(R.id.cardViewKolacja));
-
-        listViewList = Arrays.asList(
-                view.findViewById(R.id.ListViewSniadanie),
-                view.findViewById(R.id.ListViewLunch),
-                view.findViewById(R.id.ListViewObiad),
-                view.findViewById(R.id.ListViewPrzekąska),
-                view.findViewById(R.id.ListViewKolacja));
+        initViews(view);
 
         ImageButton buttonAddProductBreakfast = view.findViewById(R.id.buttonAddProductBreakfast);
+        buttonAddProductBreakfast.setOnClickListener(this);
         ImageButton buttonAddProductLunch = view.findViewById(R.id.buttonAddProductLunch);
+        buttonAddProductLunch.setOnClickListener(this);
         ImageButton buttonAddProductDinner = view.findViewById(R.id.buttonAddProductDinner);
+        buttonAddProductDinner.setOnClickListener(this);
         ImageButton buttonAddProductSnack = view.findViewById(R.id.buttonAddProductSnack);
+        buttonAddProductSnack.setOnClickListener(this);
         ImageButton buttonAddProductSupper = view.findViewById(R.id.buttonAddProductSupper);
-        textViewData = view.findViewById(R.id.textViewData);
+        buttonAddProductSupper.setOnClickListener(this);
 
-        arrayAdaptersForList = Arrays.asList(
-                new ArrayAdapter<>(requireNonNull(getContext()), android.R.layout.simple_list_item_1, arrayItemList.get(0)),
-                new ArrayAdapter<>(requireNonNull(getContext()), android.R.layout.simple_list_item_1, arrayItemList.get(1)),
-                new ArrayAdapter<>(requireNonNull(getContext()), android.R.layout.simple_list_item_1, arrayItemList.get(2)),
-                new ArrayAdapter<>(requireNonNull(getContext()), android.R.layout.simple_list_item_1, arrayItemList.get(3)),
-                new ArrayAdapter<>(requireNonNull(getContext()), android.R.layout.simple_list_item_1, arrayItemList.get(4)));
+        textViewData = view.findViewById(R.id.textViewData);
 
         listViewList.get(0).setOnItemClickListener((adapterView, breakfast, positionValue, l) ->
                 alertOperation(1, getAmountFromValue((String) adapterView.getItemAtPosition(positionValue)), getNameFromValue((String) adapterView.getItemAtPosition(positionValue))));
@@ -225,15 +158,36 @@ public class HouseFragment extends Fragment {
 
         mDateSetListener = this::dataSetListener;
 
-        buttonAddProductBreakfast.setOnClickListener(add -> addProduct("1"));
-        buttonAddProductLunch.setOnClickListener(add -> addProduct("2"));
-        buttonAddProductDinner.setOnClickListener(add -> addProduct("3"));
-        buttonAddProductSnack.setOnClickListener(add -> addProduct("4"));
-        buttonAddProductSupper.setOnClickListener(add -> addProduct("5"));
-
         refreshApp();
 
         return view;
+    }
+
+    /**
+     * Decyduje do jakiej pory maja byc zapisywane produkty
+     */
+    @Override
+    public void onClick(View v) {
+        switch (v.getId())
+        {
+            case R.id.buttonAddProductBreakfast:
+                addProduct("1");
+                break;
+            case R.id.buttonAddProductLunch:
+                addProduct("2");
+                break;
+            case R.id.buttonAddProductDinner:
+                addProduct("3");
+                break;
+            case R.id.buttonAddProductSnack:
+                addProduct("4");
+                break;
+            case R.id.buttonAddProductSupper:
+                addProduct("5");
+                break;
+            default:
+                break;
+        }
     }
 
     /**
@@ -448,9 +402,7 @@ public class HouseFragment extends Fragment {
     /**
      * Metoda sluzaca do schowania wszystkich list w przypadku np. ponownego uruchomienia aplikacji
      */
-    private void hideAllListViews() {
-        listViewList.forEach(element -> element.setVisibility(GONE));
-    }
+    private void hideAllListViews() { listViewList.forEach(element -> element.setVisibility(GONE)); }
 
     /**
      * Metoda sluzaca do pokazania listy wyswietlania po jej wybraniu
@@ -502,7 +454,7 @@ public class HouseFragment extends Fragment {
                 setListMacro(supperListMacro, calories, protein, carb, fat);
                 break;
             default:
-                // code block
+                break;
         }
     }
 
@@ -714,6 +666,7 @@ public class HouseFragment extends Fragment {
                 maxValue[2] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(30), 9));
                 break;
             default:
+                break;
         }
         return valueToConvert;
     }
@@ -733,7 +686,7 @@ public class HouseFragment extends Fragment {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 getContext());
         alertDialogBuilder.setView(promptsView);
-        final EditText input = (EditText) promptsView.findViewById(R.id.inputNumber);
+        final EditText input = promptsView.findViewById(R.id.inputNumber);
 
         alertDialogBuilder
                 .setCancelable(false)
@@ -786,17 +739,17 @@ public class HouseFragment extends Fragment {
 
         Log.i(TAG,"editProductInDatabase - edytowanie produktu z aplikacji");
 
-        SQLiteDatabase baza = requireNonNull(getActivity()).openOrCreateDatabase(DATABASE_FILE, Context.MODE_PRIVATE, null);
+        SQLiteDatabase database = requireNonNull(getActivity()).openOrCreateDatabase(DATABASE_FILE, Context.MODE_PRIVATE, null);
         int iloscCON = Integer.parseInt(ilosc.replaceAll("\\s+", ""));
         String nazwaCON = nazwa.replaceAll("\\s+$", "");
 
-        Cursor idMeal = baza.rawQuery(getMealIdByNameAndAmountFromTableMeal(nazwaCON, iloscCON), null);
+        Cursor idMeal = database.rawQuery(getMealIdByNameAndAmountFromTableMeal(nazwaCON, iloscCON), null);
         idMeal.moveToFirst();
 
-        Cursor dataProduct = baza.rawQuery(getMealIdByDataAndIdMealFromTableMeal(textViewData.getText().toString(), idMeal.getString(0)), null);
+        Cursor dataProduct = database.rawQuery(getMealIdByDataAndIdMealFromTableMeal(textViewData.getText().toString(), idMeal.getString(0)), null);
         dataProduct.moveToFirst();
 
-        Cursor idHash = baza.rawQuery(getElementByIdTimeOfDayAndDataAndIdMealFromHash(idTimeOfDay, textViewData.getText().toString(), idMeal.getString(0)), null);
+        Cursor idHash = database.rawQuery(getElementByIdTimeOfDayAndDataAndIdMealFromHash(idTimeOfDay, textViewData.getText().toString(), idMeal.getString(0)), null);
         idHash.moveToFirst();
 
         int il = Integer.parseInt(dataProduct.getString(5));
@@ -808,35 +761,35 @@ public class HouseFragment extends Fragment {
         il = amountOfProduct;
 
         try {
-            Cursor checkInMealTable = baza.rawQuery(getElementByNameAndValueFromPosilek(dataProduct.getString(6), amountOfProduct), null);
+            Cursor checkInMealTable = database.rawQuery(getElementByNameAndValueFromPosilek(dataProduct.getString(6), amountOfProduct), null);
             checkInMealTable.moveToFirst();
 
-            Cursor deleteFromHashTable = baza.rawQuery(deleteElementByIdHashFromHash(idHash.getString(0)), null);
+            Cursor deleteFromHashTable = database.rawQuery(deleteElementByIdHashFromHash(idHash.getString(0)), null);
             deleteFromHashTable.moveToFirst();
 
-            Cursor insertToHashTable = baza.rawQuery(insertElementIntoHashTable(textViewData.getText().toString(), checkInMealTable.getString(0), idTimeOfDay), null);
+            Cursor insertToHashTable = database.rawQuery(insertElementIntoHashTable(textViewData.getText().toString(), checkInMealTable.getString(0), idTimeOfDay), null);
             insertToHashTable.moveToFirst();
 
             Closer.closeCursors(checkInMealTable, insertToHashTable, deleteFromHashTable);
 
         } catch (Exception ex) {
-            Cursor insertToMealTable = baza.rawQuery(insertElementIntoMealTable(dataProduct.getString(6), b, w, t, bl, kcal, il), null);
+            Cursor insertToMealTable = database.rawQuery(insertElementIntoMealTable(dataProduct.getString(6), b, w, t, bl, kcal, il), null);
             insertToMealTable.moveToFirst();
 
-            Cursor checkInMealTable = baza.rawQuery(getElementByNameAndValueFromPosilek(dataProduct.getString(6), amountOfProduct), null);
+            Cursor checkInMealTable = database.rawQuery(getElementByNameAndValueFromPosilek(dataProduct.getString(6), amountOfProduct), null);
             checkInMealTable.moveToFirst();
 
-            Cursor deleteFromHashTable = baza.rawQuery(deleteElementByIdHashFromHash(idHash.getString(0)), null);
+            Cursor deleteFromHashTable = database.rawQuery(deleteElementByIdHashFromHash(idHash.getString(0)), null);
             deleteFromHashTable.moveToFirst();
 
-            Cursor insertToHashTable = baza.rawQuery(insertElementIntoHashTable(textViewData.getText().toString(), checkInMealTable.getString(0), idTimeOfDay), null);
+            Cursor insertToHashTable = database.rawQuery(insertElementIntoHashTable(textViewData.getText().toString(), checkInMealTable.getString(0), idTimeOfDay), null);
             insertToHashTable.moveToFirst();
 
             Closer.closeCursors(checkInMealTable, insertToMealTable, insertToHashTable, deleteFromHashTable);
         }
 
         Closer.closeCursors(idHash, dataProduct, idMeal);
-        baza.close();
+        database.close();
         refreshApp();
         refreshAfterDbChanged();
     }
@@ -869,5 +822,86 @@ public class HouseFragment extends Fragment {
             ft.setReorderingAllowed(false);
         }
         ft.detach(this).attach(this).commit();
+    }
+
+    /**
+     * Inicjuje komponenty tej klasy
+     */
+    private void initViews(View view) {
+
+        progressBarCalories = view.findViewById(R.id.progressBarCalories);
+        progressBarProtein = view.findViewById(R.id.progressBarProtein);
+        progressBarCarb = view.findViewById(R.id.progressBarCarb);
+        progressBarFat = view.findViewById(R.id.progressBarFat);
+
+        textViewAllCalories = view.findViewById(R.id.textViewAllCalories);
+        textViewAllProtein = view.findViewById(R.id.textViewAllProtein);
+        textViewAllCarb = view.findViewById(R.id.textViewAllCarb);
+        textViewAllFat = view.findViewById(R.id.textViewAllFat);
+
+        breakfastListMacro = Arrays.asList(
+                view.findViewById(R.id.KcalS),
+                view.findViewById(R.id.WS),
+                view.findViewById(R.id.PS),
+                view.findViewById(R.id.TS));
+
+        lunchListMacro = Arrays.asList(
+                view.findViewById(R.id.KcalL),
+                view.findViewById(R.id.WL),
+                view.findViewById(R.id.PL),
+                view.findViewById(R.id.TL));
+
+        dinnerListMacro = Arrays.asList(
+                view.findViewById(R.id.KcalO),
+                view.findViewById(R.id.WO),
+                view.findViewById(R.id.PO),
+                view.findViewById(R.id.TO));
+
+        snackListMacro = Arrays.asList(
+                view.findViewById(R.id.KcalP),
+                view.findViewById(R.id.WP),
+                view.findViewById(R.id.PP),
+                view.findViewById(R.id.TP));
+
+        supperListMacro = Arrays.asList(
+                view.findViewById(R.id.KcalK),
+                view.findViewById(R.id.WK),
+                view.findViewById(R.id.PK),
+                view.findViewById(R.id.TK));
+
+        arrayItemList = Arrays.asList(
+                new ArrayList<>(),
+                new ArrayList<>(),
+                new ArrayList<>(),
+                new ArrayList<>(),
+                new ArrayList<>());
+
+        textViews = Arrays.asList(
+                view.findViewById(R.id.textViewSniadanie),
+                view.findViewById(R.id.textViewLunch),
+                view.findViewById(R.id.textViewObiad),
+                view.findViewById(R.id.textViewPrzekąska),
+                view.findViewById(R.id.textViewKolacja));
+
+        cardViewList = Arrays.asList(
+                view.findViewById(R.id.cardViewSniadanie),
+                view.findViewById(R.id.cardViewLunch),
+                view.findViewById(R.id.cardViewObiad),
+                view.findViewById(R.id.cardViewPrzekąska),
+                view.findViewById(R.id.cardViewKolacja));
+
+        listViewList = Arrays.asList(
+                view.findViewById(R.id.ListViewSniadanie),
+                view.findViewById(R.id.ListViewLunch),
+                view.findViewById(R.id.ListViewObiad),
+                view.findViewById(R.id.ListViewPrzekąska),
+                view.findViewById(R.id.ListViewKolacja));
+
+        arrayAdaptersForList = Arrays.asList(
+                new ArrayAdapter<>(requireNonNull(getContext()), android.R.layout.simple_list_item_1, arrayItemList.get(0)),
+                new ArrayAdapter<>(requireNonNull(getContext()), android.R.layout.simple_list_item_1, arrayItemList.get(1)),
+                new ArrayAdapter<>(requireNonNull(getContext()), android.R.layout.simple_list_item_1, arrayItemList.get(2)),
+                new ArrayAdapter<>(requireNonNull(getContext()), android.R.layout.simple_list_item_1, arrayItemList.get(3)),
+                new ArrayAdapter<>(requireNonNull(getContext()), android.R.layout.simple_list_item_1, arrayItemList.get(4)));
     }
 }

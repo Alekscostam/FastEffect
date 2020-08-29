@@ -34,13 +34,13 @@ import static java.util.Objects.requireNonNull;
  * Klasa wykorzystywana do ustawien dotyczacych zapotrzebowania kalorycznego dla użytkownika
  * Zakladka "Aktywność"
  */
-public class SportFragment extends Fragment implements AdapterView.OnItemSelectedListener {
+public class SportFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener {
 
     public static final String SHARED_PREFS = "shaaredPrefs";
 
     private Button buttonSave;
 
-    private Map<Integer, Integer> longIntegerMap = new TreeMap<>();
+    private Map<Integer, Integer> longIntegerMap;
 
     private LinearLayout linearLayoutAutomatically;
     private LinearLayout linearLayoutManually;
@@ -59,26 +59,18 @@ public class SportFragment extends Fragment implements AdapterView.OnItemSelecte
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_sport, container, false);
-
-        textInputEditTextCalories = view.findViewById(R.id.textInputEditTextKalorie);
-        textInputEditTextProtein = view.findViewById(R.id.textInputEditTextProtein);
-        textInputEditTextCarb = view.findViewById(R.id.textInputEditTextCarb);
-        textInputEditTextFat = view.findViewById(R.id.textInputEditTextFat);
+        initViews(view);
 
         sharedPreferences = requireNonNull(getContext()).getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
 
         String firstLogIn = "firstLogIn";
         boolean myFirstLog = sharedPreferences.getBoolean(firstLogIn, false);
-        if(myFirstLog)
-        {
+        if (myFirstLog) {
             Toast.makeText(getContext(), "Pierwsze logowanie! Wybierz sposób wyliczenia kalorri i makroskładników", Toast.LENGTH_LONG).show();
         }
 
         Button buttonAutomatically = view.findViewById(R.id.buttonAutomatycznie);
         Button buttonManually = view.findViewById(R.id.buttonRęczne);
-
-        linearLayoutAutomatically = view.findViewById(R.id.linearLayoutAutomatyczne);
-        linearLayoutManually = view.findViewById(R.id.linearLayoutRęczne);
 
         getMacro(sharedPreferences);
 
@@ -88,33 +80,48 @@ public class SportFragment extends Fragment implements AdapterView.OnItemSelecte
         if (equals) setAutomatically();
         else setManually();
 
-        buttonAutomatically.setOnClickListener(auto -> {
-            setAutomatically();
-            optionSelected = "0";
-        });
+        buttonAutomatically.setOnClickListener(this);
+        buttonManually.setOnClickListener(this);
 
-        buttonManually.setOnClickListener(manually -> {
-            setManually();
-            optionSelected = "1";
-        });
+        adaptersInit();
 
-        buttonSave = view.findViewById(R.id.buttonSave);
+        buttonSave.setEnabled(true);
+        buttonSave.setOnClickListener(this);
 
-        spinnerActivity = view.findViewById(R.id.spinnerAktywnosc);
+        return view;
+    }
+
+    private void adaptersInit() {
+
         ArrayAdapter<CharSequence> adapterActivity = ArrayAdapter.createFromResource(requireNonNull(getActivity()), R.array.spinnerActivities, R.layout.spinner_item_my);
         setSpinners(spinnerActivity, adapterActivity, "spinnerAktywnosc");
 
-        spinnerKindOfSport = view.findViewById(R.id.spinnerRodzajSportu);
         ArrayAdapter<CharSequence> adapterKindOfSport = ArrayAdapter.createFromResource(getActivity(), R.array.spinnerTypeOfActivities, R.layout.spinner_item_my);
         setSpinners(spinnerKindOfSport, adapterKindOfSport, "spinnerRodzajSportu");
 
-        spinnerGoal = view.findViewById(R.id.spinnerCel);
         ArrayAdapter<CharSequence> adapterGoal = ArrayAdapter.createFromResource(getActivity(), R.array.spinnerGoals, R.layout.spinner_item_my);
         setSpinners(spinnerGoal, adapterGoal, "spinnerCel");
+    }
 
-        buttonSave.setEnabled(true);
-        buttonSave.setOnClickListener(save -> saveOptions());
-        return view;
+    /**
+     * Inicjuje komponenty tej klasy
+     */
+    private void initViews(View view) {
+
+        longIntegerMap = new TreeMap<>();
+
+        textInputEditTextCalories = view.findViewById(R.id.textInputEditTextKalorie);
+        textInputEditTextProtein = view.findViewById(R.id.textInputEditTextProtein);
+        textInputEditTextCarb = view.findViewById(R.id.textInputEditTextCarb);
+        textInputEditTextFat = view.findViewById(R.id.textInputEditTextFat);
+        linearLayoutAutomatically = view.findViewById(R.id.linearLayoutAutomatyczne);
+        linearLayoutManually = view.findViewById(R.id.linearLayoutRęczne);
+
+        spinnerActivity = view.findViewById(R.id.spinnerAktywnosc);
+        spinnerKindOfSport = view.findViewById(R.id.spinnerRodzajSportu);
+        spinnerGoal = view.findViewById(R.id.spinnerCel);
+
+        buttonSave = view.findViewById(R.id.buttonSave);
     }
 
     /**
@@ -151,6 +158,7 @@ public class SportFragment extends Fragment implements AdapterView.OnItemSelecte
             spinnerGoal.setSelection(requireNonNull(longIntegerMap.get(keyList.get(1))));
             editor.putString("spinnerRodzajSportu", requireNonNull(this.longIntegerMap.get(keyList.get(2))).toString()); //InputString: from the EditText
             spinnerKindOfSport.setSelection(requireNonNull(longIntegerMap.get(keyList.get(2))));
+
             editor.apply();
         }
         if (!optionSelected.equals("0")) {
@@ -240,5 +248,24 @@ public class SportFragment extends Fragment implements AdapterView.OnItemSelecte
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
         // empty method from AdapterView.OnItemSelectedListener
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.buttonAutomatycznie:
+                setAutomatically();
+                optionSelected = "0";
+                break;
+            case R.id.buttonRęczne:
+                setManually();
+                optionSelected = "1";
+                break;
+            case R.id.buttonSave:
+                saveOptions();
+                break;
+            default:
+                break;
+        }
     }
 }

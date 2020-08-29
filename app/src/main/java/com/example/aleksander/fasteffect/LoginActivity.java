@@ -59,13 +59,11 @@ public class LoginActivity extends AppCompatActivity {
         intent.setFlags(FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TASK);
         sharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
 
-
         editorRemember = sharedPreferences.edit();
         editorRemember.apply();
 
         boolean checkRemember = sharedPreferences.getBoolean(LOGIN, false);
         rememberOrNot(checkRemember);
-
     }
 
     /**

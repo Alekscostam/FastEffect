@@ -16,10 +16,7 @@ public class Closer {
     }
 
     public static void closeCursors(Cursor... cursors) {
-
-        Log.i(TAG,"closeCursors - zamykanie wszystkich kursorw");
-
+        Log.i(TAG,"closeCursors - zamykanie wszystkich kursorow");
         Arrays.stream(cursors).forEach(Cursor::close);
-
     }
 }

@@ -12,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -54,9 +56,9 @@ import static java.util.Objects.requireNonNull;
 /**
  * Klasa służąca do odbierania danych ze zdalnej bazy danych do lokalnej bazy danych
  */
-public class AddProductActivity extends AppCompatActivity {
+public class AddProductActivity extends AppCompatActivity implements View.OnClickListener {
 
-    public static final String TAG= "com.example.aleksander.fasteffect.ProductClasses";
+    public static final String TAG = "com.example.aleksander.fasteffect.ProductClasses";
 
     private String dateOpen;
     private String timeOfDay;
@@ -82,66 +84,64 @@ public class AddProductActivity extends AppCompatActivity {
         databaseReference = FirebaseDatabase.getInstance().getReference("Produkty");
 
         TextView textViewBack = findViewById(R.id.textViewOpis);
-        EditText editTextFilter = findViewById(R.id.editTextSearch);
+        textViewBack.setOnClickListener(this);
 
         ImageButton imageButtonAdd = findViewById(R.id.buttonAdd);
+        imageButtonAdd.setOnClickListener(this);
+
+        EditText editTextFilter = findViewById(R.id.editTextSearch);
+
 
         dateOpen = DataHolder.getInstance().getData();
         SharedPreferences prefsTimeOfDay = PreferenceManager.getDefaultSharedPreferences(this);
         timeOfDay = prefsTimeOfDay.getString("PoraDnia", "no id"); //no id: default value
         listViewProducts = findViewById(R.id.listViewProdukty);
-        listViewProducts.setOnItemClickListener((adapterView, view, i, l) -> {
 
-            LayoutInflater li = LayoutInflater.from(this);
-            View promptsView = li.inflate(R.layout.custom_alert_dialog_add_product, null);
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            final EditText userInput = (EditText) promptsView.findViewById(R.id.inputNumber);
-            final String selectedItem = (String) adapterView.getItemAtPosition(i);
-            builder.setView(promptsView);
-
-            builder
-                    .setCancelable(false)
-                    .setPositiveButton("Ok", (dialogInterface, positive) -> {
-                        String amount = userInput.getText().toString();
-                        arithmeticOperationsForVariables(selectedItem, amount);
-                        addProductToDatabase(amount);
-                    })
-                    .setNegativeButton("Anuluj", (dialogInterface, negative) -> dialogInterface.cancel());
-            AlertDialog alertDialog = builder.create();
-            requireNonNull(alertDialog.getWindow()).setLayout(450, 350);
-            alertDialog.show();
-        });
+        listViewProducts.setOnItemClickListener((adapterView, view, position, l) -> alertInit(adapterView, position));
 
         editTextFilter.addTextChangedListener((TextWatcherFilter) (charSequence, start, count, after) -> (AddProductActivity.this)
                 .arrayAdapter
                 .getFilter()
                 .filter(charSequence.toString()));
-
-
-        textViewBack.setOnClickListener(v -> {
-            Intent backIntent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(backIntent);
-        });
-
-        imageButtonAdd.setOnClickListener(view -> {
-            Intent addIntent = new Intent(getApplicationContext(), AddNewProductActivity.class);
-            startActivity(addIntent);
-        });
     }
+
+    /**
+     * Tworzy alert
+     */
+    private void alertInit(AdapterView<?> adapterView, int position) {
+        LayoutInflater li = LayoutInflater.from(this);
+        View promptsView = li.inflate(R.layout.custom_alert_dialog_add_product, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final EditText userInput = promptsView.findViewById(R.id.inputNumber);
+        final String selectedItem = (String) adapterView.getItemAtPosition(position);
+        builder.setView(promptsView);
+
+        builder.setCancelable(false)
+                .setPositiveButton("Ok", (dialogInterface, positive) -> {
+                    String amount = userInput.getText().toString();
+                    arithmeticOperationsForVariables(selectedItem, amount);
+                    addProductToDatabase(amount);
+                })
+                .setNegativeButton("Anuluj", (dialogInterface, negative) -> dialogInterface.cancel());
+        AlertDialog alertDialog = builder.create();
+        requireNonNull(alertDialog.getWindow()).setLayout(450, 350);
+        alertDialog.show();
+    }
+
 
     @Override
     protected void onStart() {
         super.onStart();
-        Log.i(TAG,"onStart - Pobieranie wartosci ze zdalnej bazy danych");
-        executorServiceMethod();
+        Log.i(TAG, "onStart - Pobieranie wartosci ze zdalnej bazy danych");
+        getFromDatabse();
         adapterInit();
 
     }
 
     /**
-     * ExecutorService, który wykonuję tę metode w celu asynchronicznego pobrania danych ze zdalenj bazy danych
+     * getFromDatabse, ktory pobiera wartosci ze zdalnej bazy danych
      */
-    private void executorServiceMethod() {
+    private void getFromDatabse() {
 
         databaseReference.addChildEventListener((OnChildAddedEventListener) (dataSnapshot, s) -> {
             StringBuilder stringBuilderValue = new StringBuilder();
@@ -257,6 +257,22 @@ public class AddProductActivity extends AppCompatActivity {
         replaceFat = (df.format(fat)).replace(",", ".");
         replaceCarb = (df.format(carb)).replace(",", ".");
         replaceFibre = (df.format(fibre)).replace(",", ".");
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.textViewOpis:
+                Intent backIntent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(backIntent);
+                break;
+            case R.id.buttonAdd:
+                Intent addIntent = new Intent(getApplicationContext(), AddNewProductActivity.class);
+                startActivity(addIntent);
+                break;
+            default:
+                break;
+        }
     }
 }
 
