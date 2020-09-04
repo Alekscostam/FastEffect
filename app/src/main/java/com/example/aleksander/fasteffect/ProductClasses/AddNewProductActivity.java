@@ -2,14 +2,14 @@ package com.example.aleksander.fasteffect.ProductClasses;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.nfc.Tag;
+
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses.CustomSnackBars;
 import com.example.aleksander.fasteffect.AdditionalClasses.DatabaseClasses.Product;
 import com.example.aleksander.fasteffect.R;
 import com.google.firebase.database.DatabaseReference;
@@ -51,10 +51,10 @@ public class AddNewProductActivity extends Activity {
                         productsCarbohydrates,
                         productsFibre)
                 );
-                Toast.makeText(AddNewProductActivity.this, "Dodano nowy produkt!", Toast.LENGTH_SHORT).show();
+                CustomSnackBars.customSnackBarStandard("Dodano nowy produkt!",getCurrentFocus()).show();
                 Log.i(TAG, "onCreate - nastąpiło zapisanie nowego produktu");
             } catch (NullPointerException exception) {
-                Toast.makeText(AddNewProductActivity.this, "Nie podano wszystkich wartości!", Toast.LENGTH_SHORT).show();
+                CustomSnackBars.customSnackBarStandard("Nie podano wszystkich wartości!",getCurrentFocus()).show();
                 Log.i(TAG, "onCreate - nie udalo sie zapisac produktu");
             }
         });
@@ -83,6 +83,5 @@ public class AddNewProductActivity extends Activity {
         } catch (NumberFormatException number) {
             Log.i(TAG, "initViews - przechwyt pustych wartosci po niicjacji komponentow");
         }
-
     }
 }

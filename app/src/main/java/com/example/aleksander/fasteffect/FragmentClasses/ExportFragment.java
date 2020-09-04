@@ -98,9 +98,5 @@ public class ExportFragment extends Fragment{
         }finally {
             cursor.close();
         }
-
     }
-
-
-
 }

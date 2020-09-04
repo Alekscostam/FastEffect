@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<color name="colorPrimary">#41AECF</color>
-<color name="colorPrimaryDark">#348BA5</color>
-<color name="colorAccent">#41AECF</color>
+    <color name="colorPrimary">#41AECF</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#41AECF</color>
 
     <color name= "textColorPrimary">#FFF</color>
     <color name= "textColorCalender">#41AECF</color>

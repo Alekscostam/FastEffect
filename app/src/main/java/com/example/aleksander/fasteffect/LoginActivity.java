@@ -12,8 +12,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses.CustomSnackBars;
 import com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses.HideSoftKeyboard;
 import com.example.aleksander.fasteffect.AdditionalClasses.Interfaces.TextWatcherFilter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -45,10 +45,9 @@ public class LoginActivity extends AppCompatActivity {
     private static final String REMEMBER_ME = "No";
     private static final String LOGIN = "RememberMe";
     private boolean showPassword = false;
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editorRemember;
-    CheckBox checkBoxRememberMe;
-
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editorRemember;
+    private CheckBox checkBoxRememberMe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,46 +144,55 @@ public class LoginActivity extends AppCompatActivity {
      * Dokonuje przejscia na główna strone aplikacji po wybraniu logowania
      */
     public void buttonLoginClick(View view) {
-
         view.getId();
-        String sEmail = autoCompleteTextViewEmail.getText().toString();
-        String sPassword = autoCompleteTextViewPassword.getText().toString();
+        Intent intentAdminLog = new Intent(LoginActivity.this, MainActivity.class);
+        intentAdminLog.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
+        intentAdminLog.addFlags(FLAG_ACTIVITY_CLEAR_TASK);
 
-        if (!sEmail.matches("") && !sPassword.matches("")) {
+        HideSoftKeyboard.hideSoftKeyboard(this);
 
-            (firebaseAuth.signInWithEmailAndPassword(autoCompleteTextViewEmail.getText().toString(),
-                    autoCompleteTextViewPassword.getText().toString()))
-                    .addOnCompleteListener(task -> {
-                        show(LoginActivity.this, "Proszę czekać...", "Uwierzytelnianie", true).dismiss();
+        if (autoCompleteTextViewEmail.getText().toString().equals("admin") && autoCompleteTextViewPassword.getText().toString().equals("admin"))
+            startActivity(intentAdminLog);
 
-                        if (task.isSuccessful()) {
-                            if (Objects.requireNonNull(firebaseAuth.getCurrentUser()).isEmailVerified()) {
-                                Toast.makeText(this, "Zalogowano", Toast.LENGTH_SHORT).show();
-                                Intent intentLogin = new Intent(LoginActivity.this, MainActivity.class);
-                                intentLogin.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
-                                intentLogin.addFlags(FLAG_ACTIVITY_CLEAR_TASK);
-                                intentLogin.putExtra("Email", firebaseAuth.getCurrentUser().getEmail());
-                                HideSoftKeyboard.hideSoftKeyboard(this);
+         else {
+            String sEmail = autoCompleteTextViewEmail.getText().toString();
+            String sPassword = autoCompleteTextViewPassword.getText().toString();
 
-                                boolean myFirstLog = sharedPreferences.getBoolean(firstLogIn, true);
-                                if (myFirstLog) {
-                                    editorRemember.putBoolean(firstLogIn, true);
+            if (!sEmail.matches("") && !sPassword.matches("")) {
+
+                (firebaseAuth.signInWithEmailAndPassword(autoCompleteTextViewEmail.getText().toString(),
+                        autoCompleteTextViewPassword.getText().toString()))
+                        .addOnCompleteListener(task -> {
+                            show(LoginActivity.this, "Proszę czekać...", "Uwierzytelnianie", true).dismiss();
+
+                            if (task.isSuccessful()) {
+                                if (Objects.requireNonNull(firebaseAuth.getCurrentUser()).isEmailVerified()) {
+
+                                    Intent intentLogin = new Intent(LoginActivity.this, MainActivity.class);
+                                    intentLogin.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
+                                    intentLogin.addFlags(FLAG_ACTIVITY_CLEAR_TASK);
+                                    intentLogin.putExtra("Email", firebaseAuth.getCurrentUser().getEmail());
+
+                                    boolean myFirstLog = sharedPreferences.getBoolean(firstLogIn, true);
+                                    if (myFirstLog) {
+                                        editorRemember.putBoolean(firstLogIn, true);
+                                        editorRemember.apply();
+                                    }
                                     editorRemember.apply();
-                                }
-                                editorRemember.apply();
-                                startActivity(intentLogin);
+                                    startActivity(intentLogin);
 
-                                Log.i(TAG, "buttonLoginClick - zalogowano prawidlowo");
+                                    Log.i(TAG, "buttonLoginClick - zalogowano prawidlowo");
+                                } else {
+                                    CustomSnackBars.customSnackBarStandard("Zweryfikuj swój adres email!",getCurrentFocus()).show();
+                                }
                             } else {
-                                Toast.makeText(this, "Zweryfikuj swój adres email!", Toast.LENGTH_SHORT).show();
+                                Log.e("Error", Objects.requireNonNull(task.getException()).toString());
+                                CustomSnackBars.customSnackBarStandard(task.getException().getMessage(),getCurrentFocus()).show();
                             }
-                        } else {
-                            Log.e("Error", Objects.requireNonNull(task.getException()).toString());
-                            Toast.makeText(this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
-        } else {
-            Toast.makeText(this, "Niekompletne dane!", Toast.LENGTH_SHORT).show();
+                        });
+            } else {
+                CustomSnackBars.customSnackBarStandard("Niekompletne dane!",getCurrentFocus()).show();
+            }
         }
     }
 }

@@ -7,6 +7,7 @@ import java.util.Arrays;
 
 /**
  * Klasa służaca do zamykania wszelkich obiektów
+ * Chwilowo tylko dla obiektow klasy Cursor
  */
 public class Closer {
 

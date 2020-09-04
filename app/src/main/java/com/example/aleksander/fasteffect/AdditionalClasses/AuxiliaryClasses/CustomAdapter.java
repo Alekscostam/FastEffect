@@ -14,6 +14,9 @@ import com.example.aleksander.fasteffect.R;
 
 import java.util.List;
 
+/**
+ * Klasa implementujca ArrayAdapter, ktory pozawala na stworzenie wlasnej ListView
+ */
 public class CustomAdapter extends ArrayAdapter<String> {
 
     public static final String TAG ="com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses";
@@ -47,7 +50,12 @@ public class CustomAdapter extends ArrayAdapter<String> {
         String[] splitProducts = singleProduct.split(" {2}");
 
         productName.setText(splitProducts[0]);
-        productCalories.setText(splitProducts[1]);
+
+        if (splitProducts.length == 7) {
+            productCalories.setText((splitProducts[1]+ " " + splitProducts[6]));
+        } else {
+            productCalories.setText((splitProducts[1]));
+        }
         restOfValuesName.setText((splitProducts[2] + " " + splitProducts[3] + " " + splitProducts[4] + " " + splitProducts[5]));
 
         return customView;

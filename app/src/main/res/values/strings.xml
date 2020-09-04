@@ -95,6 +95,9 @@
     <string name="export">export</string>
     <string name="hide_or_show_password">hide or show password</string>
     <string name="warto_kaloryczna_na_100g_produktu">Wartość kaloryczna na 100g produktu</string>
+    <string name="find_product">Wyszukaj produkt</string>
+    <string name="data">28.02.2020</string>
+    <string name="time_of_day_add_product">Przycisk dodawania produktu do pory dnia</string>
 
     <string-array name="spinnerActivities">
         <item>Brak aktywności, praca siedząca</item>

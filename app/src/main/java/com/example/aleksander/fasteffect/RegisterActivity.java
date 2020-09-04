@@ -8,8 +8,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses.CustomSnackBars;
 import com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses.HideSoftKeyboard;
 import com.example.aleksander.fasteffect.AdditionalClasses.User;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,15 +25,15 @@ import static android.app.ProgressDialog.show;
  */
 public class RegisterActivity extends AppCompatActivity {
 
-    public static final String TAG="com.example.aleksander.fasteffect";
+    public static final String TAG = "com.example.aleksander.fasteffect";
 
-   private String sGender;
-   private String sPassword;
-   private String sPasswordAgain;
-   private String sEmail;
-   private String sAge;
-   private String sWeight;
-   private String sHeight;
+    private String sGender;
+    private String sPassword;
+    private String sPasswordAgain;
+    private String sEmail;
+    private String sAge;
+    private String sWeight;
+    private String sHeight;
 
     private FirebaseAuth firebaseAuth;
 
@@ -67,12 +67,12 @@ public class RegisterActivity extends AppCompatActivity {
      * Inicjuje komponenty
      */
     private void editTextInit() {
-        TextInputEditText password =(findViewById(R.id.textInputEditTextPassword));
-        TextInputEditText passwordAgain =(findViewById(R.id.textInputEditTextPasswordAgain));
-        TextInputEditText email =(findViewById(R.id.textInputEditTextEmail));
-        TextInputEditText weight =(findViewById(R.id.textInputEditTextWaga));
-        TextInputEditText age =(findViewById(R.id.textInputEditTextWiek));
-        TextInputEditText height =(findViewById(R.id.textInputEditTextWzrost));
+        TextInputEditText password = (findViewById(R.id.textInputEditTextPassword));
+        TextInputEditText passwordAgain = (findViewById(R.id.textInputEditTextPasswordAgain));
+        TextInputEditText email = (findViewById(R.id.textInputEditTextEmail));
+        TextInputEditText weight = (findViewById(R.id.textInputEditTextWaga));
+        TextInputEditText age = (findViewById(R.id.textInputEditTextWiek));
+        TextInputEditText height = (findViewById(R.id.textInputEditTextWzrost));
 
         sPassword = Objects.requireNonNull(password.getText()).toString();
         sPasswordAgain = Objects.requireNonNull(passwordAgain.getText()).toString();
@@ -89,6 +89,7 @@ public class RegisterActivity extends AppCompatActivity {
     public void buttonRegisterClick(View view) {
         editTextInit();
         view.getId();
+        HideSoftKeyboard.hideSoftKeyboard(this);
 
         if (!sEmail.isEmpty() && !sPassword.isEmpty() && !sPasswordAgain.isEmpty()) {
             (firebaseAuth.createUserWithEmailAndPassword(sEmail, sPassword))
@@ -102,24 +103,22 @@ public class RegisterActivity extends AppCompatActivity {
                                 if (taskUser.isSuccessful()) {
                                     Objects.requireNonNull(firebaseAuth.getCurrentUser()).sendEmailVerification().addOnCompleteListener(taskLast -> {
                                         if (taskLast.isSuccessful()) {
-                                            Toast.makeText(RegisterActivity.this, "Zarejestrowano! Sprawdź swój email w celu weryfikacji", Toast.LENGTH_SHORT).show();
-                                            HideSoftKeyboard.hideSoftKeyboard(this);
-                                       Log.i(TAG,"buttonRegisterClick - udana rejestracja uzytkownika");
-                                        }
-                                        else
-                                            Toast.makeText(RegisterActivity.this, Objects.requireNonNull(taskLast.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                                            CustomSnackBars.customSnackBarStandard("Zarejestrowano! Sprawdź swój email w celu weryfikacji", getCurrentFocus()).show();
+                                            Log.i(TAG, "buttonRegisterClick - udana rejestracja uzytkownika");
+                                        } else
+                                            CustomSnackBars.customSnackBarStandard(Objects.requireNonNull(taskLast.getException()).getMessage(), getCurrentFocus()).show();
                                     });
 
                                 } else
-                                    Toast.makeText(RegisterActivity.this, "fail", Toast.LENGTH_SHORT).show();
+                                    CustomSnackBars.customSnackBarStandard("fail", getCurrentFocus()).show();
                             });
                         } else {
                             Log.e("Error", Objects.requireNonNull(task.getException()).toString());
-                            Toast.makeText(RegisterActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            CustomSnackBars.customSnackBarStandard(task.getException().getMessage(), getCurrentFocus()).show();
                         }
                     });
         } else
-            Toast.makeText(this, "Niekompletne dane!", Toast.LENGTH_SHORT).show();
+            CustomSnackBars.customSnackBarStandard("Niekompletne dane!", getCurrentFocus()).show();
     }
 }
 

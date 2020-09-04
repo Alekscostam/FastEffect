@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -11,6 +12,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <TextView
                 android:id="@+id/textViewBack"
                 android:layout_width="match_parent"
@@ -22,13 +24,12 @@
                 android:textColor="#FFFFFF"
                 android:textSize="20sp" />
 
-
             <TextView
                 android:id="@+id/textViewDescription"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:gravity="center"
+                android:layout_height="40dp"
                 android:background="#cdf2ff"
+                android:gravity="center"
                 android:text="@string/eneterValue"
                 android:textSize="17sp" />
 
@@ -48,7 +49,7 @@
                     android:maxLength="30"
                     android:singleLine="true"
                     android:textColor="	#808080"
-                    android:textSize="15sp" />
+                    android:textSize="13sp" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -67,7 +68,7 @@
                     android:maxLength="5"
                     android:singleLine="true"
                     android:textColor="	#808080"
-                    android:textSize="15sp" />
+                    android:textSize="13sp" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -86,7 +87,7 @@
                     android:maxLength="5"
                     android:singleLine="true"
                     android:textColor="	#808080"
-                    android:textSize="15sp" />
+                    android:textSize="13sp" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -105,7 +106,7 @@
                     android:maxLength="5"
                     android:singleLine="true"
                     android:textColor="	#808080"
-                    android:textSize="15sp" />
+                    android:textSize="13sp" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -124,7 +125,7 @@
                     android:maxLength="5"
                     android:singleLine="true"
                     android:textColor="	#808080"
-                    android:textSize="15sp" />
+                    android:textSize="13sp" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -143,7 +144,7 @@
                     android:maxLength="5"
                     android:singleLine="true"
                     android:textColor="	#808080"
-                    android:textSize="15sp" />
+                    android:textSize="13sp" />
             </android.support.design.widget.TextInputLayout>
 
             <Button
@@ -156,7 +157,7 @@
                 android:background="@drawable/button_rounded_aqua"
                 android:text="@string/enterProduct"
                 android:textAllCaps="false"
-                android:textSize="18sp" />
+                android:textSize="15sp" />
         </LinearLayout>
     </ScrollView>
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

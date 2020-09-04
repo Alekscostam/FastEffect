@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses.CustomSnackBars;
 import com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses.HideSoftKeyboard;
 import com.example.aleksander.fasteffect.R;
 
@@ -42,15 +43,9 @@ public class SportFragment extends Fragment implements AdapterView.OnItemSelecte
 
     private Map<Integer, Integer> longIntegerMap;
 
-    private LinearLayout linearLayoutAutomatically;
-    private LinearLayout linearLayoutManually;
-    private TextInputEditText textInputEditTextCalories;
-    private TextInputEditText textInputEditTextProtein;
-    private TextInputEditText textInputEditTextCarb;
-    private TextInputEditText textInputEditTextFat;
-    private Spinner spinnerActivity;
-    private Spinner spinnerKindOfSport;
-    private Spinner spinnerGoal;
+    private LinearLayout linearLayoutAutomatically, linearLayoutManually;
+    private TextInputEditText textInputEditTextCalories, textInputEditTextProtein, textInputEditTextCarb, textInputEditTextFat;
+    private Spinner spinnerActivity, spinnerKindOfSport, spinnerGoal;
     private SharedPreferences sharedPreferences;
     protected String optionSelected;
 
@@ -146,6 +141,7 @@ public class SportFragment extends Fragment implements AdapterView.OnItemSelecte
     private void saveOptions() {
         SharedPreferences sharedPreferencesSharedPrefs = requireNonNull(getContext()).getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferencesSharedPrefs.edit();
+        HideSoftKeyboard.hideSoftKeyboard(requireNonNull(getActivity()));
 
         if (optionSelected.equals("0")) {
             optionSet("0");
@@ -158,6 +154,7 @@ public class SportFragment extends Fragment implements AdapterView.OnItemSelecte
             spinnerGoal.setSelection(requireNonNull(longIntegerMap.get(keyList.get(1))));
             editor.putString("spinnerRodzajSportu", requireNonNull(this.longIntegerMap.get(keyList.get(2))).toString()); //InputString: from the EditText
             spinnerKindOfSport.setSelection(requireNonNull(longIntegerMap.get(keyList.get(2))));
+            CustomSnackBars.customSnackBarStandard("Zapisano!", getView()).show();
 
             editor.apply();
         }
@@ -173,21 +170,18 @@ public class SportFragment extends Fragment implements AdapterView.OnItemSelecte
                 editor.putString("textFat", String.valueOf(fat));
                 editor.commit();
             } else
-                Toast.makeText(getContext(), "Wartość procentowa nie jest równa 100%", Toast.LENGTH_SHORT).show();
+                CustomSnackBars.customSnackBarStandard("Wartość procentowa nie jest równa 100%", getView()).show();
 
             int calories = Integer.parseInt(requireNonNull(textInputEditTextCalories.getText()).toString());
             if ((calories) < 100)
-                Toast.makeText(getContext(), "Wartość jest za mała", Toast.LENGTH_SHORT).show();
+                CustomSnackBars.customSnackBarStandard("Wartość jest za mała", getView()).show();
             else {
                 editor.putString("textCalories", String.valueOf(calories));
                 editor.commit();
 
-                HideSoftKeyboard.hideSoftKeyboard(requireNonNull(getActivity()));
-                Toast.makeText(getContext(), "Zapisano!", Toast.LENGTH_SHORT).show();
+                CustomSnackBars.customSnackBarStandard("Zapisano!", getView()).show();
             }
         }
-
-
         buttonSave.setEnabled(true);
     }
 

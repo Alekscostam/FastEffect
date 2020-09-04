@@ -5,11 +5,15 @@ import android.content.Context;
 import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 
+/**
+ * Klasa po ktorej wywolaniu nastepuje schowanie klawiatury
+ */
 public class HideSoftKeyboard {
 
     public static final String TAG = "com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses";
 
     private HideSoftKeyboard() {
+        // prywatny konstruktor
     }
 
     public static void hideSoftKeyboard(Activity activity) {

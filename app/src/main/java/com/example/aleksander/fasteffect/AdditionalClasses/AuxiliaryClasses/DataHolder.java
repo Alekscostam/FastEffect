@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Klaa pomocnicza do otrzymywania i operowania na dacie
+ * Klasa pomocnicza do otrzymywania i operowania na dacie
  */
 @Getter
 @Setter

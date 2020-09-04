@@ -7,13 +7,13 @@ package com.example.aleksander.fasteffect.AdditionalClasses.DatabaseClasses;
 public class SQLDatabaseStructure {
 
     private SQLDatabaseStructure() {
+        // prywatny konstruktor
     }
 
     /////// BAZA
     public static final String DATABASE_FILE = "bazaEksport.db";
 
     /////// Tabela Posilek
-
     public static final String TABLE_MEAL = "Posilek";
     public static final String MEAL_ID_COLUMN = "idPosilek";
     public static final String MEAL_NAME_COLUMN = "Nazwa";

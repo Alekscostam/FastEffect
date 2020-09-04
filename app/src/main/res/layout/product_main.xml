@@ -3,85 +3,83 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <ScrollView
+    <LinearLayout
+        android:id="@+id/viewDescription"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:ignore="UselessParent">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/textViewOpis"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:background="#41AECF"
+            android:drawableStart="@drawable/ic_left"
+            android:gravity="center"
+            android:text="@string/findFood"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            tools:ignore="MissingConstraints" />
+
+        <ImageButton
+            android:id="@+id/buttonAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:background="#41AECF"
+            android:contentDescription="@string/descAdd"
+            android:src="@drawable/ic_add" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textViewDescription"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_below="@+id/viewDescription"
+        android:background="#cdf2ff"
+        android:gravity="center"
+        android:text="@string/warto_kaloryczna_na_100g_produktu"
+        android:textSize="15sp" />
+
+    <LinearLayout
+        android:id="@+id/linearEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewDescription"
+        android:layout_margin="10dp">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:contentDescription="@string/descAdd"
+            app:srcCompat="@drawable/ic_search_black_24dp" />
+
+        <EditText
+            android:id="@+id/editTextSearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/textViewOpis"
-                    android:layout_width="0dp"
-                    android:layout_height="60dp"
-                    android:layout_weight="1"
-                    android:background="#41AECF"
-                    android:drawableStart="@drawable/ic_left"
-                    android:gravity="center"
-                    android:text="@string/findFood"
-                    android:textColor="#FFFFFF"
-                    android:textSize="20sp"
-                    tools:ignore="MissingConstraints" />
-                <ImageButton
-                    android:id="@+id/buttonAdd"
-                    android:layout_width="wrap_content"
-                    android:layout_height="60dp"
-                    android:background="#41AECF"
-                    android:src="@drawable/ic_add"
-                    android:contentDescription="@string/descAdd"/>
-            </LinearLayout>
-            <TextView
-                android:id="@+id/textViewDesription"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_gravity="center"
-                android:background="#cdf2ff"
-                android:text="@string/warto_kaloryczna_na_100g_produktu"
-                android:textSize="15sp"
-                android:gravity="center"
-                tools:ignore="MissingConstraints"/>
-            <EditText
-                android:id="@+id/editTextSearch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="8dp"
-                android:ems="10"
-                android:gravity="center"
-                android:inputType="textPersonName"
-                android:textColor="#000000"
-                android:textSize="18sp"
-                tools:ignore="LabelFor,MissingConstraints"
-                android:autofillHints="" />
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="-38dp"
-                app:srcCompat="@drawable/ic_search_black_24dp"
-                tools:ignore="VectorDrawableCompat"
-                android:contentDescription="@string/descAdd"  />
-            <ListView
-                android:id="@+id/listViewProdukty"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="25dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="0dp"
-                tools:ignore="NestedScrolling" />
+            android:layout_gravity="center"
+            android:layout_marginEnd="22dp"
+            android:ems="10"
+            android:gravity="center"
+            android:inputType="textPersonName"
+            android:textColor="#000000"
+            android:textSize="18sp" />
 
-        </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
+
+    <ListView
+
+        android:id="@+id/listViewProdukty"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/linearEditText"
+        android:layout_margin="15dp" />
+
 
 </RelativeLayout>

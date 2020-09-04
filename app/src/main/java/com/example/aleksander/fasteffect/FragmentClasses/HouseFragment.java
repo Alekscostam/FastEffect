@@ -13,6 +13,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
@@ -35,6 +36,13 @@ import com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses.Data
 import com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses.ResizeListView;
 import com.example.aleksander.fasteffect.ProductClasses.AddProductActivity;
 import com.example.aleksander.fasteffect.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -50,6 +58,10 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.example.aleksander.fasteffect.AdditionalClasses.DatabaseClasses.SQLDatabaseStructure.DATABASE_FILE;
 import static com.example.aleksander.fasteffect.AdditionalClasses.DatabaseClasses.SQLDatabaseStructure.TABLE_HASH;
+import static com.example.aleksander.fasteffect.AdditionalClasses.User.childAge;
+import static com.example.aleksander.fasteffect.AdditionalClasses.User.childGender;
+import static com.example.aleksander.fasteffect.AdditionalClasses.User.childHeight;
+import static com.example.aleksander.fasteffect.AdditionalClasses.User.childWeight;
 import static com.example.aleksander.fasteffect.Repository.DatabaseQuery.deleteByIdHashFromHashTable;
 import static com.example.aleksander.fasteffect.Repository.DatabaseQuery.deleteElementByIdHashFromHash;
 import static com.example.aleksander.fasteffect.Repository.DatabaseQuery.getElementByIdTimeOfDayAndDataAndIdMealFromHash;
@@ -66,42 +78,35 @@ import static java.util.Objects.requireNonNull;
  * Klasa będąca głównym oknem aplikacji. Pobiera ona wszelkie dane z lokalnej bazy danych
  * Zakladka "Strona główna"
  */
-public class HouseFragment extends Fragment implements View.OnClickListener {
+public class HouseFragment extends Fragment implements View.OnClickListener, ValueEventListener {
 
-    public static final String TAG="com.example.aleksander.fasteffect.FragmentClass";
+    public static final String TAG = "com.example.aleksander.fasteffect.FragmentClass";
 
     public static final String SHARED_PREFS = "shaaredPrefs";
 
-    private int caloriesSummary = 0;
-    private int[] hide = {0, 0, 0, 0, 0};
-    private int[] addValueCalories = new int[5];
-    private double[] addValueProtein = new double[5];
-    private double[] addValueFat = new double[5];
-    private double[] addValueCarb = new double[5];
-    private double[] maxValue = new double[5];
+    SharedPreferences sharedPreferences;
+
+    private int caloriesSummary;
+    private int[] hide;
+    private int[] addValueCalories;
+    private double[] addValueProtein;
+    private double[] addValueFat;
+    private double[] addValueCarb;
+    private double[] maxValue;
+
+    private String userGender;
+    private String userAge;
+    private String userWeight;
+    private String userHeight;
 
     private double activity;
     private int kindOfSport;
     private int goal;
-
-    private ProgressBar progressBarCalories;
-    private ProgressBar progressBarProtein;
-    private ProgressBar progressBarCarb;
-    private ProgressBar progressBarFat;
-
     private TextView textViewData;
 
-    //Sniadanie
-    private List<TextView> breakfastListMacro;
-    private List<TextView> lunchListMacro;
-    private List<TextView> dinnerListMacro;
-    private List<TextView> snackListMacro;
-    private List<TextView> supperListMacro;
-
-    private TextView textViewAllCalories;
-    private TextView textViewAllProtein;
-    private TextView textViewAllCarb;
-    private TextView textViewAllFat;
+    private ProgressBar progressBarCalories, progressBarProtein, progressBarCarb, progressBarFat;
+    private List<TextView> breakfastListMacro, lunchListMacro, dinnerListMacro, snackListMacro, supperListMacro;
+    private TextView textViewAllCalories, textViewAllProtein, textViewAllCarb, textViewAllFat;
 
     private List<ListView> listViewList;
     private List<CardView> cardViewList;
@@ -109,13 +114,19 @@ public class HouseFragment extends Fragment implements View.OnClickListener {
     private List<ArrayList<String>> arrayItemList;
     private List<ArrayAdapter<String>> arrayAdaptersForList;
 
-
     private DatePickerDialog.OnDateSetListener mDateSetListener;
+
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         final View view = inflater.inflate(R.layout.fragment_house, container, false);
+
+
+        String referenceName = "Users";
+        DatabaseReference databaseReference = database.getReference(referenceName);
+        databaseReference.addValueEventListener(this);
 
         initViews(view);
 
@@ -129,8 +140,6 @@ public class HouseFragment extends Fragment implements View.OnClickListener {
         buttonAddProductSnack.setOnClickListener(this);
         ImageButton buttonAddProductSupper = view.findViewById(R.id.buttonAddProductSupper);
         buttonAddProductSupper.setOnClickListener(this);
-
-        textViewData = view.findViewById(R.id.textViewData);
 
         listViewList.get(0).setOnItemClickListener((adapterView, breakfast, positionValue, l) ->
                 alertOperation(1, getAmountFromValue((String) adapterView.getItemAtPosition(positionValue)), getNameFromValue((String) adapterView.getItemAtPosition(positionValue))));
@@ -158,18 +167,16 @@ public class HouseFragment extends Fragment implements View.OnClickListener {
 
         mDateSetListener = this::dataSetListener;
 
-        refreshApp();
-
         return view;
     }
+
 
     /**
      * Decyduje do jakiej pory maja byc zapisywane produkty
      */
     @Override
     public void onClick(View v) {
-        switch (v.getId())
-        {
+        switch (v.getId()) {
             case R.id.buttonAddProductBreakfast:
                 addProduct("1");
                 break;
@@ -298,9 +305,10 @@ public class HouseFragment extends Fragment implements View.OnClickListener {
      */
     private void viewDatabase() {
 
-        Log.i(TAG,"viewDatabase - odczyt produktów z bazy danych");
+        Log.i(TAG, "viewDatabase - odczyt produktów z bazy danych");
 
         clearListAndSetAdapter(arrayAdaptersForList);
+
         SQLiteDatabase sqLiteDatabase = requireNonNull(getActivity()).openOrCreateDatabase(DATABASE_FILE, android.content.Context.MODE_PRIVATE, null);
 
         for (int id = 1; id <= 5; id++) {
@@ -402,7 +410,9 @@ public class HouseFragment extends Fragment implements View.OnClickListener {
     /**
      * Metoda sluzaca do schowania wszystkich list w przypadku np. ponownego uruchomienia aplikacji
      */
-    private void hideAllListViews() { listViewList.forEach(element -> element.setVisibility(GONE)); }
+    private void hideAllListViews() {
+        listViewList.forEach(element -> element.setVisibility(GONE));
+    }
 
     /**
      * Metoda sluzaca do pokazania listy wyswietlania po jej wybraniu
@@ -508,8 +518,8 @@ public class HouseFragment extends Fragment implements View.OnClickListener {
      */
     private void sumUpEverything() {
 
-        Log.i(TAG,"sumUpEverything - sumowanie wszytskich komponentow");
-        SharedPreferences sharedPreferences = requireNonNull(getContext()).getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        Log.i(TAG, "sumUpEverything - sumowanie wszytskich komponentow");
+
         String dataSportFragment = sharedPreferences.getString("optionSelected", "0"); //no id: default value
         assert dataSportFragment != null;
         int optionSportFragment = Integer.parseInt(dataSportFragment);
@@ -538,26 +548,19 @@ public class HouseFragment extends Fragment implements View.OnClickListener {
 
         if (optionSportFragment == 0) {
 
-            String dataWeight = sharedPreferences.getString("optionWaga", "0");
-            String dataAge = sharedPreferences.getString("optionWiek", "0");
-            String dataHeight = sharedPreferences.getString("optionWzrost", "0");
-            String dataGender = sharedPreferences.getString("optionPlec", "0");
+
             String dataActivity = sharedPreferences.getString("spinnerAktywnosc", "0");
             String dataKindOfSport = sharedPreferences.getString("spinnerRodzajSportu", "0");
             String dataGoal = sharedPreferences.getString("spinnerCel", "0");
 
             assert dataKindOfSport != null;
-            assert dataWeight != null;
-            assert dataHeight != null;
-            assert dataAge != null;
             assert dataActivity != null;
             assert dataGoal != null;
-            assert dataGender != null;
 
             kindOfSport = Integer.parseInt(dataKindOfSport);
-            double weight = Double.parseDouble(dataWeight);
-            int height = Integer.parseInt(dataHeight);
-            int age = Integer.parseInt(dataAge);
+            double weight = Double.parseDouble(userWeight);
+            int height = Integer.parseInt(userHeight);
+            int age = Integer.parseInt(userAge);
 
             switch (dataActivity) {
                 case "0":
@@ -589,7 +592,7 @@ public class HouseFragment extends Fragment implements View.OnClickListener {
                     break;
                 default:
             }
-            caloriesSummary = mathematicalForSecondOption(weight, height, age, dataGender, goal, activity);
+            caloriesSummary = mathematicalForSecondOption(weight, height, age, userGender, goal, activity);
         }
         String calories = "Kcal:\n " + sumCalories + "/" + caloriesSummary;
         String protein = "Białko:\n " + proteinS + "/" + maxValue[0];
@@ -619,7 +622,7 @@ public class HouseFragment extends Fragment implements View.OnClickListener {
      * Ustawienia dotyczace ProgressBar
      */
     private void setProgressBar(int maxValue, int currentValue, ProgressBar progressBar) {
-        Log.i(TAG,"setProgressBar - ustawienie progressBar");
+        Log.i(TAG, "setProgressBar - ustawienie progressBar");
 
         progressBar.setMax(maxValue);
         progressBar.setProgress(currentValue);
@@ -633,7 +636,7 @@ public class HouseFragment extends Fragment implements View.OnClickListener {
      * Wzor na druga opcje wybrana przez uzytkownika w sekcji "Aktywnosc"
      */
     private int mathematicalForSecondOption(double weight, int height, int age, String gender, int goal, double activity) {
-        Log.i(TAG,"mathematicalForSecondOption - druga opcja wyboru sposobu wyliaczania kalori i makroskładników");
+        Log.i(TAG, "mathematicalForSecondOption - druga opcja wyboru sposobu wyliaczania kalori i makroskładników");
         double mathematicalFormula = 0;
         int valueToConvert;
 
@@ -646,19 +649,19 @@ public class HouseFragment extends Fragment implements View.OnClickListener {
 
         switch (kindOfSport) {
             case 0:
-                maxValue[0] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(30), 4));
-                maxValue[1] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(45), 4));
+                maxValue[0] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(25), 4));
+                maxValue[1] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(50), 4));
                 maxValue[2] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(25), 9));
                 break;
             case 1:
-                maxValue[0] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(20), 4));
-                maxValue[1] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(65), 4));
-                maxValue[2] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(15), 9));
+                maxValue[0] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(18), 4));
+                maxValue[1] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(63), 4));
+                maxValue[2] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(19), 9));
                 break;
             case 2:
-                maxValue[0] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(25), 4));
+                maxValue[0] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(20), 4));
                 maxValue[1] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(60), 4));
-                maxValue[2] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(15), 9));
+                maxValue[2] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(20), 9));
                 break;
             case 3:
                 maxValue[0] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(15), 4));
@@ -679,7 +682,7 @@ public class HouseFragment extends Fragment implements View.OnClickListener {
      * @param productName produktu na ktorym ma zostac wybrana konkretna operacja
      */
     private void alertOperation(final int timeOfDay, final String amount, final String productName) {
-        Log.i(TAG,"alertOperation - Wywołanie alertu");
+        Log.i(TAG, "alertOperation - Wywołanie alertu");
 
         LayoutInflater li = LayoutInflater.from(getContext());
         View promptsView = li.inflate(R.layout.custom_alert_dialog_house, null);
@@ -711,7 +714,7 @@ public class HouseFragment extends Fragment implements View.OnClickListener {
      */
     private void deleteFromDatabase(int idTimeOfDay, String amount, String name) {
 
-        Log.i(TAG,"deleteFromDatabase - usuwanie produktu z aplikacji");
+        Log.i(TAG, "deleteFromDatabase - usuwanie produktu z aplikacji");
 
         SQLiteDatabase sqLiteDatabase = requireNonNull(getActivity()).openOrCreateDatabase(DATABASE_FILE, Context.MODE_PRIVATE, null);
         int amountReplace = Integer.parseInt(amount.replaceAll("\\s+", ""));
@@ -737,19 +740,19 @@ public class HouseFragment extends Fragment implements View.OnClickListener {
      */
     private void editProductInDatabase(int amountOfProduct, int idTimeOfDay, String ilosc, String nazwa) {
 
-        Log.i(TAG,"editProductInDatabase - edytowanie produktu z aplikacji");
+        Log.i(TAG, "editProductInDatabase - edytowanie produktu z aplikacji");
 
-        SQLiteDatabase database = requireNonNull(getActivity()).openOrCreateDatabase(DATABASE_FILE, Context.MODE_PRIVATE, null);
+        SQLiteDatabase sqLiteDatabase = requireNonNull(getActivity()).openOrCreateDatabase(DATABASE_FILE, Context.MODE_PRIVATE, null);
         int iloscCON = Integer.parseInt(ilosc.replaceAll("\\s+", ""));
         String nazwaCON = nazwa.replaceAll("\\s+$", "");
 
-        Cursor idMeal = database.rawQuery(getMealIdByNameAndAmountFromTableMeal(nazwaCON, iloscCON), null);
+        Cursor idMeal = sqLiteDatabase.rawQuery(getMealIdByNameAndAmountFromTableMeal(nazwaCON, iloscCON), null);
         idMeal.moveToFirst();
 
-        Cursor dataProduct = database.rawQuery(getMealIdByDataAndIdMealFromTableMeal(textViewData.getText().toString(), idMeal.getString(0)), null);
+        Cursor dataProduct = sqLiteDatabase.rawQuery(getMealIdByDataAndIdMealFromTableMeal(textViewData.getText().toString(), idMeal.getString(0)), null);
         dataProduct.moveToFirst();
 
-        Cursor idHash = database.rawQuery(getElementByIdTimeOfDayAndDataAndIdMealFromHash(idTimeOfDay, textViewData.getText().toString(), idMeal.getString(0)), null);
+        Cursor idHash = sqLiteDatabase.rawQuery(getElementByIdTimeOfDayAndDataAndIdMealFromHash(idTimeOfDay, textViewData.getText().toString(), idMeal.getString(0)), null);
         idHash.moveToFirst();
 
         int il = Integer.parseInt(dataProduct.getString(5));
@@ -761,35 +764,35 @@ public class HouseFragment extends Fragment implements View.OnClickListener {
         il = amountOfProduct;
 
         try {
-            Cursor checkInMealTable = database.rawQuery(getElementByNameAndValueFromPosilek(dataProduct.getString(6), amountOfProduct), null);
+            Cursor checkInMealTable = sqLiteDatabase.rawQuery(getElementByNameAndValueFromPosilek(dataProduct.getString(6), amountOfProduct), null);
             checkInMealTable.moveToFirst();
 
-            Cursor deleteFromHashTable = database.rawQuery(deleteElementByIdHashFromHash(idHash.getString(0)), null);
+            Cursor deleteFromHashTable = sqLiteDatabase.rawQuery(deleteElementByIdHashFromHash(idHash.getString(0)), null);
             deleteFromHashTable.moveToFirst();
 
-            Cursor insertToHashTable = database.rawQuery(insertElementIntoHashTable(textViewData.getText().toString(), checkInMealTable.getString(0), idTimeOfDay), null);
+            Cursor insertToHashTable = sqLiteDatabase.rawQuery(insertElementIntoHashTable(textViewData.getText().toString(), checkInMealTable.getString(0), idTimeOfDay), null);
             insertToHashTable.moveToFirst();
 
             Closer.closeCursors(checkInMealTable, insertToHashTable, deleteFromHashTable);
 
         } catch (Exception ex) {
-            Cursor insertToMealTable = database.rawQuery(insertElementIntoMealTable(dataProduct.getString(6), b, w, t, bl, kcal, il), null);
+            Cursor insertToMealTable = sqLiteDatabase.rawQuery(insertElementIntoMealTable(dataProduct.getString(6), b, w, t, bl, kcal, il), null);
             insertToMealTable.moveToFirst();
 
-            Cursor checkInMealTable = database.rawQuery(getElementByNameAndValueFromPosilek(dataProduct.getString(6), amountOfProduct), null);
+            Cursor checkInMealTable = sqLiteDatabase.rawQuery(getElementByNameAndValueFromPosilek(dataProduct.getString(6), amountOfProduct), null);
             checkInMealTable.moveToFirst();
 
-            Cursor deleteFromHashTable = database.rawQuery(deleteElementByIdHashFromHash(idHash.getString(0)), null);
+            Cursor deleteFromHashTable = sqLiteDatabase.rawQuery(deleteElementByIdHashFromHash(idHash.getString(0)), null);
             deleteFromHashTable.moveToFirst();
 
-            Cursor insertToHashTable = database.rawQuery(insertElementIntoHashTable(textViewData.getText().toString(), checkInMealTable.getString(0), idTimeOfDay), null);
+            Cursor insertToHashTable = sqLiteDatabase.rawQuery(insertElementIntoHashTable(textViewData.getText().toString(), checkInMealTable.getString(0), idTimeOfDay), null);
             insertToHashTable.moveToFirst();
 
             Closer.closeCursors(checkInMealTable, insertToMealTable, insertToHashTable, deleteFromHashTable);
         }
 
         Closer.closeCursors(idHash, dataProduct, idMeal);
-        database.close();
+        sqLiteDatabase.close();
         refreshApp();
         refreshAfterDbChanged();
     }
@@ -800,7 +803,11 @@ public class HouseFragment extends Fragment implements View.OnClickListener {
     private void refreshApp() {
         resetAllComponents();
         hideAllListViews();
-        viewDatabase();
+        try {
+            viewDatabase();
+        } catch (IllegalStateException e) {
+            e.getMessage();
+        }
         sumUpEverything();
     }
 
@@ -828,6 +835,19 @@ public class HouseFragment extends Fragment implements View.OnClickListener {
      * Inicjuje komponenty tej klasy
      */
     private void initViews(View view) {
+
+        sharedPreferences = requireNonNull(getContext()).getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+
+        textViewData = view.findViewById(R.id.textViewData);
+
+        caloriesSummary = 0;
+        hide = new int[]{0, 0, 0, 0, 0};
+
+        addValueCalories = new int[5];
+        addValueProtein = new double[5];
+        addValueFat = new double[5];
+        addValueCarb = new double[5];
+        maxValue = new double[5];
 
         progressBarCalories = view.findViewById(R.id.progressBarCalories);
         progressBarProtein = view.findViewById(R.id.progressBarProtein);
@@ -903,5 +923,29 @@ public class HouseFragment extends Fragment implements View.OnClickListener {
                 new ArrayAdapter<>(requireNonNull(getContext()), android.R.layout.simple_list_item_1, arrayItemList.get(2)),
                 new ArrayAdapter<>(requireNonNull(getContext()), android.R.layout.simple_list_item_1, arrayItemList.get(3)),
                 new ArrayAdapter<>(requireNonNull(getContext()), android.R.layout.simple_list_item_1, arrayItemList.get(4)));
+    }
+
+    @Override
+    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        assert user != null;
+        String uid = user.getUid();
+        userAge = dataSnapshot.child(uid).child(childAge).getValue(String.class);
+        userWeight = dataSnapshot.child(uid).child(childWeight).getValue(String.class);
+        userHeight = dataSnapshot.child(uid).child(childHeight).getValue(String.class);
+        userGender = String.valueOf(dataSnapshot.child(uid).child(childGender).getValue(String.class));
+
+        try {
+            sqLiteDatabase = requireNonNull(getActivity()).openOrCreateDatabase(DATABASE_FILE, android.content.Context.MODE_PRIVATE, null);
+        } catch (NullPointerException e) {
+            e.getMessage();
+        }
+
+        refreshApp();
+    }
+
+    @Override
+    public void onCancelled(@NonNull DatabaseError databaseError) {
+        databaseError.getMessage();
     }
 }

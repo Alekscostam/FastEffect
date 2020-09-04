@@ -1,107 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textViewBar"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:background="#41AECF"
-        android:gravity="center"
-        android:text="@string/app_name"
-        android:textColor="#FFFFFF"
-        android:textSize="42sp" />
+        android:layout_height="match_parent">
 
-    <AutoCompleteTextView
-        android:id="@+id/autoCompleteTextViewEmail"
-        android:layout_width="300dp"
-        android:layout_height="40dp"
-        android:layout_below="@+id/textViewBar"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/plainttext_roundedlogin"
-        android:drawableStart="@drawable/ic_email"
-        android:hint="@string/email"
-        android:inputType="textEmailAddress"
-        android:maxLength="30"
-        android:singleLine="true"
-        android:textColor="#808080" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <AutoCompleteTextView
-        android:id="@+id/autoCompleteTextViewPassword"
-        android:layout_width="300dp"
-        android:layout_height="40dp"
-        android:layout_below="@+id/autoCompleteTextViewEmail"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/plainttext_roundedlogin"
-        android:drawableStart="@drawable/ic_lock"
-        android:hint="@string/password"
-        android:inputType="textPassword"
-        android:maxLength="20"
-        android:singleLine="true"
-        android:textColor="#808080"
-        android:typeface="sans" />
+            <TextView
+                android:id="@+id/textViewBar"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="#41AECF"
+                android:gravity="center"
+                android:text="@string/app_name"
+                android:textColor="#FFFFFF"
+                android:textSize="42sp" />
 
-    <CheckBox
-        android:id="@+id/checkBoxRememberMe"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/autoCompleteTextViewPassword"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:text="@string/rememberMe"
-        android:textColor="#0D0D0D" />
+            <AutoCompleteTextView
+                android:id="@+id/autoCompleteTextViewEmail"
+                android:layout_width="300dp"
+                android:layout_height="40dp"
+                android:layout_below="@+id/textViewBar"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/plainttext_roundedlogin"
+                android:drawableStart="@drawable/ic_email"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:maxLength="40"
+                android:singleLine="true"
+                android:textColor="#808080" />
 
-    <Button
-        android:id="@+id/buttonLogin"
-        android:layout_width="240dp"
-        android:layout_height="40dp"
-        android:layout_below="@+id/checkBoxRememberMe"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/button_rounded_aqua"
-        android:onClick="buttonLoginClick"
-        android:text="@string/login"
-        android:textAllCaps="false"
-        android:textSize="18sp" />
+            <AutoCompleteTextView
+                android:id="@+id/autoCompleteTextViewPassword"
+                android:layout_width="300dp"
+                android:layout_height="40dp"
+                android:layout_below="@+id/autoCompleteTextViewEmail"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/plainttext_roundedlogin"
+                android:drawableStart="@drawable/ic_lock"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:maxLength="20"
+                android:singleLine="true"
+                android:textColor="#808080"
+                android:typeface="sans" />
 
-    <ImageButton
-        android:id="@+id/imageButtonPassword"
-        android:layout_width="34dp"
-        android:layout_height="34dp"
-        android:layout_alignStart="@+id/autoCompleteTextViewPassword"
-        android:layout_alignTop="@+id/autoCompleteTextViewPassword"
-        android:layout_alignEnd="@+id/autoCompleteTextViewPassword"
-        android:layout_alignBottom="@+id/autoCompleteTextViewPassword"
-        android:layout_marginStart="262dp"
-        android:layout_marginTop="3dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginBottom="4dp"
-        android:background="#FFFFFF"
-        android:contentDescription="@string/hide_or_show_password"
-        app:srcCompat="@drawable/ic_remove_red_eye_black_24dp" />
+            <CheckBox
+                android:id="@+id/checkBoxRememberMe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/autoCompleteTextViewPassword"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:text="@string/rememberMe"
+                android:textColor="#0D0D0D" />
 
-    <TextView
-        android:id="@+id/textViewRegister"
-        android:layout_width="143dp"
-        android:layout_height="34dp"
-        android:layout_below="@id/buttonLogin"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:text="@string/Create_Account"
-        android:textColor="#FF0000" />
+            <Button
+                android:id="@+id/buttonLogin"
+                android:layout_width="240dp"
+                android:layout_height="40dp"
+                android:layout_below="@+id/checkBoxRememberMe"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/button_rounded_aqua"
+                android:onClick="buttonLoginClick"
+                android:text="@string/login"
+                android:textAllCaps="false"
+                android:textSize="18sp" />
 
-    <TextView
-        android:id="@+id/textViewAlert"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/textViewRegister"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="8dp"
-        android:textSize="22sp" />
-</RelativeLayout>
+            <ImageButton
+                android:id="@+id/imageButtonPassword"
+                android:src="@drawable/ic_remove_red_eye_black_24dp"
+
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:layout_alignStart="@+id/autoCompleteTextViewPassword"
+                android:layout_alignTop="@+id/autoCompleteTextViewPassword"
+                android:layout_alignEnd="@+id/autoCompleteTextViewPassword"
+                android:layout_alignBottom="@+id/autoCompleteTextViewPassword"
+                android:layout_marginStart="262dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="4dp"
+                android:background="#FFFFFF"
+                android:contentDescription="@string/hide_or_show_password" />
+
+            <TextView
+                android:id="@+id/textViewRegister"
+                android:layout_width="143dp"
+                android:layout_height="34dp"
+                android:layout_below="@id/buttonLogin"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:text="@string/Create_Account"
+                android:textColor="#FF0000" />
+
+            <TextView
+                android:id="@+id/textViewAlert"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textViewRegister"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="8dp"
+                android:textSize="22sp" />
+        </RelativeLayout>
+    </ScrollView>
+</android.support.constraint.ConstraintLayout>

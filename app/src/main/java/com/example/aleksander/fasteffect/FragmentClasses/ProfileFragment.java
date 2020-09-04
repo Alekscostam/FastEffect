@@ -1,8 +1,6 @@
 package com.example.aleksander.fasteffect.FragmentClasses;
 
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
@@ -14,8 +12,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses.CustomSnackBars;
 import com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses.HideSoftKeyboard;
 import com.example.aleksander.fasteffect.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,31 +26,26 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
 
+import static com.example.aleksander.fasteffect.AdditionalClasses.User.childAge;
+import static com.example.aleksander.fasteffect.AdditionalClasses.User.childGender;
+import static com.example.aleksander.fasteffect.AdditionalClasses.User.childHeight;
+import static com.example.aleksander.fasteffect.AdditionalClasses.User.childWeight;
+
 
 /**
  * {@link Fragment}
  * Klasa posiada podstawowe informacje o użytkowniku
  * Zakladka "Profil"
  */
-public class ProfileFragment extends Fragment implements ValueEventListener{
+public class ProfileFragment extends Fragment implements ValueEventListener {
 
     public static final String TAG = "com.example.aleksander.fasteffect.FragmentClass";
-
-    public static final String SHARED_PREFS = "shaaredPrefs";
 
     private String uid;
     private String referenceName = "Users";
 
-    private String childWeight = "weight";
-    private String childAge = "age";
-    private String childHeight = "height";
-    private String childGender = "gender";
-
-    private TextInputEditText textInputEditTextAge;
-    private TextInputEditText textInputEditTextHeight;
-    private TextInputEditText textInputEditTextWeight;
-    private RadioButton radioButtonM;
-    private RadioButton radioButtonW;
+    private TextInputEditText textInputEditTextAge, textInputEditTextHeight, textInputEditTextWeight;
+    private RadioButton radioButtonM, radioButtonW;
     private TextView textViewEmail;
 
     private String userGender;
@@ -60,8 +53,8 @@ public class ProfileFragment extends Fragment implements ValueEventListener{
     private String userWeight;
     private String userHeight;
 
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference databaseReference;
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference databaseReference;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,7 +65,7 @@ public class ProfileFragment extends Fragment implements ValueEventListener{
         initViews(view);
 
         databaseReference = database.getReference(referenceName);
-        databaseReference.addValueEventListener(this);
+        databaseReference.addValueEventListener(ProfileFragment.this);
 
         Button buttonSave = view.findViewById(R.id.buttonSave);
         buttonSave.setOnClickListener(save -> onSaveRef());
@@ -85,10 +78,28 @@ public class ProfileFragment extends Fragment implements ValueEventListener{
         return view;
     }
 
-
+    /**
+     * Zaladowanie informacji o uzytkowniku ze zdalnej bazy danych po wejsciu w zakładke "Profil"
+     */
     @Override
     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-        onLoadRef(dataSnapshot);
+        String childEmail = "email";
+        String userEmail = dataSnapshot.child(uid).child(childEmail).getValue(String.class);
+        userAge = dataSnapshot.child(uid).child(childAge).getValue(String.class);
+        userWeight = dataSnapshot.child(uid).child(childWeight).getValue(String.class);
+        userHeight = dataSnapshot.child(uid).child(childHeight).getValue(String.class);
+        userGender = String.valueOf(dataSnapshot.child(uid).child(childGender).getValue(String.class));
+
+        textViewEmail.setText(userEmail);
+        textInputEditTextAge.setText(userAge);
+        textInputEditTextWeight.setText(userWeight);
+        textInputEditTextHeight.setText(userHeight);
+
+        if (userGender.equals("M")) {
+            radioButtonM.setChecked(true);
+        } else if (userGender.equals("W")) {
+            radioButtonW.setChecked(true);
+        }
     }
 
     @Override
@@ -112,14 +123,12 @@ public class ProfileFragment extends Fragment implements ValueEventListener{
     private void onSaveRef() {
 
         Log.i(TAG, "onSaveRef - zimiana danych dla uzytkownika");
+        HideSoftKeyboard.hideSoftKeyboard(Objects.requireNonNull(getActivity()));
 
         if (Double.parseDouble(String.valueOf(textInputEditTextWeight.getText())) > 200)
-            Toast.makeText(getContext(), "Nieprawidłowa waga", Toast.LENGTH_SHORT).show();
-        else {
+            CustomSnackBars.customSnackBarStandard("Nieprawidłowa waga", getView()).show();
+         else {
             databaseReference = FirebaseDatabase.getInstance().getReference(referenceName);
-
-            if (Double.parseDouble(String.valueOf(textInputEditTextWeight.getText())) > 200)
-                Toast.makeText(getContext(), String.valueOf(textInputEditTextWeight.getText()), Toast.LENGTH_SHORT).show();
 
             userWeight = String.valueOf(textInputEditTextWeight.getText());
             userAge = String.valueOf(textInputEditTextAge.getText());
@@ -133,55 +142,8 @@ public class ProfileFragment extends Fragment implements ValueEventListener{
             databaseReference.child(uid).child(childHeight).setValue(userHeight);
             databaseReference.child(uid).child(childGender).setValue(userGender);
 
-            setShared(
-                    Objects.requireNonNull(textInputEditTextWeight.getText()).toString(),
-                    Objects.requireNonNull(textInputEditTextAge.getText()).toString(),
-                    Objects.requireNonNull(textInputEditTextHeight.getText()).toString(),
-                    userGender);
-
-            HideSoftKeyboard.hideSoftKeyboard(Objects.requireNonNull(getActivity()));
-            Toast.makeText(getContext(), "Zapisano zmiany!", Toast.LENGTH_SHORT).show();
+            CustomSnackBars.customSnackBarStandard("Zapisano zmiany!", getView()).show();
         }
     }
 
-    /**
-     * Zaladowanie informacji o uzytkowniku ze zdalnej bazy danych po wejsciu w zakładke "Profil"
-     */
-    public void onLoadRef(DataSnapshot dataSnapshot) {
-        String childEmail = "email";
-        String userEmail = dataSnapshot.child(uid).child(childEmail).getValue(String.class);
-        userAge = dataSnapshot.child(uid).child(childAge).getValue(String.class);
-        userWeight = dataSnapshot.child(uid).child(childWeight).getValue(String.class);
-        userHeight = dataSnapshot.child(uid).child(childHeight).getValue(String.class);
-        userGender = String.valueOf(dataSnapshot.child(uid).child(childGender).getValue(String.class));
-
-        textViewEmail.setText(userEmail);
-        textInputEditTextAge.setText(userAge);
-        textInputEditTextWeight.setText(userWeight);
-        textInputEditTextHeight.setText(userHeight);
-
-        if (userGender.equals("M")) {
-            radioButtonM.setChecked(true);
-        } else if (userGender.equals("W")) {
-            radioButtonW.setChecked(true);
-        }
-    }
-
-    /**
-     * Zapamietanie informacji o uzytkowniku do pamieciu urzadzenia w celu ich dalszego przetwarzania
-     *
-     * @param weight waga uzytkownika
-     * @param age    wiek uzytkownika
-     * @param height wzrost uzytkownika
-     * @param gender plec uzytkownika
-     */
-    public void setShared(String weight, String age, String height, String gender) {
-        SharedPreferences sharedPreferences = Objects.requireNonNull(this.getActivity()).getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("optionWaga", weight);
-        editor.putString("optionWiek", age);
-        editor.putString("optionWzrost", height);
-        editor.putString("optionPlec", gender);
-        editor.apply();
-    }
 }

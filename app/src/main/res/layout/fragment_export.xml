@@ -8,7 +8,7 @@
         <TextView
             android:id="@+id/textViewDesription"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="40dp"
             android:layout_gravity="center"
             android:background="#cdf2ff"
             android:text="@string/d_export"

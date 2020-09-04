@@ -12,7 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -71,7 +70,7 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
     private String stringOfName;
 
     private DatabaseReference databaseReference;
-    private List<String> linkedList = new LinkedList<>();
+    private List<String> linkedList;
 
     ListView listViewProducts;
     ArrayAdapter<String> arrayAdapter;
@@ -82,6 +81,7 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.product_main);
 
         databaseReference = FirebaseDatabase.getInstance().getReference("Produkty");
+        linkedList = new LinkedList<>();
 
         TextView textViewBack = findViewById(R.id.textViewOpis);
         textViewBack.setOnClickListener(this);
@@ -90,7 +90,6 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
         imageButtonAdd.setOnClickListener(this);
 
         EditText editTextFilter = findViewById(R.id.editTextSearch);
-
 
         dateOpen = DataHolder.getInstance().getData();
         SharedPreferences prefsTimeOfDay = PreferenceManager.getDefaultSharedPreferences(this);
@@ -128,14 +127,12 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
         alertDialog.show();
     }
 
-
     @Override
     protected void onStart() {
         super.onStart();
         Log.i(TAG, "onStart - Pobieranie wartosci ze zdalnej bazy danych");
         getFromDatabse();
         adapterInit();
-
     }
 
     /**
@@ -249,7 +246,6 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
         double fat = Double.parseDouble(stringOfFat) * converterValue;
         double carb = Double.parseDouble(stringOfCarbs) * converterValue;
         double fibre = Double.parseDouble(stringOfFibre) * converterValue;
-
 
         stringOfName = selectedItem.substring(0, selectedItem.indexOf(","));
         replaceCalories = (df.format(Math.round(calories))).replace(",", ".");
