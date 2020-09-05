@@ -49,3 +49,5 @@ Vapp/src/main/java/com/example/aleksander/fasteffect/FragmentClasses/HouseFragme
 Vapp/src/main/java/com/example/aleksander/fasteffect/FragmentClasses/SportFragment.java,0\8\080d98ddb56cf6b1f3abb6c9f477204db0b1860d
 ‡
 Wapp/src/main/java/com/example/aleksander/fasteffect/FragmentClasses/ExportFragment.java,0\c\0c779bb605d968b5f299860d17b839a8b5015b94
+›
+kapp/src/main/java/com/example/aleksander/fasteffect/AdditionalClasses/AuxiliaryClasses/CustomSnackBars.java,5\7\57c9a13233e1436a51663bb0d323a9ac88034827

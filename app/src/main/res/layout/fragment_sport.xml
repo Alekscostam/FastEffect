@@ -21,64 +21,88 @@
                 android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:background="#cdf2ff"
+                android:gravity="center"
+                android:textColor="#000000"
                 android:text="@string/setMacro"
-                android:textSize="18sp"
-                android:gravity="center"
-                tools:ignore="MissingConstraints"/>
+                android:textSize="19sp"
+                tools:ignore="MissingConstraints" />
 
-            <LinearLayout
-                android:gravity="center"
+            <RadioGroup
+                android:id="@+id/radioButtonChooser"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="25dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="30dp"
+                android:gravity="center_horizontal"
                 android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/buttonAutomatycznie"
-                   android:layout_margin="5dp"
-                    android:layout_width="110dp"
-                    android:layout_height="30dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/button_rounded_aqua"
-                    android:text="@string/automatically"
-                    android:textAlignment="center"
-                    android:textAllCaps="false"
-                    android:textSize="14sp"
-                    tools:ignore="ButtonStyle,MissingConstraints"/>
-                <Button
-                    android:id="@+id/buttonRęczne"
-                    android:layout_width="110dp"
-                    android:layout_height="30dp"
-                   android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/button_rounded_aqua"
-                    android:text="@string/manually"
-                    android:textAlignment="center"
-                    android:textAllCaps="false"
-                    android:textColor="#FFFFFF"
-                    android:textSize="14sp"
-                    tools:ignore="ButtonStyle,MissingConstraints"/>
-            </LinearLayout>
+                <RadioButton
+                    android:id="@+id/radioManually"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ręczny"
+                    android:textSize="17sp" />
+
+                <RadioButton
+                    android:id="@+id/radioAutomatic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Automatyczny"
+                    android:textSize="17sp"
+                    android:layout_marginLeft="60dp"
+                    />
+
+            </RadioGroup>
 
             <LinearLayout
                 android:id="@+id/linearLayoutAutomatyczne"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="10dp"
                 android:orientation="vertical"
                 app:layout_constraintTop_toBottomOf="@+id/buttonAutomatycznie"
                 tools:ignore="MissingConstraints">
+
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/textViewRodzaj"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
+                        android:gravity="center"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="10dp"
                         android:text="@string/kindOfSport"
-                        android:textSize="14sp"/>
+                        android:textSize="17sp"
+                        android:textColor="#000"
+                        android:background="#B0DCE6"
+                        android:layout_marginBottom="10dp"/>
+
+                    <RadioGroup
+                        android:id="@+id/radioGroupSport"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <RadioButton
+                            android:id="@+id/radioStrength"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/strengthSport"/>
+                        <RadioButton
+                            android:id="@+id/radioMixed"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/mixedSport" />
+                        <RadioButton
+                            android:id="@+id/radioEndurance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/enduranceSport"/>
+                        <RadioButton
+                            android:id="@+id/radioNoKindOfSport"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/noSport"/>
+                    </RadioGroup>
                     <Spinner
                         android:id="@+id/spinnerRodzajSportu"
                         android:layout_width="match_parent"
@@ -87,21 +111,60 @@
                         android:gravity="center"
                         android:textColor="#000000"
                         android:textSize="5sp"
-                        tools:ignore="SmallSp"/>
+                        tools:ignore="SmallSp" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_marginTop="27dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical">
+
                     <TextView
+
                         android:id="@+id/textViewAktywnosc"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
+                        android:gravity="center"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
                         android:layout_gravity="center"
+                        android:textColor="#000"
+                        android:background="#B0DCE6"
                         android:text="@string/activity"
-                        android:textSize="14sp"/>
+                        android:textSize="17sp"
+                        android:layout_marginBottom="10dp"/>
+                    <RadioGroup
+                        android:id="@+id/radioGroupActivity"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <RadioButton
+                            android:id="@+id/radioNoActivity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/noActivity"/>
+                        <RadioButton
+                            android:id="@+id/radioLowActivity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/lowActivity" />
+                        <RadioButton
+                            android:id="@+id/radioMediumActivity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/mediumActivity"/>
+                        <RadioButton
+                            android:id="@+id/radioHighActivity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/highActivity"/>
+                        <RadioButton
+                            android:id="@+id/radioVeryHighActivity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/veryHighActivity"/>
+
+                    </RadioGroup>
                     <Spinner
                         android:id="@+id/spinnerAktywnosc"
                         android:layout_width="match_parent"
@@ -110,21 +173,46 @@
                         android:gravity="center"
                         android:textColor="#000000"
                         android:textSize="5sp"
-                        tools:ignore="SmallSp"/>
+                        tools:ignore="SmallSp" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_marginTop="27dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="27dp"
+                    android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/textViewCel"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
+                        android:gravity="center"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
                         android:layout_gravity="center"
+                        android:textColor="#000"
+                        android:background="#B0DCE6"
                         android:text="@string/whatIsPlanning"
-                        android:textSize="14sp" />
+                        android:textSize="17sp"
+                        android:layout_marginBottom="10dp"/>
+                    <RadioGroup
+                        android:id="@+id/radioGroupGoal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <RadioButton
+                            android:id="@+id/radioKeepWeight"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/keepWeight"/>
+                        <RadioButton
+                            android:id="@+id/radioIncreaseWeight"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/increaseWeight" />
+                        <RadioButton
+                            android:id="@+id/radioReductionWeight"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/reductionWeight"/>
+                    </RadioGroup>
                     <Spinner
                         android:id="@+id/spinnerCel"
                         android:layout_width="match_parent"
@@ -146,6 +234,7 @@
                 android:orientation="vertical"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayoutAutomatyczne"
                 tools:ignore="MissingConstraints">
+
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/textInputLayoutKalorie"
                     android:layout_width="100dp"
@@ -163,7 +252,7 @@
                         android:maxLength="4"
                         android:singleLine="true"
                         android:textColor="	#808080"
-                        android:textSize="15sp"/>
+                        android:textSize="15sp" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -184,7 +273,7 @@
                         android:maxLength="2"
                         android:singleLine="true"
                         android:textColor="	#808080"
-                        android:textSize="12sp"/>
+                        android:textSize="12sp" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -205,7 +294,7 @@
                         android:maxLength="2"
                         android:singleLine="true"
                         android:textColor="	#808080"
-                        android:textSize="12sp"/>
+                        android:textSize="12sp" />
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
@@ -241,7 +330,7 @@
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textSize="18sp"
-                tools:ignore="MissingConstraints"/>
+                tools:ignore="MissingConstraints" />
 
         </LinearLayout>
     </ScrollView>

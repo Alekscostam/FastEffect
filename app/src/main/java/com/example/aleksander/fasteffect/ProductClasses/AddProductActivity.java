@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,6 +75,7 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
 
     ListView listViewProducts;
     ArrayAdapter<String> arrayAdapter;
+    EditText editTextFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +91,9 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
         ImageButton imageButtonAdd = findViewById(R.id.buttonAdd);
         imageButtonAdd.setOnClickListener(this);
 
-        EditText editTextFilter = findViewById(R.id.editTextSearch);
+        editTextFilter = findViewById(R.id.editTextSearch);
+        editTextFilter.setInputType(InputType.TYPE_NULL);
+        editTextFilter.setOnClickListener(this);
 
         dateOpen = DataHolder.getInstance().getData();
         SharedPreferences prefsTimeOfDay = PreferenceManager.getDefaultSharedPreferences(this);
@@ -131,14 +135,14 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
     protected void onStart() {
         super.onStart();
         Log.i(TAG, "onStart - Pobieranie wartosci ze zdalnej bazy danych");
-        getFromDatabse();
+        getFromDatabase();
         adapterInit();
     }
 
     /**
      * getFromDatabse, ktory pobiera wartosci ze zdalnej bazy danych
      */
-    private void getFromDatabse() {
+    private void getFromDatabase() {
 
         databaseReference.addChildEventListener((OnChildAddedEventListener) (dataSnapshot, s) -> {
             StringBuilder stringBuilderValue = new StringBuilder();
@@ -170,8 +174,7 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
      */
     private void addProductToDatabase(String amount) {
 
-        SQLiteDatabase sqLiteDatabase = openOrCreateDatabase(DATABASE_FILE,
-                android.content.Context.MODE_PRIVATE, null);
+        SQLiteDatabase sqLiteDatabase = openOrCreateDatabase(DATABASE_FILE, android.content.Context.MODE_PRIVATE, null);
 
         ContentValues rowProduct = new ContentValues();
         ContentValues rowHash = new ContentValues();
@@ -265,6 +268,9 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
             case R.id.buttonAdd:
                 Intent addIntent = new Intent(getApplicationContext(), AddNewProductActivity.class);
                 startActivity(addIntent);
+                break;
+                case R.id.editTextSearch:
+                    editTextFilter.setInputType(InputType.TYPE_CLASS_TEXT);
                 break;
             default:
                 break;

@@ -13,6 +13,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -35,7 +37,7 @@ import static java.util.Objects.requireNonNull;
  * Klasa wykorzystywana do ustawien dotyczacych zapotrzebowania kalorycznego dla użytkownika
  * Zakladka "Aktywność"
  */
-public class SportFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener {
+public class SportFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener, RadioGroup.OnCheckedChangeListener {
 
     public static final String SHARED_PREFS = "shaaredPrefs";
 
@@ -46,15 +48,33 @@ public class SportFragment extends Fragment implements AdapterView.OnItemSelecte
     private LinearLayout linearLayoutAutomatically, linearLayoutManually;
     private TextInputEditText textInputEditTextCalories, textInputEditTextProtein, textInputEditTextCarb, textInputEditTextFat;
     private Spinner spinnerActivity, spinnerKindOfSport, spinnerGoal;
+
+
     private SharedPreferences sharedPreferences;
     protected String optionSelected;
+    private  RadioGroup radioGroupChooser, radioGroupSport, radioGroupGoal, radioGroupActivity;
 
+    private static String chooserSport;
+    private static String chooserActivity;
+    private static String chooserGoal;
+
+    static {
+        chooserSport = "chooserSport";
+        chooserActivity = "chooserActivity";
+        chooserGoal = "chooserGoal";
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_sport, container, false);
         initViews(view);
+
+        radioGroupChooser = view.findViewById(R.id.radioButtonChooser);
+        radioGroupChooser.setOnCheckedChangeListener(this);
+        radioGroupSport = view.findViewById(R.id.radioGroupSport);
+        radioGroupGoal = view.findViewById(R.id.radioGroupGoal);
+        radioGroupActivity = view.findViewById(R.id.radioGroupActivity);
 
         sharedPreferences = requireNonNull(getContext()).getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
 
@@ -64,9 +84,8 @@ public class SportFragment extends Fragment implements AdapterView.OnItemSelecte
             Toast.makeText(getContext(), "Pierwsze logowanie! Wybierz sposób wyliczenia kalorri i makroskładników", Toast.LENGTH_LONG).show();
         }
 
-        Button buttonAutomatically = view.findViewById(R.id.buttonAutomatycznie);
-        Button buttonManually = view.findViewById(R.id.buttonRęczne);
-
+        getterChooser(view);
+        radioInitGet(view);
         getMacro(sharedPreferences);
 
         optionSelected = String.valueOf(sharedPreferences.getString("optionSelected", "0"));
@@ -75,9 +94,6 @@ public class SportFragment extends Fragment implements AdapterView.OnItemSelecte
         if (equals) setAutomatically();
         else setManually();
 
-        buttonAutomatically.setOnClickListener(this);
-        buttonManually.setOnClickListener(this);
-
         adaptersInit();
 
         buttonSave.setEnabled(true);
@@ -85,6 +101,7 @@ public class SportFragment extends Fragment implements AdapterView.OnItemSelecte
 
         return view;
     }
+
 
     private void adaptersInit() {
 
@@ -142,6 +159,13 @@ public class SportFragment extends Fragment implements AdapterView.OnItemSelecte
         SharedPreferences sharedPreferencesSharedPrefs = requireNonNull(getContext()).getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferencesSharedPrefs.edit();
         HideSoftKeyboard.hideSoftKeyboard(requireNonNull(getActivity()));
+        int checkedRadioButtonId = radioGroupChooser.getCheckedRadioButtonId();
+
+        int checkedRadioButtonSportId = radioGroupSport.getCheckedRadioButtonId();
+        int checkedRadioButtonActivityId = radioGroupActivity.getCheckedRadioButtonId();
+        int checkedRadioButtonGoalId = radioGroupGoal.getCheckedRadioButtonId();
+
+        boolean complete = false;
 
         if (optionSelected.equals("0")) {
             optionSet("0");
@@ -154,9 +178,14 @@ public class SportFragment extends Fragment implements AdapterView.OnItemSelecte
             spinnerGoal.setSelection(requireNonNull(longIntegerMap.get(keyList.get(1))));
             editor.putString("spinnerRodzajSportu", requireNonNull(this.longIntegerMap.get(keyList.get(2))).toString()); //InputString: from the EditText
             spinnerKindOfSport.setSelection(requireNonNull(longIntegerMap.get(keyList.get(2))));
-            CustomSnackBars.customSnackBarStandard("Zapisano!", getView()).show();
 
+            sharedPreferences.edit().putInt(SportFragment.chooserSport, checkedRadioButtonSportId).apply();
+            sharedPreferences.edit().putInt(SportFragment.chooserActivity, checkedRadioButtonActivityId).apply();
+            sharedPreferences.edit().putInt(SportFragment.chooserGoal, checkedRadioButtonGoalId).apply();
+
+            CustomSnackBars.customSnackBarStandard("Zapisano!", getView()).show();
             editor.apply();
+            complete = true;
         }
         if (!optionSelected.equals("0")) {
             optionSet("1");
@@ -168,7 +197,6 @@ public class SportFragment extends Fragment implements AdapterView.OnItemSelecte
                 editor.putString("textProtein", String.valueOf(protein));
                 editor.putString("textCarb", String.valueOf(carb));
                 editor.putString("textFat", String.valueOf(fat));
-                editor.commit();
             } else
                 CustomSnackBars.customSnackBarStandard("Wartość procentowa nie jest równa 100%", getView()).show();
 
@@ -177,16 +205,130 @@ public class SportFragment extends Fragment implements AdapterView.OnItemSelecte
                 CustomSnackBars.customSnackBarStandard("Wartość jest za mała", getView()).show();
             else {
                 editor.putString("textCalories", String.valueOf(calories));
-                editor.commit();
-
                 CustomSnackBars.customSnackBarStandard("Zapisano!", getView()).show();
+                complete = true;
             }
         }
+
+        if (complete) {
+            editor = sharedPreferences.edit().putInt("chooserOption", checkedRadioButtonId);
+            editor.apply();
+            editor.commit();
+        }
+
         buttonSave.setEnabled(true);
     }
 
     /**
-     * Mtoda sluzaca do ustawienia tekstu na textInput'ach
+     * Inicjacja radio buttonow
+     */
+    private void radioInitGet(View view) {
+
+        final int idRadioEndurance = R.id.radioEndurance;
+        final int idRadioStrength = R.id.radioStrength;
+        final int idRadioMixed = R.id.radioMixed;
+        final int idRadioNoKindOfSport = R.id.radioNoKindOfSport;
+
+        final int idRadioKeepWeight = R.id.radioKeepWeight;
+        final int idRadioIncreaseWeight = R.id.radioIncreaseWeight;
+        final int idRadioReductionWeight = R.id.radioReductionWeight;
+
+        final int idRadioNoActivity = R.id.radioNoActivity;
+        final int idRadioLowActivity = R.id.radioLowActivity;
+        final int idRadioMediumActivity = R.id.radioMediumActivity;
+        final int idRadioHighActivity = R.id.radioHighActivity;
+        final int idRadioVeryHighActivity = R.id.radioVeryHighActivity;
+
+        RadioButton radioEndurance = view.findViewById(R.id.radioEndurance);
+        RadioButton radioStrength = view.findViewById(R.id.radioStrength);
+        RadioButton radioNoKindOfSport = view.findViewById(R.id.radioNoKindOfSport);
+        RadioButton radioMixed = view.findViewById(R.id.radioMixed);
+
+
+        RadioButton radioKeepWeight = view.findViewById(R.id.radioKeepWeight);
+        RadioButton radioIncreaseWeight = view.findViewById(R.id.radioIncreaseWeight);
+        RadioButton radioReductionWeight = view.findViewById(R.id.radioReductionWeight);
+
+
+        RadioButton radioNoActivity = view.findViewById(R.id.radioNoActivity);
+        RadioButton radioLowActivity = view.findViewById(R.id.radioLowActivity);
+        RadioButton radioMediumActivity = view.findViewById(R.id.radioMediumActivity);
+        RadioButton radioHighActivity = view.findViewById(R.id.radioHighActivity);
+        RadioButton radioVeryHighActivity = view.findViewById(R.id.radioVeryHighActivity);
+
+        int chooserSport = sharedPreferences.getInt(SportFragment.chooserSport, idRadioNoKindOfSport);
+        int chooserActivity = sharedPreferences.getInt(SportFragment.chooserActivity, idRadioNoKindOfSport);
+        int chooserGoal = sharedPreferences.getInt(SportFragment.chooserGoal, idRadioNoKindOfSport);
+
+        switch (chooserSport) {
+            case idRadioEndurance:
+                radioEndurance.setChecked(true);
+                break;
+            case idRadioStrength:
+                radioStrength.setChecked(true);
+                break;
+            case idRadioMixed:
+                radioMixed.setChecked(true);
+                break;
+            case idRadioNoKindOfSport:
+                radioNoKindOfSport.setChecked(true);
+                break;
+            default:
+                break;
+        }
+
+        switch (chooserActivity) {
+            case idRadioNoActivity:
+                radioNoActivity.setChecked(true);
+                break;
+            case idRadioLowActivity:
+                radioLowActivity.setChecked(true);
+                break;
+            case idRadioMediumActivity:
+                radioMediumActivity.setChecked(true);
+                break;
+            case idRadioHighActivity:
+                radioHighActivity.setChecked(true);
+                break;
+            case idRadioVeryHighActivity:
+                radioVeryHighActivity.setChecked(true);
+                break;
+            default:
+                break;
+        }
+
+        switch (chooserGoal) {
+            case idRadioKeepWeight:
+                radioKeepWeight.setChecked(true);
+                break;
+            case idRadioIncreaseWeight:
+                radioIncreaseWeight.setChecked(true);
+                break;
+            case idRadioReductionWeight:
+                radioReductionWeight.setChecked(true);
+                break;
+            default:
+                break;
+        }
+    }
+
+
+    private void getterChooser(View view) {
+        int radioAutomatic = R.id.radioAutomatic;
+
+        RadioButton radioButtonAutomatic = view.findViewById(R.id.radioAutomatic);
+        RadioButton radioButtonAManually = view.findViewById(R.id.radioManually);
+
+        int chooserOption = sharedPreferences.getInt("chooserOption", radioAutomatic);
+
+        if (chooserOption == radioAutomatic) {
+            radioButtonAutomatic.setChecked(true);
+        } else
+            radioButtonAManually.setChecked(true);
+    }
+
+    /**
+     * Metoda sluzaca do ustawienia tekstu na textInput'ach
      *
      * @param sharedPreferences odczytuje wartosci z pamieci
      */
@@ -246,17 +388,22 @@ public class SportFragment extends Fragment implements AdapterView.OnItemSelecte
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.buttonAutomatycznie:
-                setAutomatically();
-                optionSelected = "0";
-                break;
-            case R.id.buttonRęczne:
+        if (v.getId() == R.id.buttonSave) {
+            saveOptions();
+        }
+    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+        switch (checkedId) {
+            case R.id.radioManually:
                 setManually();
                 optionSelected = "1";
                 break;
-            case R.id.buttonSave:
-                saveOptions();
+            case R.id.radioAutomatic:
+                setAutomatically();
+                optionSelected = "0";
                 break;
             default:
                 break;

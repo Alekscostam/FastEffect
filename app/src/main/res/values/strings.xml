@@ -99,6 +99,23 @@
     <string name="data">28.02.2020</string>
     <string name="time_of_day_add_product">Przycisk dodawania produktu do pory dnia</string>
 
+
+    <string name="noActivity">Brak aktywności, praca siedząca</string>
+    <string name="lowActivity">Praca siedzaca, i 1–2 treningi w tygodniu</string>
+    <string name="mediumActivity">Praca siedzaca, i 3–4 treningi w tygodniu</string>
+    <string name="highActivity">Praca fizyczna, i 3–4 treningi w tygodniu</string>
+    <string name="veryHighActivity">Wysoka aktywność, osoby codziennie trenujące</string>
+
+    <string name="strengthSport">Siłowy</string>
+    <string name="enduranceSport">Wytrzymałościowy</string>
+    <string name="mixedSport">Mieszany</string>
+    <string name="noSport">Żaden</string>
+
+
+    <string name="keepWeight">Utrzymanie wagi</string>
+    <string name="increaseWeight">Zwiększenie wagi</string>
+    <string name="reductionWeight">Zmniejszenie wagi</string>
+
     <string-array name="spinnerActivities">
         <item>Brak aktywności, praca siedząca</item>
         <item>Praca siedzaca, i 1–2 treningi w tygodniu</item>

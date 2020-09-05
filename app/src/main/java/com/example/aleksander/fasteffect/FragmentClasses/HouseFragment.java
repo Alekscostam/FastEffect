@@ -548,6 +548,9 @@ public class HouseFragment extends Fragment implements View.OnClickListener, Val
 
         if (optionSportFragment == 0) {
 
+            int chooserSport = sharedPreferences.getInt("chooserSport", 0);
+            int chooserActivity = sharedPreferences.getInt("chooserActivity", 0);
+            int chooserGoal = sharedPreferences.getInt("chooserGoal", 0);
 
             String dataActivity = sharedPreferences.getString("spinnerAktywnosc", "0");
             String dataKindOfSport = sharedPreferences.getString("spinnerRodzajSportu", "0");
@@ -805,8 +808,8 @@ public class HouseFragment extends Fragment implements View.OnClickListener, Val
         hideAllListViews();
         try {
             viewDatabase();
-        } catch (IllegalStateException e) {
-            e.getMessage();
+        } catch (IllegalStateException | NullPointerException exceptions) {
+            exceptions.getMessage();
         }
         sumUpEverything();
     }
@@ -934,12 +937,6 @@ public class HouseFragment extends Fragment implements View.OnClickListener, Val
         userWeight = dataSnapshot.child(uid).child(childWeight).getValue(String.class);
         userHeight = dataSnapshot.child(uid).child(childHeight).getValue(String.class);
         userGender = String.valueOf(dataSnapshot.child(uid).child(childGender).getValue(String.class));
-
-        try {
-            sqLiteDatabase = requireNonNull(getActivity()).openOrCreateDatabase(DATABASE_FILE, android.content.Context.MODE_PRIVATE, null);
-        } catch (NullPointerException e) {
-            e.getMessage();
-        }
 
         refreshApp();
     }

@@ -1,2 +1,6 @@
 
 t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ÚşÅÈşÿÿÿÿ
+H
+java:S1128",Remove this unused import 'android.nfc.Tag'.(¡¸ó8—²•ÛÅ.
+S
+java:S1128"1Remove this unused import 'android.widget.Toast'.(©›ïÍúÿÿÿÿ8—²•ÛÅ.
