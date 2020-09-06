@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static final String TAG ="com.example.aleksander.fasteffect";
 
     private static final String PREF_NAME = "prefs";
-    private String login = "RememberMe";
     private DrawerLayout drawer;
     private SharedPreferences sharedPreferences;
 
@@ -54,11 +53,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         sharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editorRemember = sharedPreferences.edit();
 
-        String firstLogIn = "firstLogIn";
-        boolean myFirstLog = sharedPreferences.getBoolean(firstLogIn, false);
-        editorRemember.putBoolean(login, true);
         databaseInit();
 
         android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar);
@@ -75,13 +70,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HouseFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_house);
         }
-
-        if(myFirstLog)
-        {
-            editorRemember.putBoolean(firstLogIn,false);
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SportFragment()).commit();
-        }
-        editorRemember.apply();
     }
 
     @Override
@@ -133,6 +121,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         SharedPreferences.Editor editorRemember = sharedPreferences.edit();
+        String login = "RememberMe";
         editorRemember.putBoolean(login, false);
         editorRemember.apply();
         finish();

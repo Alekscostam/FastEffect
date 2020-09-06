@@ -249,14 +249,14 @@ public class HouseFragment extends Fragment implements View.OnClickListener, Val
     }
 
     /**
-     * Metoda, która decyduje o pokazaniu lub ukryciu apliakcji
+     * Metoda, która decyduje o pokazaniu lub ukryciu listView
      */
     private void cardViewShowOrHide(int index, ListView listView) {
         if (hide[index] == 0) {
-            showListView(listView);
+            listView.setVisibility(VISIBLE);
             hide[index] = 1;
         } else {
-            hideOneListView(listView);
+            listView.setVisibility(GONE);
             hide[index] = 0;
         }
     }
@@ -399,26 +399,6 @@ public class HouseFragment extends Fragment implements View.OnClickListener, Val
         editor.apply();
     }
 
-    /**
-     * Metoda sluzaca do schowania listy wyswietlania po jej wybraniu
-     */
-    private void hideOneListView(ListView listView) {
-        listView.setVisibility(GONE);
-    }
-
-    /**
-     * Metoda sluzaca do schowania wszystkich list w przypadku np. ponownego uruchomienia aplikacji
-     */
-    private void hideAllListViews() {
-        listViewList.forEach(element -> element.setVisibility(GONE));
-    }
-
-    /**
-     * Metoda sluzaca do pokazania listy wyswietlania po jej wybraniu
-     */
-    private void showListView(ListView listView) {
-        listView.setVisibility(VISIBLE);
-    }
 
     /**
      * Sprawdza adapter na podstawie jego zawartosci i okresla odpowiedni wyglad dla cardView i textView
@@ -519,7 +499,7 @@ public class HouseFragment extends Fragment implements View.OnClickListener, Val
 
         Log.i(TAG, "sumUpEverything - sumowanie wszytskich komponentow");
 
-        String dataSportFragment = sharedPreferences.getString("optionSelected", "0"); //no id: default value
+        String dataSportFragment = sharedPreferences.getString("optionSelected", "0");
         assert dataSportFragment != null;
         int optionSportFragment = Integer.parseInt(dataSportFragment);
 
@@ -715,27 +695,31 @@ public class HouseFragment extends Fragment implements View.OnClickListener, Val
 
         LayoutInflater li = LayoutInflater.from(getContext());
         View promptsView = li.inflate(R.layout.custom_alert_dialog_house, null);
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                getContext());
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
         alertDialogBuilder.setView(promptsView);
+
         final EditText input = promptsView.findViewById(R.id.inputNumber);
 
         alertDialogBuilder
                 .setCancelable(false)
-                .setPositiveButton("Usuń", (dialogInterface, i) -> deleteFromDatabase(timeOfDay, amount, productName))
-                .setNegativeButton("Anuluj", (dialogInterface, i) -> dialogInterface.cancel())
-                .setNeutralButton("Edytuj", (dialogInterface, i) -> {
-                    int amountValue = Integer.parseInt(input.getText().toString());
-                    if (amountValue == 0) {
-                        Toast.makeText(getContext(), "Wartość nie może wynosić 0!", Toast.LENGTH_SHORT).show();
-                    } else {
-                        editProductInDatabase(amountValue, timeOfDay, amount, productName);
+                .setPositiveButton("Usuń", (dialogInterface, delete) -> deleteFromDatabase(timeOfDay, amount, productName))
+                .setNegativeButton("Anuluj", (dialogInterface, cancel) -> dialogInterface.cancel())
+                .setNeutralButton("Edytuj", (dialogInterface, edit) -> {
+                    try {
+                        int amountValue = Integer.parseInt(input.getText().toString());
+                        if (amountValue == 0) {
+                            Toast.makeText(getContext(), "Wartość nie może wynosić 0!", Toast.LENGTH_LONG).show();
+                        } else {
+                            editProductInDatabase(amountValue, timeOfDay, amount, productName);
+                        }
+                    }catch (NumberFormatException nfe)
+                    {
+                        nfe.getMessage();
                     }
                 });
 
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
-        requireNonNull(alertDialog.getWindow()).setLayout(600, 420);
     }
 
     /**
@@ -831,7 +815,7 @@ public class HouseFragment extends Fragment implements View.OnClickListener, Val
      */
     private void refreshApp() {
         resetAllComponents();
-        hideAllListViews();
+        listViewList.forEach(element -> element.setVisibility(GONE));
         try {
             viewDatabase();
         } catch (IllegalStateException | NullPointerException exceptions) {

@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses.CustomSnackBars;
 import com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses.HideSoftKeyboard;
@@ -85,12 +84,6 @@ public class SportFragment extends Fragment implements View.OnClickListener, Rad
         radioGroupActivity = view.findViewById(R.id.radioGroupActivity);
 
         sharedPreferences = requireNonNull(getContext()).getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
-
-        String firstLogIn = "firstLogIn";
-        boolean myFirstLog = sharedPreferences.getBoolean(firstLogIn, false);
-        if (myFirstLog) {
-            Toast.makeText(getContext(), "Pierwsze logowanie! Wybierz sposób wyliczenia kalorri i makroskładników", Toast.LENGTH_LONG).show();
-        }
 
         getterChooser(view);
         radioInitGet(view);
@@ -182,7 +175,6 @@ public class SportFragment extends Fragment implements View.OnClickListener, Rad
             editor.apply();
             editor.commit();
         }
-
         buttonSave.setEnabled(true);
     }
 
@@ -195,13 +187,13 @@ public class SportFragment extends Fragment implements View.OnClickListener, Rad
         final int idRadioKeepWeight = R.id.radioKeepWeight;
         final int idRadioLowActivity = R.id.radioLowActivity;
 
-        int chooseSport = sharedPreferences.getInt(SportFragment.chooserSport, idRadioNoKindOfSport);
-        int chooseActivity = sharedPreferences.getInt(SportFragment.chooserActivity, idRadioLowActivity);
-        int chooseGoal = sharedPreferences.getInt(SportFragment.chooserGoal, idRadioKeepWeight);
+        int chosenSport = sharedPreferences.getInt(SportFragment.chooserSport, idRadioNoKindOfSport);
+        int chosenActivity = sharedPreferences.getInt(SportFragment.chooserActivity, idRadioLowActivity);
+        int chosenGoal = sharedPreferences.getInt(SportFragment.chooserGoal, idRadioKeepWeight);
 
-        RadioButton rbSport = (RadioButton) view.findViewById(chooseSport);
-        RadioButton rbActivity = (RadioButton) view.findViewById(chooseActivity);
-        RadioButton rbGoal = (RadioButton) view.findViewById(chooseGoal);
+        RadioButton rbSport = (RadioButton) view.findViewById(chosenSport);
+        RadioButton rbActivity = (RadioButton) view.findViewById(chosenActivity);
+        RadioButton rbGoal = (RadioButton) view.findViewById(chosenGoal);
 
         try {
             rbSport.setChecked(true);
@@ -287,7 +279,6 @@ public class SportFragment extends Fragment implements View.OnClickListener, Rad
         linearLayoutManually.getLayoutParams().width = MATCH_PARENT;
     }
 
-
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.buttonSave) {
@@ -297,7 +288,6 @@ public class SportFragment extends Fragment implements View.OnClickListener, Rad
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
-
         switch (checkedId) {
             case R.id.radioManually:
                 setManually();

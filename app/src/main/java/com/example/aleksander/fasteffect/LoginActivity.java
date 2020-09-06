@@ -37,7 +37,6 @@ public class LoginActivity extends AppCompatActivity {
     private AutoCompleteTextView autoCompleteTextViewPassword;
     private FirebaseAuth firebaseAuth;
 
-    private String firstLogIn = "firstLogIn";
     private static final String PREF_NAME = "prefs";
     private static final String KEY_REMEMBER = "remember";
     private static final String KEY_USERNAME = "username";
@@ -73,8 +72,7 @@ public class LoginActivity extends AppCompatActivity {
             Log.i(TAG, "rememberOrNot - zapamietanie uzytkownika");
 
             Intent intentLogin = new Intent(LoginActivity.this, MainActivity.class);
-            intentLogin.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
-            intentLogin.addFlags(FLAG_ACTIVITY_CLEAR_TASK);
+            intentLogin.addFlags(FLAG_ACTIVITY_CLEAR_TOP).addFlags(FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intentLogin);
 
         } else {
@@ -146,15 +144,14 @@ public class LoginActivity extends AppCompatActivity {
     public void buttonLoginClick(View view) {
         view.getId();
         Intent intentAdminLog = new Intent(LoginActivity.this, MainActivity.class);
-        intentAdminLog.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
-        intentAdminLog.addFlags(FLAG_ACTIVITY_CLEAR_TASK);
+        intentAdminLog.addFlags(FLAG_ACTIVITY_CLEAR_TOP).addFlags(FLAG_ACTIVITY_CLEAR_TASK);
 
         HideSoftKeyboard.hideSoftKeyboard(this);
 
         if (autoCompleteTextViewEmail.getText().toString().equals("admin") && autoCompleteTextViewPassword.getText().toString().equals("admin"))
             startActivity(intentAdminLog);
 
-         else {
+        else {
             String sEmail = autoCompleteTextViewEmail.getText().toString();
             String sPassword = autoCompleteTextViewPassword.getText().toString();
 
@@ -169,29 +166,22 @@ public class LoginActivity extends AppCompatActivity {
                                 if (Objects.requireNonNull(firebaseAuth.getCurrentUser()).isEmailVerified()) {
 
                                     Intent intentLogin = new Intent(LoginActivity.this, MainActivity.class);
-                                    intentLogin.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
-                                    intentLogin.addFlags(FLAG_ACTIVITY_CLEAR_TASK);
+                                    intentLogin
+                                            .addFlags(FLAG_ACTIVITY_CLEAR_TOP).addFlags(FLAG_ACTIVITY_CLEAR_TASK);
                                     intentLogin.putExtra("Email", firebaseAuth.getCurrentUser().getEmail());
-
-                                    boolean myFirstLog = sharedPreferences.getBoolean(firstLogIn, true);
-                                    if (myFirstLog) {
-                                        editorRemember.putBoolean(firstLogIn, true);
-                                        editorRemember.apply();
-                                    }
-                                    editorRemember.apply();
                                     startActivity(intentLogin);
 
                                     Log.i(TAG, "buttonLoginClick - zalogowano prawidlowo");
                                 } else {
-                                    CustomSnackBars.customSnackBarStandard("Zweryfikuj swój adres email!",getCurrentFocus()).show();
+                                    CustomSnackBars.customSnackBarStandard("Zweryfikuj swój adres email!", getCurrentFocus()).show();
                                 }
                             } else {
                                 Log.e("Error", Objects.requireNonNull(task.getException()).toString());
-                                CustomSnackBars.customSnackBarStandard(task.getException().getMessage(),getCurrentFocus()).show();
+                                CustomSnackBars.customSnackBarStandard(task.getException().getMessage(), getCurrentFocus()).show();
                             }
                         });
             } else {
-                CustomSnackBars.customSnackBarStandard("Niekompletne dane!",getCurrentFocus()).show();
+                CustomSnackBars.customSnackBarStandard("Niekompletne dane!", getCurrentFocus()).show();
             }
         }
     }

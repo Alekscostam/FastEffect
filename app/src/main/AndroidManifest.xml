@@ -26,20 +26,17 @@
         </activity>
 
         <activity
-            android:name=".MainActivity"
-            android:noHistory="true" />
+            android:name=".MainActivity" />
 
         <activity
             android:name=".RegisterActivity"
             android:noHistory="true" />
 
         <activity
-            android:name=".ProductClasses.AddProductActivity"
-            android:noHistory="true" />
+            android:name=".ProductClasses.AddProductActivity" />
 
         <activity
-            android:name=".ProductClasses.AddNewProductActivity"
-            android:noHistory="true" />
+            android:name=".ProductClasses.AddNewProductActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
