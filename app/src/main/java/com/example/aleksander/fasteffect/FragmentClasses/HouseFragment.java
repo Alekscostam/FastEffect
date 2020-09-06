@@ -1,6 +1,5 @@
 package com.example.aleksander.fasteffect.FragmentClasses;
 
-
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.ContentValues;
@@ -535,10 +534,10 @@ public class HouseFragment extends Fragment implements View.OnClickListener, Val
 
         if (optionSportFragment == 1) {
 
-            String dataCalories = sharedPreferences.getString("textCalories", "0");
-            String dataProtein = sharedPreferences.getString("textProtein", "0");
-            String dataCarb = sharedPreferences.getString("textCarb", "0");
-            String dataFat = sharedPreferences.getString("textFat", "0");
+            String dataCalories = sharedPreferences.getString("textCalories", "2000");
+            String dataProtein = sharedPreferences.getString("textProtein", "20");
+            String dataCarb = sharedPreferences.getString("textCarb", "50");
+            String dataFat = sharedPreferences.getString("textFat", "30");
             maxValue[0] = (mathematicalFormulas(dataCalories, dataProtein, 4));
             maxValue[1] = (mathematicalFormulas(dataCalories, dataCarb, 4));
             maxValue[2] = (mathematicalFormulas(dataCalories, dataFat, 9));
@@ -548,53 +547,14 @@ public class HouseFragment extends Fragment implements View.OnClickListener, Val
 
         if (optionSportFragment == 0) {
 
-            int chooserSport = sharedPreferences.getInt("chooserSport", 0);
-            int chooserActivity = sharedPreferences.getInt("chooserActivity", 0);
-            int chooserGoal = sharedPreferences.getInt("chooserGoal", 0);
-
-            String dataActivity = sharedPreferences.getString("spinnerAktywnosc", "0");
-            String dataKindOfSport = sharedPreferences.getString("spinnerRodzajSportu", "0");
-            String dataGoal = sharedPreferences.getString("spinnerCel", "0");
-
-            assert dataKindOfSport != null;
-            assert dataActivity != null;
-            assert dataGoal != null;
-
-            kindOfSport = Integer.parseInt(dataKindOfSport);
             double weight = Double.parseDouble(userWeight);
             int height = Integer.parseInt(userHeight);
             int age = Integer.parseInt(userAge);
 
-            switch (dataActivity) {
-                case "0":
-                    activity = 1.2;
-                    break;
-                case "1":
-                    activity = 1.3;
-                    break;
-                case "2":
-                    activity = 1.5;
-                    break;
-                case "3":
-                    activity = 1.7;
-                    break;
-                case "4":
-                    activity = 1.9;
-                    break;
-                default:
-            }
-            switch (dataGoal) {
-                case "0":
-                    goal = 0;
-                    break;
-                case "1":
-                    goal = 300;
-                    break;
-                case "2":
-                    goal = -300;
-                    break;
-                default:
-            }
+            optionsCheckerSport();
+            optionsCheckerActivity();
+            optionsCheckerGoal();
+
             caloriesSummary = mathematicalForSecondOption(weight, height, age, userGender, goal, activity);
         }
         String calories = "Kcal:\n " + sumCalories + "/" + caloriesSummary;
@@ -611,6 +571,72 @@ public class HouseFragment extends Fragment implements View.OnClickListener, Val
         setProgressBar((int) (maxValue[0]), (int) (sumProtein), progressBarProtein);
         setProgressBar((int) (maxValue[1]), (int) (sumCarbs), progressBarCarb);
         setProgressBar((int) (maxValue[2]), (int) (sumFats), progressBarFat);
+    }
+
+    /**
+     * SharedPreferences dla rodzaju sportu
+     */
+    private void optionsCheckerSport() {
+        String strengthSport = getResources().getString(R.string.strengthSport);
+        String enduranceSport = getResources().getString(R.string.enduranceSport);
+        String mixedSport = getResources().getString(R.string.mixedSport);
+        String noSport = getResources().getString(R.string.noSport);
+
+        String rbSport = sharedPreferences.getString("rbSport", strengthSport);
+
+        assert rbSport != null;
+        if (rbSport.equals(strengthSport))
+            kindOfSport = 0;
+        else if (rbSport.equals(enduranceSport))
+            kindOfSport = 1;
+        else if (rbSport.equals(mixedSport))
+            kindOfSport = 2;
+        else if (rbSport.equals(noSport))
+            kindOfSport = 3;
+    }
+
+    /**
+     * SharedPreferences dla aktywnosci ogolnej
+     */
+    private void optionsCheckerActivity() {
+        String noActivity = getResources().getString(R.string.noActivity);
+        String lowActivity = getResources().getString(R.string.lowActivity);
+        String mediumActivity = getResources().getString(R.string.mediumActivity);
+        String highActivity = getResources().getString(R.string.highActivity);
+        String veryHighActivity = getResources().getString(R.string.veryHighActivity);
+
+        String rbActivity = sharedPreferences.getString("rbActivity", lowActivity);
+
+        assert rbActivity != null;
+        if (rbActivity.equals(noActivity))
+            activity = 1.2;
+        else if (rbActivity.equals(lowActivity))
+            activity = 1.3;
+        else if (rbActivity.equals(mediumActivity))
+            activity = 1.5;
+        else if (rbActivity.equals(highActivity))
+            activity = 1.7;
+        else if (rbActivity.equals(veryHighActivity))
+            activity = 1.9;
+    }
+
+    /**
+     * SharedPreferences dla celu
+     */
+    private void optionsCheckerGoal() {
+        String keepWeight = getResources().getString(R.string.keepWeight);
+        String increaseWeight = getResources().getString(R.string.increaseWeight);
+        String reductionWeight = getResources().getString(R.string.reductionWeight);
+
+        String rbGoal = sharedPreferences.getString("rbGoal", keepWeight);
+
+        assert rbGoal != null;
+        if (rbGoal.equals(keepWeight))
+            goal = 0;
+        else if (rbGoal.equals(increaseWeight))
+            goal = 300;
+        else if (rbGoal.equals(reductionWeight))
+            goal = -300;
     }
 
     /**
@@ -652,19 +678,19 @@ public class HouseFragment extends Fragment implements View.OnClickListener, Val
 
         switch (kindOfSport) {
             case 0:
-                maxValue[0] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(25), 4));
+                maxValue[0] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(22), 4));
                 maxValue[1] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(50), 4));
-                maxValue[2] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(25), 9));
+                maxValue[2] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(28), 9));
                 break;
             case 1:
-                maxValue[0] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(18), 4));
-                maxValue[1] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(63), 4));
-                maxValue[2] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(19), 9));
+                maxValue[0] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(17), 4));
+                maxValue[1] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(61), 4));
+                maxValue[2] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(22), 9));
                 break;
             case 2:
                 maxValue[0] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(20), 4));
-                maxValue[1] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(60), 4));
-                maxValue[2] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(20), 9));
+                maxValue[1] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(55), 4));
+                maxValue[2] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(25), 9));
                 break;
             case 3:
                 maxValue[0] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(15), 4));
@@ -933,6 +959,7 @@ public class HouseFragment extends Fragment implements View.OnClickListener, Val
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         assert user != null;
         String uid = user.getUid();
+
         userAge = dataSnapshot.child(uid).child(childAge).getValue(String.class);
         userWeight = dataSnapshot.child(uid).child(childWeight).getValue(String.class);
         userHeight = dataSnapshot.child(uid).child(childHeight).getValue(String.class);

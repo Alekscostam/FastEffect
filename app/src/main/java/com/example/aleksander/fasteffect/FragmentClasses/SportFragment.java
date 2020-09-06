@@ -6,26 +6,19 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses.CustomSnackBars;
 import com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses.HideSoftKeyboard;
 import com.example.aleksander.fasteffect.R;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import static android.widget.LinearLayout.LayoutParams.MATCH_PARENT;
 import static android.widget.LinearLayout.LayoutParams.WRAP_CONTENT;
@@ -37,31 +30,46 @@ import static java.util.Objects.requireNonNull;
  * Klasa wykorzystywana do ustawien dotyczacych zapotrzebowania kalorycznego dla użytkownika
  * Zakladka "Aktywność"
  */
-public class SportFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener, RadioGroup.OnCheckedChangeListener {
+public class SportFragment extends Fragment implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
+
+    public static final String TAG="com.example.aleksander.fasteffect.FragmentClasses";
 
     public static final String SHARED_PREFS = "shaaredPrefs";
 
     private Button buttonSave;
 
-    private Map<Integer, Integer> longIntegerMap;
-
     private LinearLayout linearLayoutAutomatically, linearLayoutManually;
     private TextInputEditText textInputEditTextCalories, textInputEditTextProtein, textInputEditTextCarb, textInputEditTextFat;
-    private Spinner spinnerActivity, spinnerKindOfSport, spinnerGoal;
 
 
     private SharedPreferences sharedPreferences;
     protected String optionSelected;
-    private  RadioGroup radioGroupChooser, radioGroupSport, radioGroupGoal, radioGroupActivity;
+    private RadioGroup radioGroupChooser, radioGroupSport, radioGroupGoal, radioGroupActivity;
 
     private static String chooserSport;
     private static String chooserActivity;
     private static String chooserGoal;
+    private static String chooserOption;
+    private static String textCalories;
+    private static String textProtein;
+    private static String textCarb;
+    private static String textFat;
+    private static String rbSport;
+    private static String rbActivity;
+    private static String rbGoal;
 
     static {
         chooserSport = "chooserSport";
         chooserActivity = "chooserActivity";
         chooserGoal = "chooserGoal";
+        chooserOption = "chooserOption";
+        textCalories = "textCalories";
+        textProtein = "textProtein";
+        textCarb = "textCarb";
+        textFat = "textFat";
+        rbSport = "rbSport";
+        rbActivity = "rbActivity";
+        rbGoal = "rbGoal";
     }
 
     @Override
@@ -94,33 +102,16 @@ public class SportFragment extends Fragment implements AdapterView.OnItemSelecte
         if (equals) setAutomatically();
         else setManually();
 
-        adaptersInit();
-
         buttonSave.setEnabled(true);
         buttonSave.setOnClickListener(this);
 
         return view;
     }
 
-
-    private void adaptersInit() {
-
-        ArrayAdapter<CharSequence> adapterActivity = ArrayAdapter.createFromResource(requireNonNull(getActivity()), R.array.spinnerActivities, R.layout.spinner_item_my);
-        setSpinners(spinnerActivity, adapterActivity, "spinnerAktywnosc");
-
-        ArrayAdapter<CharSequence> adapterKindOfSport = ArrayAdapter.createFromResource(getActivity(), R.array.spinnerTypeOfActivities, R.layout.spinner_item_my);
-        setSpinners(spinnerKindOfSport, adapterKindOfSport, "spinnerRodzajSportu");
-
-        ArrayAdapter<CharSequence> adapterGoal = ArrayAdapter.createFromResource(getActivity(), R.array.spinnerGoals, R.layout.spinner_item_my);
-        setSpinners(spinnerGoal, adapterGoal, "spinnerCel");
-    }
-
     /**
      * Inicjuje komponenty tej klasy
      */
     private void initViews(View view) {
-
-        longIntegerMap = new TreeMap<>();
 
         textInputEditTextCalories = view.findViewById(R.id.textInputEditTextKalorie);
         textInputEditTextProtein = view.findViewById(R.id.textInputEditTextProtein);
@@ -129,27 +120,7 @@ public class SportFragment extends Fragment implements AdapterView.OnItemSelecte
         linearLayoutAutomatically = view.findViewById(R.id.linearLayoutAutomatyczne);
         linearLayoutManually = view.findViewById(R.id.linearLayoutRęczne);
 
-        spinnerActivity = view.findViewById(R.id.spinnerAktywnosc);
-        spinnerKindOfSport = view.findViewById(R.id.spinnerRodzajSportu);
-        spinnerGoal = view.findViewById(R.id.spinnerCel);
-
         buttonSave = view.findViewById(R.id.buttonSave);
-    }
-
-    /**
-     * Ustawia wartosci dla wszystkich spinnerow
-     *
-     * @param spinner            przekazywany do ustawienia na nim wartosci
-     * @param adapter            sluzy do ustawienie na niego specjalnego layoutu
-     * @param stringValueSpinner wartosc do jakiej odwoluje sie schared preferences
-     */
-    private void setSpinners(Spinner spinner, ArrayAdapter<CharSequence> adapter, String stringValueSpinner) {
-        adapter.setDropDownViewResource(R.layout.spinner_item_my);
-        spinner.setAdapter(adapter);
-        String spinnerValue = sharedPreferences.getString(stringValueSpinner, "0");
-        assert spinnerValue != null;
-        spinner.setSelection(Integer.parseInt(spinnerValue));
-        spinner.setOnItemSelectedListener(this);
     }
 
     /**
@@ -159,6 +130,7 @@ public class SportFragment extends Fragment implements AdapterView.OnItemSelecte
         SharedPreferences sharedPreferencesSharedPrefs = requireNonNull(getContext()).getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferencesSharedPrefs.edit();
         HideSoftKeyboard.hideSoftKeyboard(requireNonNull(getActivity()));
+
         int checkedRadioButtonId = radioGroupChooser.getCheckedRadioButtonId();
 
         int checkedRadioButtonSportId = radioGroupSport.getCheckedRadioButtonId();
@@ -170,21 +142,14 @@ public class SportFragment extends Fragment implements AdapterView.OnItemSelecte
         if (optionSelected.equals("0")) {
             optionSet("0");
 
-            List<Integer> keyList = new ArrayList<>(longIntegerMap.keySet());
-
-            editor.putString("spinnerAktywnosc", requireNonNull(this.longIntegerMap.get(keyList.get(0))).toString()); //InputString: from the EditText
-            spinnerActivity.setSelection(requireNonNull(longIntegerMap.get(keyList.get(0))));
-            editor.putString("spinnerCel", requireNonNull(this.longIntegerMap.get(keyList.get(1))).toString()); //InputString: from the EditText
-            spinnerGoal.setSelection(requireNonNull(longIntegerMap.get(keyList.get(1))));
-            editor.putString("spinnerRodzajSportu", requireNonNull(this.longIntegerMap.get(keyList.get(2))).toString()); //InputString: from the EditText
-            spinnerKindOfSport.setSelection(requireNonNull(longIntegerMap.get(keyList.get(2))));
-
             sharedPreferences.edit().putInt(SportFragment.chooserSport, checkedRadioButtonSportId).apply();
             sharedPreferences.edit().putInt(SportFragment.chooserActivity, checkedRadioButtonActivityId).apply();
             sharedPreferences.edit().putInt(SportFragment.chooserGoal, checkedRadioButtonGoalId).apply();
 
             CustomSnackBars.customSnackBarStandard("Zapisano!", getView()).show();
             editor.apply();
+            radioInitGet(requireNonNull(getView()));
+
             complete = true;
         }
         if (!optionSelected.equals("0")) {
@@ -194,9 +159,9 @@ public class SportFragment extends Fragment implements AdapterView.OnItemSelecte
             int fat = Integer.parseInt(requireNonNull(textInputEditTextFat.getText()).toString());
 
             if ((protein + carb + fat) == 100) {
-                editor.putString("textProtein", String.valueOf(protein));
-                editor.putString("textCarb", String.valueOf(carb));
-                editor.putString("textFat", String.valueOf(fat));
+                editor.putString(textProtein, String.valueOf(protein));
+                editor.putString(textCarb, String.valueOf(carb));
+                editor.putString(textFat, String.valueOf(fat));
             } else
                 CustomSnackBars.customSnackBarStandard("Wartość procentowa nie jest równa 100%", getView()).show();
 
@@ -204,14 +169,16 @@ public class SportFragment extends Fragment implements AdapterView.OnItemSelecte
             if ((calories) < 100)
                 CustomSnackBars.customSnackBarStandard("Wartość jest za mała", getView()).show();
             else {
-                editor.putString("textCalories", String.valueOf(calories));
+                editor.putString(textCalories, String.valueOf(calories));
+                editor.commit();
+                editor.apply();
                 CustomSnackBars.customSnackBarStandard("Zapisano!", getView()).show();
                 complete = true;
             }
         }
 
         if (complete) {
-            editor = sharedPreferences.edit().putInt("chooserOption", checkedRadioButtonId);
+            editor = sharedPreferences.edit().putInt(chooserOption, checkedRadioButtonId);
             editor.apply();
             editor.commit();
         }
@@ -224,104 +191,49 @@ public class SportFragment extends Fragment implements AdapterView.OnItemSelecte
      */
     private void radioInitGet(View view) {
 
-        final int idRadioEndurance = R.id.radioEndurance;
-        final int idRadioStrength = R.id.radioStrength;
-        final int idRadioMixed = R.id.radioMixed;
         final int idRadioNoKindOfSport = R.id.radioNoKindOfSport;
-
         final int idRadioKeepWeight = R.id.radioKeepWeight;
-        final int idRadioIncreaseWeight = R.id.radioIncreaseWeight;
-        final int idRadioReductionWeight = R.id.radioReductionWeight;
-
-        final int idRadioNoActivity = R.id.radioNoActivity;
         final int idRadioLowActivity = R.id.radioLowActivity;
-        final int idRadioMediumActivity = R.id.radioMediumActivity;
-        final int idRadioHighActivity = R.id.radioHighActivity;
-        final int idRadioVeryHighActivity = R.id.radioVeryHighActivity;
 
-        RadioButton radioEndurance = view.findViewById(R.id.radioEndurance);
-        RadioButton radioStrength = view.findViewById(R.id.radioStrength);
-        RadioButton radioNoKindOfSport = view.findViewById(R.id.radioNoKindOfSport);
-        RadioButton radioMixed = view.findViewById(R.id.radioMixed);
+        int chooseSport = sharedPreferences.getInt(SportFragment.chooserSport, idRadioNoKindOfSport);
+        int chooseActivity = sharedPreferences.getInt(SportFragment.chooserActivity, idRadioLowActivity);
+        int chooseGoal = sharedPreferences.getInt(SportFragment.chooserGoal, idRadioKeepWeight);
 
+        RadioButton rbSport = (RadioButton) view.findViewById(chooseSport);
+        RadioButton rbActivity = (RadioButton) view.findViewById(chooseActivity);
+        RadioButton rbGoal = (RadioButton) view.findViewById(chooseGoal);
 
-        RadioButton radioKeepWeight = view.findViewById(R.id.radioKeepWeight);
-        RadioButton radioIncreaseWeight = view.findViewById(R.id.radioIncreaseWeight);
-        RadioButton radioReductionWeight = view.findViewById(R.id.radioReductionWeight);
-
-
-        RadioButton radioNoActivity = view.findViewById(R.id.radioNoActivity);
-        RadioButton radioLowActivity = view.findViewById(R.id.radioLowActivity);
-        RadioButton radioMediumActivity = view.findViewById(R.id.radioMediumActivity);
-        RadioButton radioHighActivity = view.findViewById(R.id.radioHighActivity);
-        RadioButton radioVeryHighActivity = view.findViewById(R.id.radioVeryHighActivity);
-
-        int chooserSport = sharedPreferences.getInt(SportFragment.chooserSport, idRadioNoKindOfSport);
-        int chooserActivity = sharedPreferences.getInt(SportFragment.chooserActivity, idRadioNoKindOfSport);
-        int chooserGoal = sharedPreferences.getInt(SportFragment.chooserGoal, idRadioNoKindOfSport);
-
-        switch (chooserSport) {
-            case idRadioEndurance:
-                radioEndurance.setChecked(true);
-                break;
-            case idRadioStrength:
-                radioStrength.setChecked(true);
-                break;
-            case idRadioMixed:
-                radioMixed.setChecked(true);
-                break;
-            case idRadioNoKindOfSport:
-                radioNoKindOfSport.setChecked(true);
-                break;
-            default:
-                break;
-        }
-
-        switch (chooserActivity) {
-            case idRadioNoActivity:
-                radioNoActivity.setChecked(true);
-                break;
-            case idRadioLowActivity:
-                radioLowActivity.setChecked(true);
-                break;
-            case idRadioMediumActivity:
-                radioMediumActivity.setChecked(true);
-                break;
-            case idRadioHighActivity:
-                radioHighActivity.setChecked(true);
-                break;
-            case idRadioVeryHighActivity:
-                radioVeryHighActivity.setChecked(true);
-                break;
-            default:
-                break;
-        }
-
-        switch (chooserGoal) {
-            case idRadioKeepWeight:
-                radioKeepWeight.setChecked(true);
-                break;
-            case idRadioIncreaseWeight:
-                radioIncreaseWeight.setChecked(true);
-                break;
-            case idRadioReductionWeight:
-                radioReductionWeight.setChecked(true);
-                break;
-            default:
-                break;
+        try {
+            rbSport.setChecked(true);
+            rbActivity.setChecked(true);
+            rbGoal.setChecked(true);
+            radiosChecker(rbSport, rbActivity, rbGoal);
+        } catch (NullPointerException e) {
+            Log.i(TAG,e.getMessage()+" Może być nullpointerException za pierwszym obejsciem");
         }
     }
 
+    private void radiosChecker(RadioButton rbS, RadioButton rbA, RadioButton rbG) {
 
+        sharedPreferences.edit()
+                .putString(rbSport, rbS.getText().toString())
+                .putString(rbActivity, rbA.getText().toString())
+                .putString(rbGoal, rbG.getText().toString())
+                .apply();
+    }
+
+    /**
+     * Opcja wybory przydzialania kaloryki
+     */
     private void getterChooser(View view) {
         int radioAutomatic = R.id.radioAutomatic;
 
         RadioButton radioButtonAutomatic = view.findViewById(R.id.radioAutomatic);
         RadioButton radioButtonAManually = view.findViewById(R.id.radioManually);
 
-        int chooserOption = sharedPreferences.getInt("chooserOption", radioAutomatic);
+        int chooserOptionInt = sharedPreferences.getInt(chooserOption, radioAutomatic);
 
-        if (chooserOption == radioAutomatic) {
+        if (chooserOptionInt == radioAutomatic) {
             radioButtonAutomatic.setChecked(true);
         } else
             radioButtonAManually.setChecked(true);
@@ -333,10 +245,10 @@ public class SportFragment extends Fragment implements AdapterView.OnItemSelecte
      * @param sharedPreferences odczytuje wartosci z pamieci
      */
     private void getMacro(SharedPreferences sharedPreferences) {
-        textInputEditTextCalories.setText(sharedPreferences.getString("textCalories", "0"));
-        textInputEditTextProtein.setText(sharedPreferences.getString("textProtein", "0"));
-        textInputEditTextCarb.setText(sharedPreferences.getString("textCarb", "0")); //no id: default value
-        textInputEditTextFat.setText(sharedPreferences.getString("textFat", "0"));
+        textInputEditTextCalories.setText(sharedPreferences.getString(textCalories, "0"));
+        textInputEditTextProtein.setText(sharedPreferences.getString(textProtein, "0"));
+        textInputEditTextCarb.setText(sharedPreferences.getString(textCarb, "0")); //no id: default value
+        textInputEditTextFat.setText(sharedPreferences.getString(textFat, "0"));
     }
 
     /**
@@ -375,16 +287,6 @@ public class SportFragment extends Fragment implements AdapterView.OnItemSelecte
         linearLayoutManually.getLayoutParams().width = MATCH_PARENT;
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        longIntegerMap.put(parent.getId(), position);
-        buttonSave.setEnabled(true);
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-        // empty method from AdapterView.OnItemSelectedListener
-    }
 
     @Override
     public void onClick(View v) {

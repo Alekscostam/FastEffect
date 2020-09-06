@@ -115,27 +115,7 @@
     <string name="keepWeight">Utrzymanie wagi</string>
     <string name="increaseWeight">Zwiększenie wagi</string>
     <string name="reductionWeight">Zmniejszenie wagi</string>
-
-    <string-array name="spinnerActivities">
-        <item>Brak aktywności, praca siedząca</item>
-        <item>Praca siedzaca, i 1–2 treningi w tygodniu</item>
-        <item>Praca siedzaca, i 3–4 treningi w tygodniu</item>
-        <item>Praca fizyczna, i 3–4 treningi w tygodniu</item>
-        <item>Wysoka aktywność, osoby codziennie trenujące</item>
-    </string-array>
-
-    <string-array name="spinnerTypeOfActivities">
-        <item>Siłowy</item>
-        <item>Wytrzymałościowy</item>
-        <item>Mieszany</item>
-        <item>Żaden</item>
-    </string-array>
-
-    <string-array name="spinnerGoals">
-        <item>Utrzymanie wagi</item>
-        <item>Zwiększenie wagi</item>
-        <item>Zmniejszenie wagi</item>
-    </string-array>
-
+    <string name="manuallyRadio">Ręcznie</string>
+    <string name="automaticRadio">Automatycznie</string>
 
 </resources>
