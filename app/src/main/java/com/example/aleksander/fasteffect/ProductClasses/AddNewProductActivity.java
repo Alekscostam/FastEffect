@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses.CustomSnackBars;
+import com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses.HideSoftKeyboard;
 import com.example.aleksander.fasteffect.AdditionalClasses.DatabaseClasses.Product;
 import com.example.aleksander.fasteffect.R;
 import com.google.firebase.database.DatabaseReference;
@@ -57,6 +58,7 @@ public class AddNewProductActivity extends Activity {
                 CustomSnackBars.customSnackBarStandard("Nie podano wszystkich wartości!",getCurrentFocus()).show();
                 Log.i(TAG, "onCreate - nie udalo sie zapisac produktu");
             }
+            HideSoftKeyboard.hideSoftKeyboard(this);
         });
 
         TextView textViewBack = findViewById(R.id.textViewBack);

@@ -514,38 +514,43 @@ public class HouseFragment extends Fragment implements View.OnClickListener, Val
 
         if (optionSportFragment == 1) {
 
-            String dataCalories = sharedPreferences.getString("textCalories", "2000");
-            String dataProtein = sharedPreferences.getString("textProtein", "20");
-            String dataCarb = sharedPreferences.getString("textCarb", "50");
-            String dataFat = sharedPreferences.getString("textFat", "30");
-            maxValue[0] = (mathematicalFormulas(dataCalories, dataProtein, 4));
-            maxValue[1] = (mathematicalFormulas(dataCalories, dataCarb, 4));
-            maxValue[2] = (mathematicalFormulas(dataCalories, dataFat, 9));
-            assert dataCalories != null;
-            caloriesSummary = Integer.parseInt(dataCalories);
+            maxValue[0] = mathematicalFormulas(sharedPreferences.getInt("textCalories", 2000), sharedPreferences.getInt("textProtein", 20), 4);
+            maxValue[1] = mathematicalFormulas(sharedPreferences.getInt("textCalories", 2000), sharedPreferences.getInt("textCarb", 50), 4);
+            maxValue[2] = mathematicalFormulas(sharedPreferences.getInt("textCalories", 2000), sharedPreferences.getInt("textFat", 30), 9);
+
+            caloriesSummary = sharedPreferences.getInt("textCalories", 2000);
         }
 
         if (optionSportFragment == 0) {
-
-            double weight = Double.parseDouble(userWeight);
-            int height = Integer.parseInt(userHeight);
-            int age = Integer.parseInt(userAge);
-
-            optionsCheckerSport();
-            optionsCheckerActivity();
-            optionsCheckerGoal();
-
+            double weight;
+            int height;
+            int age;
+            if (userHeight.isEmpty() || userAge.isEmpty() || userWeight.isEmpty()) {
+                weight = 80;
+                height = 180;
+                age = 24;
+            } else {
+                weight = Double.parseDouble(userWeight);
+                height = Integer.parseInt(userHeight);
+                age = Integer.parseInt(userAge);
+            }
+            try {
+                optionsCheckerSport();
+                optionsCheckerActivity();
+                optionsCheckerGoal();
+            } catch (IllegalStateException ise) {
+                Log.i(TAG, ise.getMessage() + " sumUpEverything - nie zdązylo załadować z resources ");
+                kindOfSport = 0;
+                activity = 1.3;
+                goal = 0;
+            }
             caloriesSummary = mathematicalForSecondOption(weight, height, age, userGender, goal, activity);
         }
-        String calories = "Kcal:\n " + sumCalories + "/" + caloriesSummary;
-        String protein = "Białko:\n " + proteinS + "/" + maxValue[0];
-        String carb = "Węglowodany:\n " + carbS + "/" + maxValue[1];
-        String fat = "Tłuszcze:\n " + fatS + "/" + maxValue[2];
 
-        textViewAllCalories.setText(calories);
-        textViewAllProtein.setText(protein);
-        textViewAllCarb.setText(carb);
-        textViewAllFat.setText(fat);
+        textViewAllCalories.setText(("Kcal:\n " + sumCalories + "/" + caloriesSummary));
+        textViewAllProtein.setText(("Białko:\n " + proteinS + "/" + maxValue[0]));
+        textViewAllCarb.setText(("Węglowodany:\n " + carbS + "/" + maxValue[1]));
+        textViewAllFat.setText(("Tłuszcze:\n " + fatS + "/" + maxValue[2]));
 
         setProgressBar(caloriesSummary, sumCalories, progressBarCalories);
         setProgressBar((int) (maxValue[0]), (int) (sumProtein), progressBarProtein);
@@ -557,6 +562,7 @@ public class HouseFragment extends Fragment implements View.OnClickListener, Val
      * SharedPreferences dla rodzaju sportu
      */
     private void optionsCheckerSport() {
+
         String strengthSport = getResources().getString(R.string.strengthSport);
         String enduranceSport = getResources().getString(R.string.enduranceSport);
         String mixedSport = getResources().getString(R.string.mixedSport);
@@ -579,6 +585,7 @@ public class HouseFragment extends Fragment implements View.OnClickListener, Val
      * SharedPreferences dla aktywnosci ogolnej
      */
     private void optionsCheckerActivity() {
+
         String noActivity = getResources().getString(R.string.noActivity);
         String lowActivity = getResources().getString(R.string.lowActivity);
         String mediumActivity = getResources().getString(R.string.mediumActivity);
@@ -604,6 +611,7 @@ public class HouseFragment extends Fragment implements View.OnClickListener, Val
      * SharedPreferences dla celu
      */
     private void optionsCheckerGoal() {
+
         String keepWeight = getResources().getString(R.string.keepWeight);
         String increaseWeight = getResources().getString(R.string.increaseWeight);
         String reductionWeight = getResources().getString(R.string.reductionWeight);
@@ -622,8 +630,8 @@ public class HouseFragment extends Fragment implements View.OnClickListener, Val
     /**
      * Funkcja pomocnicza, która dokonuje obliczen i zwraca wynik funkcji doubleFormatWithDot
      */
-    private double mathematicalFormulas(String calories, String macro, int division) {
-        double mathematicalFormulas = ((Double.parseDouble(calories) * Double.parseDouble(macro)) / 100) / division;
+    private double mathematicalFormulas(int calories, int macro, int division) {
+        double mathematicalFormulas = (((double) calories * (double) macro) / 100) / division;
         return doubleFormatWithDot(mathematicalFormulas);
     }
 
@@ -658,24 +666,24 @@ public class HouseFragment extends Fragment implements View.OnClickListener, Val
 
         switch (kindOfSport) {
             case 0:
-                maxValue[0] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(22), 4));
-                maxValue[1] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(50), 4));
-                maxValue[2] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(28), 9));
+                maxValue[0] = mathematicalFormulas(valueToConvert, 22, 4);
+                maxValue[1] = mathematicalFormulas(valueToConvert, 50, 4);
+                maxValue[2] = mathematicalFormulas(valueToConvert, 28, 9);
                 break;
             case 1:
-                maxValue[0] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(17), 4));
-                maxValue[1] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(61), 4));
-                maxValue[2] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(22), 9));
+                maxValue[0] = mathematicalFormulas(valueToConvert, 17, 4);
+                maxValue[1] = mathematicalFormulas(valueToConvert, 61, 4);
+                maxValue[2] = mathematicalFormulas(valueToConvert, 22, 9);
                 break;
             case 2:
-                maxValue[0] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(20), 4));
-                maxValue[1] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(55), 4));
-                maxValue[2] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(25), 9));
+                maxValue[0] = mathematicalFormulas(valueToConvert, 20, 4);
+                maxValue[1] = mathematicalFormulas(valueToConvert, 55, 4);
+                maxValue[2] = mathematicalFormulas(valueToConvert, 25, 9);
                 break;
             case 3:
-                maxValue[0] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(15), 4));
-                maxValue[1] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(55), 4));
-                maxValue[2] = (mathematicalFormulas(String.valueOf(valueToConvert), String.valueOf(30), 9));
+                maxValue[0] = mathematicalFormulas(valueToConvert, 15, 4);
+                maxValue[1] = mathematicalFormulas(valueToConvert, 55, 4);
+                maxValue[2] = mathematicalFormulas(valueToConvert, 30, 9);
                 break;
             default:
                 break;
@@ -712,8 +720,7 @@ public class HouseFragment extends Fragment implements View.OnClickListener, Val
                         } else {
                             editProductInDatabase(amountValue, timeOfDay, amount, productName);
                         }
-                    }catch (NumberFormatException nfe)
-                    {
+                    } catch (NumberFormatException nfe) {
                         nfe.getMessage();
                     }
                 });

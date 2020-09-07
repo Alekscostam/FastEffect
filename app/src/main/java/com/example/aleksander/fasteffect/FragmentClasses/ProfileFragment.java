@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses.CustomSnackBars;
 import com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses.HideSoftKeyboard;
@@ -137,12 +138,17 @@ public class ProfileFragment extends Fragment implements ValueEventListener {
             if (radioButtonM.isChecked()) userGender = "M";
             else if (radioButtonW.isChecked()) userGender = "W";
 
-            databaseReference.child(uid).child(childWeight).setValue(userWeight);
-            databaseReference.child(uid).child(childAge).setValue(userAge);
-            databaseReference.child(uid).child(childHeight).setValue(userHeight);
-            databaseReference.child(uid).child(childGender).setValue(userGender);
+            if(userAge.isEmpty()||userHeight.isEmpty()||userWeight.isEmpty()) {
+                Toast.makeText(getContext(), "Wartości nie mogą być puste!", Toast.LENGTH_LONG).show();
+            }
+            else{
+                databaseReference.child(uid).child(childWeight).setValue(userWeight);
+                databaseReference.child(uid).child(childAge).setValue(userAge);
+                databaseReference.child(uid).child(childHeight).setValue(userHeight);
+                databaseReference.child(uid).child(childGender).setValue(userGender);
+                CustomSnackBars.customSnackBarStandard("Zapisano zmiany!", getView()).show();
+            }
 
-            CustomSnackBars.customSnackBarStandard("Zapisano zmiany!", getView()).show();
         }
     }
 

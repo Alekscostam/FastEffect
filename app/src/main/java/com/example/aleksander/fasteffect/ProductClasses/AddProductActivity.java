@@ -19,8 +19,10 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses.CustomAdapter;
+import com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses.CustomSnackBars;
 import com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses.DataHolder;
 import com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses.ResizeListView;
 import com.example.aleksander.fasteffect.AdditionalClasses.DatabaseClasses.Product;
@@ -73,9 +75,9 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
     private DatabaseReference databaseReference;
     private List<String> linkedList;
 
-    ListView listViewProducts;
-    ArrayAdapter<String> arrayAdapter;
-    EditText editTextFilter;
+    private ListView listViewProducts;
+    private ArrayAdapter<String> arrayAdapter;
+    private EditText editTextFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,9 +123,14 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
 
         builder.setCancelable(false)
                 .setPositiveButton("Ok", (dialogInterface, positive) -> {
-                    String amount = userInput.getText().toString();
-                    arithmeticOperationsForVariables(selectedItem, amount);
-                    addProductToDatabase(amount);
+                    try {
+                        String amount = userInput.getText().toString();
+                        arithmeticOperationsForVariables(selectedItem, amount);
+                        addProductToDatabase(amount);
+                    } catch (NumberFormatException nfe) {
+                        Log.i(TAG, nfe.getMessage() + " alertInit - pusta wartość w alercie!");
+                        Toast.makeText(this, "Wartość nie może być pusta!", Toast.LENGTH_LONG).show();
+                    }
                 })
                 .setNegativeButton("Anuluj", (dialogInterface, negative) -> dialogInterface.cancel());
         AlertDialog alertDialog = builder.create();
@@ -269,8 +276,8 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
                 Intent addIntent = new Intent(getApplicationContext(), AddNewProductActivity.class);
                 startActivity(addIntent);
                 break;
-                case R.id.editTextSearch:
-                    editTextFilter.setInputType(InputType.TYPE_CLASS_TEXT);
+            case R.id.editTextSearch:
+                editTextFilter.setInputType(InputType.TYPE_CLASS_TEXT);
                 break;
             default:
                 break;

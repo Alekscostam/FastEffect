@@ -45,7 +45,6 @@ public class LoginActivity extends AppCompatActivity {
     private static final String LOGIN = "RememberMe";
     private boolean showPassword = false;
     private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor editorRemember;
     private CheckBox checkBoxRememberMe;
 
     @Override
@@ -56,9 +55,6 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setFlags(FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TASK);
         sharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-
-        editorRemember = sharedPreferences.edit();
-        editorRemember.apply();
 
         boolean checkRemember = sharedPreferences.getBoolean(LOGIN, false);
         rememberOrNot(checkRemember);
@@ -72,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
             Log.i(TAG, "rememberOrNot - zapamietanie uzytkownika");
 
             Intent intentLogin = new Intent(LoginActivity.this, MainActivity.class);
-            intentLogin.addFlags(FLAG_ACTIVITY_CLEAR_TOP).addFlags(FLAG_ACTIVITY_CLEAR_TASK);
+            intentLogin.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intentLogin);
 
         } else {
@@ -83,8 +79,6 @@ public class LoginActivity extends AppCompatActivity {
             TextView textViewRegister = findViewById(R.id.textViewRegister);
 
             sharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-            editorRemember = sharedPreferences.edit();
-            editorRemember.apply();
             checkBoxRememberMe = findViewById(R.id.checkBoxRememberMe);
 
             boolean checked = sharedPreferences.getBoolean(KEY_REMEMBER, false);
@@ -123,6 +117,7 @@ public class LoginActivity extends AppCompatActivity {
      * Ustawienia dotyczace tego czy dane logowania użytkownika maja zostać zapisane
      */
     private void managePrefs() {
+        SharedPreferences.Editor editorRemember = sharedPreferences.edit();
         if (checkBoxRememberMe.isChecked()) {
             editorRemember.putString(KEY_USERNAME, autoCompleteTextViewEmail.getText().toString().trim());
             editorRemember.putString(KEY_PASS, autoCompleteTextViewPassword.getText().toString().trim());
@@ -144,7 +139,7 @@ public class LoginActivity extends AppCompatActivity {
     public void buttonLoginClick(View view) {
         view.getId();
         Intent intentAdminLog = new Intent(LoginActivity.this, MainActivity.class);
-        intentAdminLog.addFlags(FLAG_ACTIVITY_CLEAR_TOP).addFlags(FLAG_ACTIVITY_CLEAR_TASK);
+        intentAdminLog.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_CLEAR_TASK);
 
         HideSoftKeyboard.hideSoftKeyboard(this);
 
@@ -167,7 +162,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                     Intent intentLogin = new Intent(LoginActivity.this, MainActivity.class);
                                     intentLogin
-                                            .addFlags(FLAG_ACTIVITY_CLEAR_TOP).addFlags(FLAG_ACTIVITY_CLEAR_TASK);
+                                            .addFlags(FLAG_ACTIVITY_CLEAR_TOP);
                                     intentLogin.putExtra("Email", firebaseAuth.getCurrentUser().getEmail());
                                     startActivity(intentLogin);
 

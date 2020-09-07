@@ -31,7 +31,7 @@ import static java.util.Objects.requireNonNull;
  */
 public class SportFragment extends Fragment implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
 
-    public static final String TAG="com.example.aleksander.fasteffect.FragmentClasses";
+    public static final String TAG = "com.example.aleksander.fasteffect.FragmentClasses";
 
     public static final String SHARED_PREFS = "shaaredPrefs";
 
@@ -147,22 +147,32 @@ public class SportFragment extends Fragment implements View.OnClickListener, Rad
         }
         if (!optionSelected.equals("0")) {
             optionSet("1");
-            int protein = Integer.parseInt(requireNonNull(textInputEditTextProtein.getText()).toString());
-            int carb = Integer.parseInt(requireNonNull(textInputEditTextCarb.getText()).toString());
-            int fat = Integer.parseInt(requireNonNull(textInputEditTextFat.getText()).toString());
+
+            int protein = sharedPreferences.getInt(textProtein, 20);
+            int carb = sharedPreferences.getInt(textCarb, 50);
+            int fat = sharedPreferences.getInt(textFat, 30);
+            int calories = sharedPreferences.getInt(textCalories, 2000);
+
+            try {
+                protein = Integer.parseInt(requireNonNull(textInputEditTextProtein.getText()).toString());
+                carb = Integer.parseInt(requireNonNull(textInputEditTextCarb.getText()).toString());
+                fat = Integer.parseInt(requireNonNull(textInputEditTextFat.getText()).toString());
+                calories = Integer.parseInt(requireNonNull(textInputEditTextCalories.getText()).toString());
+            } catch (NumberFormatException nfe) {
+                Log.i(TAG, nfe.getMessage() + " saveOptions - nieprawidlowy format danych!");
+                CustomSnackBars.customSnackBarStandard("Nie podano wszystkich wartości!", getView()).show();
+            }
 
             if ((protein + carb + fat) == 100) {
-                editor.putString(textProtein, String.valueOf(protein));
-                editor.putString(textCarb, String.valueOf(carb));
-                editor.putString(textFat, String.valueOf(fat));
+                editor.putInt(textProtein, protein);
+                editor.putInt(textCarb, carb);
+                editor.putInt(textFat, fat);
             } else
                 CustomSnackBars.customSnackBarStandard("Wartość procentowa nie jest równa 100%", getView()).show();
-
-            int calories = Integer.parseInt(requireNonNull(textInputEditTextCalories.getText()).toString());
             if ((calories) < 100)
                 CustomSnackBars.customSnackBarStandard("Wartość jest za mała", getView()).show();
             else {
-                editor.putString(textCalories, String.valueOf(calories));
+                editor.putInt(textCalories, calories);
                 editor.commit();
                 editor.apply();
                 CustomSnackBars.customSnackBarStandard("Zapisano!", getView()).show();
@@ -191,9 +201,9 @@ public class SportFragment extends Fragment implements View.OnClickListener, Rad
         int chosenActivity = sharedPreferences.getInt(SportFragment.chooserActivity, idRadioLowActivity);
         int chosenGoal = sharedPreferences.getInt(SportFragment.chooserGoal, idRadioKeepWeight);
 
-        RadioButton rbSport = (RadioButton) view.findViewById(chosenSport);
-        RadioButton rbActivity = (RadioButton) view.findViewById(chosenActivity);
-        RadioButton rbGoal = (RadioButton) view.findViewById(chosenGoal);
+        RadioButton rbSport = view.findViewById(chosenSport);
+        RadioButton rbActivity = view.findViewById(chosenActivity);
+        RadioButton rbGoal = view.findViewById(chosenGoal);
 
         try {
             rbSport.setChecked(true);
@@ -201,7 +211,7 @@ public class SportFragment extends Fragment implements View.OnClickListener, Rad
             rbGoal.setChecked(true);
             radiosChecker(rbSport, rbActivity, rbGoal);
         } catch (NullPointerException e) {
-            Log.i(TAG,e.getMessage()+" Może być nullpointerException za pierwszym obejsciem");
+            Log.i(TAG, e.getMessage() + " Może być nullpointerException za pierwszym obejsciem");
         }
     }
 
@@ -237,10 +247,11 @@ public class SportFragment extends Fragment implements View.OnClickListener, Rad
      * @param sharedPreferences odczytuje wartosci z pamieci
      */
     private void getMacro(SharedPreferences sharedPreferences) {
-        textInputEditTextCalories.setText(sharedPreferences.getString(textCalories, "0"));
-        textInputEditTextProtein.setText(sharedPreferences.getString(textProtein, "0"));
-        textInputEditTextCarb.setText(sharedPreferences.getString(textCarb, "0")); //no id: default value
-        textInputEditTextFat.setText(sharedPreferences.getString(textFat, "0"));
+        int anInt = sharedPreferences.getInt(textCalories, 2000);
+        textInputEditTextCalories.setText(String.valueOf(sharedPreferences.getInt(textCalories, 2000)));
+        textInputEditTextProtein.setText(String.valueOf(sharedPreferences.getInt(textProtein, 20)));
+        textInputEditTextCarb.setText(String.valueOf(sharedPreferences.getInt(textCarb, 50)));
+        textInputEditTextFat.setText(String.valueOf(sharedPreferences.getInt(textFat, 30)));
     }
 
     /**
