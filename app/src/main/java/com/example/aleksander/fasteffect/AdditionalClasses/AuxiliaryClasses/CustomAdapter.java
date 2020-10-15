@@ -21,16 +21,13 @@ public class CustomAdapter extends ArrayAdapter<String> {
 
     public static final String TAG ="com.example.aleksander.fasteffect.AdditionalClasses.AuxiliaryClasses";
 
-    /**
-     * Konstruktor moze przyjac dowolny, wybrany przez nas ksztalt(parametry)
-     */
+
     public CustomAdapter(@NonNull Context context, List<String> productList) {
         super(context, R.layout.custom_row_adapter, productList);
     }
 
     /**
      * Własny widok dla adaptera
-     * Dane sa dostepne dzieki inicjalizacji konstruktora, ktory znajduje sie powyzej
      */
     @NonNull
     @Override

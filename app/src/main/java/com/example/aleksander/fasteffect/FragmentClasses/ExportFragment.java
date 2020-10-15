@@ -26,7 +26,7 @@ import java.io.IOException;
 
 import lombok.NoArgsConstructor;
 
-import static com.example.aleksander.fasteffect.Repository.DatabaseQuery.findAll;
+import static com.example.aleksander.fasteffect.DBQueries.DatabaseQuery.findAll;
 import static java.util.Objects.requireNonNull;
 
 /**

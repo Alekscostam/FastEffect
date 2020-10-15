@@ -61,15 +61,15 @@ import static com.example.aleksander.fasteffect.AdditionalClasses.User.childAge;
 import static com.example.aleksander.fasteffect.AdditionalClasses.User.childGender;
 import static com.example.aleksander.fasteffect.AdditionalClasses.User.childHeight;
 import static com.example.aleksander.fasteffect.AdditionalClasses.User.childWeight;
-import static com.example.aleksander.fasteffect.Repository.DatabaseQuery.deleteByIdHashFromHashTable;
-import static com.example.aleksander.fasteffect.Repository.DatabaseQuery.deleteElementByIdHashFromHash;
-import static com.example.aleksander.fasteffect.Repository.DatabaseQuery.getElementByIdTimeOfDayAndDataAndIdMealFromHash;
-import static com.example.aleksander.fasteffect.Repository.DatabaseQuery.getElementByIdTimeOfDayAndDataFromAllTables;
-import static com.example.aleksander.fasteffect.Repository.DatabaseQuery.getElementByNameAndValueFromPosilek;
-import static com.example.aleksander.fasteffect.Repository.DatabaseQuery.getMealIdByDataAndIdMealFromTableMeal;
-import static com.example.aleksander.fasteffect.Repository.DatabaseQuery.getMealIdByNameAndAmountFromTableMeal;
-import static com.example.aleksander.fasteffect.Repository.DatabaseQuery.insertElementIntoHashTable;
-import static com.example.aleksander.fasteffect.Repository.DatabaseQuery.insertElementIntoMealTable;
+import static com.example.aleksander.fasteffect.DBQueries.DatabaseQuery.deleteByIdHashFromHashTable;
+import static com.example.aleksander.fasteffect.DBQueries.DatabaseQuery.deleteElementByIdHashFromHash;
+import static com.example.aleksander.fasteffect.DBQueries.DatabaseQuery.getElementByIdTimeOfDayAndDataAndIdMealFromHash;
+import static com.example.aleksander.fasteffect.DBQueries.DatabaseQuery.getElementByIdTimeOfDayAndDataFromAllTables;
+import static com.example.aleksander.fasteffect.DBQueries.DatabaseQuery.getElementByNameAndValueFromPosilek;
+import static com.example.aleksander.fasteffect.DBQueries.DatabaseQuery.getMealIdByDataAndIdMealFromTableMeal;
+import static com.example.aleksander.fasteffect.DBQueries.DatabaseQuery.getMealIdByNameAndAmountFromTableMeal;
+import static com.example.aleksander.fasteffect.DBQueries.DatabaseQuery.insertElementIntoHashTable;
+import static com.example.aleksander.fasteffect.DBQueries.DatabaseQuery.insertElementIntoMealTable;
 import static java.util.Objects.requireNonNull;
 
 /**

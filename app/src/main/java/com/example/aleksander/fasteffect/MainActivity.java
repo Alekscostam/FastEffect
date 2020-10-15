@@ -25,10 +25,10 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import static com.example.aleksander.fasteffect.AdditionalClasses.DatabaseClasses.SQLDatabaseStructure.TABLE_TIME_OF_DAY;
 import static com.example.aleksander.fasteffect.AdditionalClasses.DatabaseClasses.SQLDatabaseStructure.TIME_COLUMN_TIME_OF_DAY;
-import static com.example.aleksander.fasteffect.Repository.DatabaseQuery.createTableHash;
-import static com.example.aleksander.fasteffect.Repository.DatabaseQuery.createTableMeal;
-import static com.example.aleksander.fasteffect.Repository.DatabaseQuery.createTableTimeOfDay;
-import static com.example.aleksander.fasteffect.Repository.DatabaseQuery.dropTable;
+import static com.example.aleksander.fasteffect.DBQueries.DatabaseQuery.createTableHash;
+import static com.example.aleksander.fasteffect.DBQueries.DatabaseQuery.createTableMeal;
+import static com.example.aleksander.fasteffect.DBQueries.DatabaseQuery.createTableTimeOfDay;
+import static com.example.aleksander.fasteffect.DBQueries.DatabaseQuery.dropTable;
 
 
 /**
